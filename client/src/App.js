@@ -3,11 +3,14 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import store from './redux/configureStore';
 import DefaultRouter from './routes';
+import { BrowserRouter } from 'react-router-dom';
 
 function App() {
   return (
     <Provider store={store}>
-      <DefaultRouter />
+      <BrowserRouter>
+        <DefaultRouter />
+      </BrowserRouter>
     </Provider>
   );
 }

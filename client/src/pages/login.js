@@ -16,10 +16,19 @@ export default function LogIn() {
 
     const onClickLogin = () => {
         console.log('login clicked')
+        axios.post('/api/user_inform', null, {
+            params: {
+                'user_id' : inputId,
+                'user_pw' : inputPw
+            }
+        })
+        // axios.get('/api/user_inform')
+        .then(res => console.log(res))
+        .catch()
     }
 
     useEffect(() => {
-        axios.get('/user_inform/login')
+        axios.get('/api/hello')
         .then(res => console.log(res))
         .catch()
     }, [])

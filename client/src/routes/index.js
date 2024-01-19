@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Main from '../pages';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
+import LogIn from '../pages/login';
 
 function DefaultRouter() {
   return (
@@ -12,7 +13,8 @@ function DefaultRouter() {
 
           <Routes>
             <Route path="/" element={<Main />}></Route>
-          </Routes>
+            <Route path="/login" element={<LogIn />}></Route>
+    </Routes>
         </div>
       </div>
 

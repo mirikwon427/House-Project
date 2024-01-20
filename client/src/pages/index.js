@@ -1,4 +1,5 @@
 import MainSwiper from '../components/main/MainSwiper';
+import MainMap from '../components/main/MainMap';
 
 const likedProducts = [
   // {
@@ -95,11 +96,8 @@ const recommendedSwiperData = {
 export default function Main() {
   return (
     <div>
-      <div className="w-full">
-        <div className="w-full h-[540px] bg-[#F4F6F5] rounded-3xl flex justify-center items-center">
-          Section 1
-        </div>
-      </div>
+      {/* 거래 많은 지역 */}
+      <MainMap />
 
       {/* 찜한 매물 목록 */}
       <MainSwiper data={likedSwiperData} />

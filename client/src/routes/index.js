@@ -14,7 +14,7 @@ function DefaultRouter() {
           <Routes>
             <Route path="/" element={<Main />}></Route>
             <Route path="/login" element={<LogIn />}></Route>
-    </Routes>
+          </Routes>
         </div>
       </div>
 

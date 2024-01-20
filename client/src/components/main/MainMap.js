@@ -187,38 +187,7 @@ export default function MainMap() {
 
   return (
     <div className="w-full">
-      <div className="w-full flex justify-between pb-6">
-        <div className="text-3xl font-extrabold">거래 많은 지역</div>
-        <div className="w-64">
-          <div className="w-full h-fit border border-[#d3d3d3] rounded-xl flex justify-center flex-col px-4">
-            <div className="w-full h-9 flex justify-between gap-3">
-              <input
-                className="flex-1 h-full outline-none border-none text-base"
-                type="text"
-                placeholder="페이지가심심해서.."
-              />
-              <div className="w-6 h-full flex justify-center flex-col">
-                <div className="w-6 h-6 cursor-pointer bg-no-repeat bg-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div className="w-full pb-6 text-3xl font-extrabold">거래 많은 지역</div>
 
       <div
         id="map"

@@ -8,12 +8,7 @@ export default function MainSwiper({ data }) {
     <div>
       <div className="w-full text-3xl font-extrabold pt-32 pb-12">{title}</div>
 
-      <Swiper
-        spaceBetween={48}
-        slidesPerView={3}
-        onSlideChange={() => console.log('slide change')}
-        onSwiper={(swiper) => console.log(swiper)}
-      >
+      <Swiper spaceBetween={48} slidesPerView={3}>
         {items.length > 0 ? (
           items.map((v) => {
             return (

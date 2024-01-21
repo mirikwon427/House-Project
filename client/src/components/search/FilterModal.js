@@ -4,8 +4,8 @@ import CheckBtn from '../common/CheckBtn';
 export default function FilterModal({ setModalOpen }) {
   return (
     <div className="w-screen h-screen fixed top-0 left-0 bg-gray-500 flex flex-col justify-center bg-opacity-40 overflow-hidden">
-      <div className="relative min-w-[600px] w-1/3 h-fit bg-white shadow-xl items-center mx-auto my-0 rounded-xl flex">
-        <div className="w-full h-full p-12">
+      <div className="relative min-w-[1080px] w-1/3 h-fit max-h-[80vh] bg-white shadow-xl items-center mx-auto my-0 rounded-xl flex">
+        <div className="w-full h-full px-12 py-12 overflow-auto">
           <div className="text-4xl font-bold mb-12">검색 조건</div>
 
           <div className="text-xl font-bold mb-4">금액</div>
@@ -37,7 +37,7 @@ export default function FilterModal({ setModalOpen }) {
           </div>
 
           <div className="text-xl font-bold mb-4">평수</div>
-          <div className="w-full flex gap-4 mb-6 flex-wrap">
+          <div className="w-full flex gap-4 flex-wrap">
             <CheckBtn data={'10평 이하'} />
             <CheckBtn data={'10평~15평'} />
             <CheckBtn data={'15평~20평'} />

@@ -4,14 +4,17 @@ import { Provider } from 'react-redux';
 import store from './redux/configureStore';
 import DefaultRouter from './routes';
 import { BrowserRouter } from 'react-router-dom';
+import AntdProvider from './components/AntdProvider';
 
 function App() {
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <DefaultRouter />
-      </BrowserRouter>
-    </Provider>
+    <AntdProvider>
+      <Provider store={store}>
+        <BrowserRouter>
+          <DefaultRouter />
+        </BrowserRouter>
+      </Provider>
+    </AntdProvider>
   );
 }
 

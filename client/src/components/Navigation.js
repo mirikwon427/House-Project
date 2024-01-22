@@ -9,7 +9,9 @@ export default function Navigation() {
 
       <div className="flex gap-12 items-center">
         <button>집값 예측</button>
-        <button>통합 검색</button>
+        <button>
+          <Link to="/search">통합검색</Link>
+        </button>
         <button>트렌드</button>
         <button className="bg-black text-white rounded-md px-4 py-2 hover:bg-gray-800">
           Profile 자리

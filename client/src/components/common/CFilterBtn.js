@@ -1,10 +1,13 @@
-export default function FilterBtn({ data }) {
+export default function CFilterBtn({ data, onClick }) {
   return (
     <div className="w-fit h-10 rounded-md flex justify-center flex-col border-[#d3d3d3] border bg-white">
       <div className="w-fit px-5 pr-3 flex gap-5 items-center">
         <div className="text-base font-normal">{data}</div>
         <div className="w-6 flex justify-center flex-col">
-          <div className="w-full h-6 cursor-pointer bg-center bg-no-repeat">
+          <div
+            className="w-full h-6 cursor-pointer bg-center bg-no-repeat"
+            onClick={onClick}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

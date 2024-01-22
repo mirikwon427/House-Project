@@ -1,4 +1,4 @@
-import Card from '../common/Card';
+import CCard from '../common/CCard';
 import { Pagination } from 'antd';
 
 const recommendedProducts = [
@@ -142,7 +142,7 @@ export default function SearchList() {
           {recommendedProducts.map((v) => {
             return (
               <div key={v.id}>
-                <Card data={v} />
+                <CCard data={v} />
               </div>
             );
           })}

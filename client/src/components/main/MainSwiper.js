@@ -1,6 +1,6 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import LargeCard from '../common/LargeCard';
+import CLargeCard from '../common/CLargeCard';
 
 export default function MainSwiper({ data }) {
   const { title, items, errMsg, errBtn } = data;
@@ -14,7 +14,7 @@ export default function MainSwiper({ data }) {
           items.map((v) => {
             return (
               <SwiperSlide key={v.id} className="w-1/3">
-                <LargeCard data={v} />
+                <CLargeCard data={v} />
               </SwiperSlide>
             );
           })

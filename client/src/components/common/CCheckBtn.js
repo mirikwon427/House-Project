@@ -1,13 +1,14 @@
 import { useState } from 'react';
 
-export default function CheckBtn({ data }) {
-  const [isChecked, setIsChecked] = useState(false);
+export default function CCheckBtn({ checked = false, data, onClick }) {
+  const [isChecked, setIsChecked] = useState(checked);
 
   return (
     <div
       className="w-fit h-10 rounded-md flex justify-center flex-col border-[#d3d3d3] border bg-white cursor-pointer"
       onClick={() => {
         setIsChecked(!isChecked);
+        onClick();
       }}
     >
       <div className="w-fit px-5 pl-3 flex gap-3 items-center">

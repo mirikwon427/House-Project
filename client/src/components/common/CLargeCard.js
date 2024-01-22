@@ -1,7 +1,7 @@
 // Props
 // data: { image: string, bldg_nm: string, sgg_nm: string }
 // image: 이미지, bldg_nm: 건물명, sgg_nm: 주소
-export default function LargeCard({ data }) {
+export default function CLargeCard({ data }) {
   return (
     <div className="cursor-pointer">
       <img

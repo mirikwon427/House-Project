@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import CButton from './common/CButton';
 
 export default function Navigation() {
   return (
@@ -13,9 +14,7 @@ export default function Navigation() {
           <Link to="/search">통합검색</Link>
         </button>
         <button>트렌드</button>
-        <button className="bg-black text-white rounded-md px-4 py-2 hover:bg-gray-800">
-          Profile 자리
-        </button>
+        <CButton title="Profile" />
       </div>
     </div>
   );

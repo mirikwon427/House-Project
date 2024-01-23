@@ -3,7 +3,7 @@ import Main from '../pages';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import LogIn from '../pages/login';
-import TestMocking from '../pages/test';
+import Search from '../pages/search';
 
 function DefaultRouter() {
   return (
@@ -15,6 +15,7 @@ function DefaultRouter() {
           <Routes>
             <Route path="/" element={<Main />}></Route>
             <Route path="/login" element={<LogIn />}></Route>
+            <Route path="/search" element={<Search />}></Route>
           </Routes>
         </div>
       </div>

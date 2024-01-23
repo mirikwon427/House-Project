@@ -3,6 +3,7 @@ import Main from '../pages';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import LogIn from '../pages/login';
+import TestMocking from '../pages/test';
 
 function DefaultRouter() {
   return (

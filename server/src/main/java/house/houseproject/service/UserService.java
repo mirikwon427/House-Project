@@ -28,10 +28,6 @@ public class UserService {
             throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
         }
 
-//        Authority authority = Authority.builder()
-//                .authorityName("ROLE_USER")
-//                .build();
-
         HUser user = HUser.builder()
                 .email(userDto.getEmail())
                 .password(passwordEncoder.encode(userDto.getPassword()))
@@ -39,7 +35,7 @@ public class UserService {
                 .age(userDto.getAge())
                 .phone(userDto.getPhone())
                 .address(userDto.getAddress())
-                //.authorities(Collections.singleton(authority))
+                .authority(Authority.USER)
                 .build();
 
         return UserDto.from(userRepository.save(user));

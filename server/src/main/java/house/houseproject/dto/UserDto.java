@@ -43,18 +43,15 @@ public class UserDto {
     private String address;
 
 
-//    private Set<AuthorityDto> authorityDtoSet;
-//
     public static UserDto from(HUser user) {
         if(user == null) return null;
 
         return UserDto.builder()
                 .email(user.getEmail())
-
-////                .name(user.getName())
-////                .authorityDtoSet(user.getAuthorities().stream()
-////                        .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
-////                        .collect(Collectors.toSet()))
+                .name(user.getName())
+                .age(user.getAge())
+                .phone(user.getPhone())
+                .address(user.getAddress())
                 .build();
     }
 }

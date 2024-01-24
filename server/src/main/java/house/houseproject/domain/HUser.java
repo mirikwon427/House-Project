@@ -30,13 +30,8 @@ public class HUser {
     private String phone;
     private String address;
 
-
-    @ManyToMany
-    @JoinTable(
-            name = "user_authority",
-            joinColumns = {@JoinColumn(name = "Id", referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
-    private Set<Authority> authorities;
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
 
 
 }

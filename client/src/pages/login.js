@@ -6,13 +6,13 @@ import CButton from '../components/common/CButton';
 
 export default function LogIn() {
 
-    const {id} = useInput('')
-    const {pw} = useInput('')
+    const id = useInput('')
+    const pw = useInput('')
 
     const onClickLogin = () => {
         
         console.log('login clicked')
-        axios.post('/login', null, {
+        axios.post('/login', {
             params: {
                 'user_id' : id.value,
                 'user_pw' : pw.value
@@ -40,13 +40,13 @@ export default function LogIn() {
         // useEffect 이용해서 axios 요청하면 bad Request를 얻는다.
         // 버튼 클릭으로 요청하면 멀쩡하게 잘 요청한다. msw를 사용해서 그런 것 같은데
         // 실제 서버를 활용했을 때도 그런지 나중에 확인하자.
-        async function get() {
-            const result = await axios.get('/api/hello')
+        // async function get() {
+        //     const result = await axios.get('/api/hello')
 
-            console.log(result);
+        //     console.log(result);
             
-        }
-        get()
+        // }
+        // get()
     }, [])
 
     return (

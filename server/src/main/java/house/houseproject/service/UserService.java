@@ -3,6 +3,7 @@ package house.houseproject.service;
 import java.util.Collections;
 
 import house.houseproject.Repository.HUserRepository;
+import house.houseproject.domain.Authority;
 import house.houseproject.domain.HUser;
 import house.houseproject.dto.UserDto;
 import house.houseproject.exception.DuplicateMemberException;

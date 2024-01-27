@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import CButton from './common/CButton';
-
+import axios from 'axios';
 
 const onClickProfile = () => {
   if (sessionStorage.getItem('user_id') === null){
@@ -9,6 +9,7 @@ const onClickProfile = () => {
       document.location.href = '/profile'
   }
 }
+
 
 export default function Navigation() {
   return (

@@ -4,6 +4,7 @@ import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import LogIn from '../pages/login';
 import Search from '../pages/search';
+import Profile from '../pages/profile';
 
 function DefaultRouter() {
   return (
@@ -16,6 +17,7 @@ function DefaultRouter() {
             <Route path="/" element={<Main />}></Route>
             <Route path="/login" element={<LogIn />}></Route>
             <Route path="/search" element={<Search />}></Route>
+            <Route path="/profile" element={<Profile />}></Route>
           </Routes>
         </div>
       </div>

@@ -6,7 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface HUserRepository extends JpaRepository<HUser, Long> {
+// long - > integer
+public interface HUserRepository extends JpaRepository<HUser, java.lang.Integer> {
     //@EntityGraph(attributePaths = "authorities")
     Optional<HUser> findOneWithAuthoritiesByEmail(String email);
 }

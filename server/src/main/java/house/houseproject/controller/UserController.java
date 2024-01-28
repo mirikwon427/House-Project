@@ -1,10 +1,10 @@
 package house.houseproject.controller;
 
 import house.houseproject.dto.UserDto;
+import house.houseproject.exception.DuplicateMemberException;
 import house.houseproject.service.UserService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +17,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
-@Controller
+@RestController
+@RequestMapping("/api")
 public class UserController {
     private final UserService userService;
 
@@ -37,10 +40,16 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDto> signup(
-            @Valid @RequestBody UserDto userDto
-    ) {
-        return ResponseEntity.ok(userService.signup(userDto));
+    public ResponseEntity<?> signup(@Valid @RequestBody UserDto userDto) {
+        try {
+            UserDto createdUser = userService.signup(userDto);
+            return ResponseEntity.ok(createdUser);
+        } catch (DuplicateMemberException e) {
+            String errorMessage = e.getCustomMessage();
+
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("status", 409, "success", false, "message", errorMessage, "fieldErrors", List.of()));
+        }
     }
 
     @GetMapping("/user")

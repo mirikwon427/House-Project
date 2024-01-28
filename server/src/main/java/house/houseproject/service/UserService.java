@@ -3,6 +3,7 @@ package house.houseproject.service;
 import java.util.Collections;
 
 import house.houseproject.Repository.HUserRepository;
+import house.houseproject.domain.Authority;
 import house.houseproject.domain.HUser;
 import house.houseproject.dto.UserDto;
 import house.houseproject.exception.DuplicateMemberException;
@@ -23,10 +24,11 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto signup(UserDto userDto) {
+    public UserDto signup(UserDto userDto) throws DuplicateMemberException {
         if (userRepository.findOneWithAuthoritiesByEmail(userDto.getEmail()).orElse(null) != null) {
-            throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
+            throw new DuplicateMemberException("false", "이미 가입되어 있는 유저입니다.");
         }
+
 
         HUser user = HUser.builder()
                 .email(userDto.getEmail())

@@ -44,6 +44,11 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public HUser findByEmail(String email){
+        return userRepository.findOneWithAuthoritiesByEmail(email).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."));
+    }
+
+    @Transactional(readOnly = true)
     public UserDto getUserWithAuthorities(String email) {
         return UserDto.from(userRepository.findOneWithAuthoritiesByEmail(email).orElse(null));
     }

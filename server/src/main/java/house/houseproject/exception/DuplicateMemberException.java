@@ -1,16 +1,47 @@
 package house.houseproject.exception;
 
-public class DuplicateMemberException extends RuntimeException {
-    public DuplicateMemberException() {
-        super();
+public class DuplicateMemberException extends Exception {
+    private final String success;
+    private final String customMessage;
+
+    public DuplicateMemberException(String success, String customMessage) {
+        super("status: 409, success:" + success + ", message:" + customMessage);
+        this.success = success;
+        this.customMessage = customMessage;
     }
-    public DuplicateMemberException(String message, Throwable cause) {
-        super(message, cause);
+
+    public String getSuccess() {
+        return success;
     }
-    public DuplicateMemberException(String message) {
-        super(message);
+
+    public String getCustomMessage() {
+        return customMessage;
     }
-    public DuplicateMemberException(Throwable cause) {
-        super(cause);
+
+    @Override
+    public String getMessage() {
+        return customMessage;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"status\": 409," +
+                "\"success\": \"" + success + "\"," +
+                "\"message\": \"" + customMessage + "\"," +
+                "\"fieldErrors\": []" +
+                "}";
+    }
+//    public DuplicateMemberException() {
+//        super();
+//    }
+//    public DuplicateMemberException(String message, Throwable cause) {
+//        super(message, cause);
+//    }
+//    public DuplicateMemberException(String message) {
+//        super(message);
+//    }
+//    public DuplicateMemberException(Throwable cause) {
+//        super(cause);
+//    }
 }

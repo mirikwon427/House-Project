@@ -24,6 +24,7 @@ export default function LogIn() {
             if (res.data.success === true) {
                 console.log('======================','로그인 성공')
                 sessionStorage.setItem('user_id', res.data.userId)
+                sessionStorage.setItem('jwtToken', res.data.jwtToken)
                 document.location.href = '/'
             } else {
                 if (res.data.userId === undefined){

@@ -10,4 +10,5 @@ public interface HUserRepository extends JpaRepository<HUser, java.lang.Integer>
     //@EntityGraph(attributePaths = "authorities")
     Optional<HUser> findOneWithAuthoritiesByEmail(String email);
     HUser findByEmail(String email);
+    Optional<HUser> findById(Integer Id);
 }

@@ -1,5 +1,7 @@
 package house.houseproject.controller;
+import house.houseproject.Repository.LikedRepository;
 import house.houseproject.domain.HUser;
+import house.houseproject.domain.Liked;
 import house.houseproject.dto.UserUpdateDto;
 import house.houseproject.service.MypageService;
 import house.houseproject.service.UserService;
@@ -13,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RequestMapping("/api/mypage")
 @RestController
@@ -21,6 +25,7 @@ public class MypageController{
 
     private final MypageService mypageService;
     private final UserService userService;
+    private final LikedRepository likedRepository;
 
     @GetMapping("/update")
     public String userUpdate(@AuthenticationPrincipal UserDetails userDetails, ModelMap model) {
@@ -42,6 +47,18 @@ public class MypageController{
         mypageService.userUpdate(userUpdateDto);
 
                return ResponseEntity.ok("hello");
+    }
+
+    @GetMapping("/likeHouse")
+    public String likedHouse(@AuthenticationPrincipal UserDetails userDetails, ModelMap model) {
+        String loginEmail = userDetails.getUsername();
+
+        HUser user = userService.findByEmail(loginEmail);
+        List<Liked> likedList = likedRepository.findAllByUserId(user.getId());
+
+        model.addAttribute("likedList", likedList);
+        log.info("likedList : {}", likedList);
+        return "/likedHouse";
     }
 
 }

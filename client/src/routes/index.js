@@ -6,6 +6,7 @@ import LogIn from '../pages/login';
 import Search from '../pages/search';
 import Profile from '../pages/profile';
 import SignUp from '../pages/signup';
+import HouseDetail from '../pages/houseDetail';
 
 function DefaultRouter() {
   return (
@@ -20,6 +21,7 @@ function DefaultRouter() {
             <Route path="/search" element={<Search />}></Route>
             <Route path="/profile" element={<Profile />}></Route>
             <Route path="/signin" element={<SignUp />}></Route>
+            <Route path="/house/:id" element={<HouseDetail />}></Route>
           </Routes>
         </div>
       </div>

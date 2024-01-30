@@ -1,9 +1,12 @@
 // Props
 // data: { image: string, bldg_nm: string, sgg_nm: string }
+
+import { Link } from 'react-router-dom';
+
 // image: 이미지, bldg_nm: 건물명, sgg_nm: 주소
 export default function Card({ data }) {
   return (
-    <div className="cursor-pointer">
+    <Link to={`/house/${data.id}`} className="cursor-pointer">
       <img
         src={data.image}
         alt="dummy"
@@ -31,6 +34,6 @@ export default function Card({ data }) {
           </svg>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -1,17 +1,24 @@
 import { Link } from 'react-router-dom';
 import CButton from './common/CButton';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const onClickProfile = () => {
-  if (sessionStorage.getItem('user_id') === null){
-      document.location.href = '/login'
-  } else {
-      document.location.href = '/profile'
-  }
-}
+
 
 
 export default function Navigation() {
+  const navigate = useNavigate();
+  const OnClickProfile = () => {
+    if (sessionStorage.getItem('id') === null){
+        navigate("/login");
+      } else {
+        navigate("/profile");
+    }
+  }
+
+
+
+
   return (
     <div className="w-full py-10 flex justify-between items-center">
       <div className="font-extrabold text-2xl">
@@ -24,7 +31,7 @@ export default function Navigation() {
           <Link to="/search">통합검색</Link>
         </button>
         <button>트렌드</button>
-        <CButton title="Profile" onClick={onClickProfile}/>
+        <CButton title="Profile" onClick={OnClickProfile}/>
       </div>
     </div>
   );

@@ -3,28 +3,37 @@ import axios from 'axios';
 import CInput from '../components/common/CInput';
 import { useInput } from '../hooks/useInput';
 import CButton from '../components/common/CButton';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { userSlice } from '../redux/store/reducers/LoginReducer'
 
 export default function LogIn() {
 
     const id = useInput('')
     const pw = useInput('')
-
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    
     const onClickLogin = () => {
         
-        console.log('login clicked')
-        axios.post('/login', {
-            params: {
-                'user_id' : id.value,
-                'user_pw' : pw.value
+        // console.log('login clicked')
+        axios({
+            method: 'post',
+            url: '/api/login',
+            data: {
+              email: id.value,
+              password: pw.value
             }
-        })
+          })
         .then(res => {
             console.log('===================== 리스폰스')
             // jwt 토큰 저장하는 코드 추가
             if (res.data.success === true) {
                 console.log('======================','로그인 성공')
-                sessionStorage.setItem('user_id', res.data.userId)
-                document.location.href = '/'
+                sessionStorage.setItem('id', res.data.id)
+                sessionStorage.setItem('token', res.data.token)
+                dispatch(userSlice.actions.login(res.data))
+                navigate("/")
             } else {
                 if (res.data.userId === undefined){
                     console.log(res.data.msg)
@@ -36,18 +45,6 @@ export default function LogIn() {
         .catch()
     }
 
-    useEffect( () => {
-        // useEffect 이용해서 axios 요청하면 bad Request를 얻는다.
-        // 버튼 클릭으로 요청하면 멀쩡하게 잘 요청한다. msw를 사용해서 그런 것 같은데
-        // 실제 서버를 활용했을 때도 그런지 나중에 확인하자.
-        // async function get() {
-        //     const result = await axios.get('/api/hello')
-
-        //     console.log(result);
-            
-        // }
-        // get()
-    }, [])
 
     return (
         <>
@@ -66,6 +63,7 @@ export default function LogIn() {
                 </svg>
                 </CInput>
                 <button className="py-3 px-5 bg-gray-800 text-white mt-3 text-lg rounded-lg focus:outline-none hover:opacity-90" type='button' onClick={onClickLogin}>Log In</button>
+                <button className="py-3 px-5 bg-gray-800 text-white mt-3 text-lg rounded-lg focus:outline-none hover:opacity-90" type='button'><Link to="/SignIn">Sign Up</Link></button>
                 {/* <CButton>Cbutton</CButton> 모양이 이쁘지가 않음*/}
                 </form>
             </div>

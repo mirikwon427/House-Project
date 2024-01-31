@@ -63,7 +63,7 @@ export default function LogIn() {
                 </svg>
                 </CInput>
                 <button className="py-3 px-5 bg-gray-800 text-white mt-3 text-lg rounded-lg focus:outline-none hover:opacity-90" type='button' onClick={onClickLogin}>Log In</button>
-                <button className="py-3 px-5 bg-gray-800 text-white mt-3 text-lg rounded-lg focus:outline-none hover:opacity-90" type='button'><Link to="/SignIn">Sign Up</Link></button>
+                <button className="py-3 px-5 bg-gray-800 text-white mt-3 text-lg rounded-lg focus:outline-none hover:opacity-90" type='button'><Link to="/SignUp">Sign Up</Link></button>
                 {/* <CButton>Cbutton</CButton> 모양이 이쁘지가 않음*/}
                 </form>
             </div>

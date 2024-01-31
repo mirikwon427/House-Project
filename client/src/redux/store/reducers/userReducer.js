@@ -46,6 +46,35 @@ const userSlice = createSlice({
       state.errMsg = action.payload.msg;
       state.isErr = true;
     },
+
+    // Logout
+    logoutUserReq(state, action) {
+      state.isloading = true;
+      state.errMsg = '';
+      state.isErr = false;
+    },
+    logoutUserSuc(state, action) {
+      state.isloading = false;
+
+      window.location.href = '/login';
+      sessionStorage.removeItem('token');
+      sessionStorage.clear();
+
+      state.user = {
+        id: '',
+        email: '',
+        name: '',
+        phone: '',
+        age: '',
+        address: '',
+      };
+      state.token = '';
+    },
+    logoutUserFail(state, action) {
+      state.isloading = false;
+      state.errMsg = action.payload.msg;
+      state.isErr = true;
+    },
   },
 });
 

@@ -69,9 +69,9 @@ public class AuthController {
 
         try {
             // 로그인 성공 시
-           UserDetails userDetails = userDetailsService.loadUserByUsername(loginDto.getEmail());
+            UserDetails userDetails = userDetailsService.loadUserByUsername(loginDto.getEmail());
             UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 

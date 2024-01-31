@@ -16,13 +16,16 @@ public class UserUpdateDto {
     private String address;
     private int age;
 
-    public void updateUserInfo(String email, String password, String name, String phone, String address, int age) {
-        setEmail(email);
-        setPassword(password);
-        setName(name);
-        setPhone(phone);
-        setAddress(address);
-        setAge(age);
+    public UserUpdateDto(String email, String password, String name, int age, String phone, String address) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.age = age;
+        this.phone = phone;
+        this.address = address;
     }
+
+
+
 
 }

@@ -28,20 +28,15 @@ const userSlice = createSlice({
 
       window.location.href = '/';
       sessionStorage.setItem('token', action.payload.token);
+      sessionStorage.setItem('id', action.payload.id)
 
-      state.user = {
-        id: action.payload.id,
-        email: action.payload.enauk,
-        name: action.payload.name,
-        phone: action.payload.phone,
-        age: action.payload.age,
-        address: action.payload.address,
-      };
+      state.user = action.payload.user;
       state.token = action.payload.token;
     },
     loginUserFail(state, action) {
       state.isloading = false;
-      sessionStorage.removeItem('token');
+      sessionStorage.clear();
+      alert(action.payload.msg);
 
       state.errMsg = action.payload.msg;
       state.isErr = true;

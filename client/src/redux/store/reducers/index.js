@@ -1,14 +1,25 @@
 import { combineReducers } from '@reduxjs/toolkit';
-// import { HYDRATE } from 'next-redux-wrapper';
-import { userSlice } from './LoginReducer';
+import userReducer from './userReducer';
+import storage from 'redux-persist/lib/storage';
+import { persistReducer } from 'redux-persist';
 
 const rootReducer = (state, action) => {
   switch (action.type) {
     default:
       return combineReducers({
-        user: userSlice.reducer
+        // user: userSlice.reducer
+        user: userReducer,
       })(state, action);
   }
 };
 
-export default rootReducer;
+const persistConfig = {
+  timeout: 100,
+  key: 'root',
+  storage,
+  whitelist: ['user'],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export default persistedReducer;

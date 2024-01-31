@@ -1,16 +1,15 @@
 import createSagaMiddleware from 'redux-saga';
-// import { createWrapper } from 'next-redux-wrapper';
 import { configureStore } from '@reduxjs/toolkit';
 
-import rootReducer from './store/reducers';
 import rootSaga from './store/sagas';
+import rootReducer from './store/reducers';
 
 const createStore = () => {
   const sagaMiddleware = createSagaMiddleware();
   const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(sagaMiddleware),
+      getDefaultMiddleware({ serializableCheck: false }).concat(sagaMiddleware),
     devTools: process.env.NEXT_PUBLIC_NODE_ENV === 'developer',
   });
 
@@ -19,13 +18,6 @@ const createStore = () => {
   return store;
 };
 
-// const wrapper = createWrapper(createStore, {
-//   debug: process.env.NEXT_PUBLIC_NODE_ENV === 'development',
-// });
-
 const store = createStore();
-
-// export type AppDispatch = typeof store.dispatch;
-// export type RootState = ReturnType<typeof store.getState>;
 
 export default store;

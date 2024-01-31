@@ -4,9 +4,9 @@ import CInput from "../components/common/CInput"
 import axios from "axios"
 import { useInput } from "../hooks/useInput"
 import {useDispatch, useSelector} from "react-redux"
-import { useEffect, useState } from "react"
+import { useState, useCallback} from "react"
 import { useNavigate } from "react-router-dom"
-import { userSlice } from "../redux/store/reducers/LoginReducer"
+import { userActions } from "../redux/store/reducers/userReducer"
 
 export default function Profile() {
   const name = useInput('');
@@ -19,21 +19,13 @@ export default function Profile() {
   const navigate = useNavigate();
   const [edit, useEdit ]= useState();
 
-  // const ShowUserData = () => {
-  //   const userEmail = useSelector((state) => state.userSlice.user.email)
-  //   console.log(userEmail)
-  // };
-  function Cart () {
-    let state = useSelector( (state)=>{ return state } )
-    console.log(state)
-  };
-  
-  useEffect(() => {
-    // console.log('전');
-    // console.log('후');
-  },[])
 
-  
+  const onClickLogout = useCallback(
+    (e) => {
+      dispatch(userActions.logoutUserReq());
+    },
+    [dispatch],
+  );  
   
   const updateUser = () => {
         axios({
@@ -52,11 +44,6 @@ export default function Profile() {
         )
     }
 
-  const LogOut = () => {
-    dispatch(userSlice.actions.logout())
-    sessionStorage.clear();
-    navigate('/')
-    }
 
   return (
     <>
@@ -68,7 +55,7 @@ export default function Profile() {
         <CInput {...age}></CInput>
         <CInput {...phoneNumber}></CInput>
         <CButton title={'회원정보 수정'} onClick={updateUser}></CButton>
-        <CButton title={'로그아웃'} onClick={LogOut}></CButton>
+        <CButton title={'로그아웃'} onClick={onClickLogout}></CButton>
         {/* <Card></Card> */}
       </div>
     </>

@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import CButton from './common/CButton';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';

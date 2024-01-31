@@ -57,7 +57,6 @@ const userSlice = createSlice({
       state.isloading = false;
 
       window.location.href = '/login';
-      sessionStorage.removeItem('token');
       sessionStorage.clear();
 
       state.user = {

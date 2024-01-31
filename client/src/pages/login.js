@@ -1,10 +1,14 @@
 import CInput from '../components/common/CInput';
 import { useInput } from '../hooks/useInput';
 import CButton from '../components/common/CButton';
-import { Link } from 'react-router-dom';
+
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { userSlice } from '../redux/store/reducers/LoginReducer'
 import { useDispatch } from 'react-redux';
 import { useCallback } from 'react';
 import { userActions } from '../redux/store/reducers/userReducer';
+
 
 export default function LogIn() {
   const id = useInput('');

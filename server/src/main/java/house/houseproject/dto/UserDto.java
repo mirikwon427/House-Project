@@ -6,8 +6,6 @@ import lombok.*;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -47,6 +45,7 @@ public class UserDto {
         if(user == null) return null;
 
         return UserDto.builder()
+                .id(user.getId())
                 .email(user.getEmail())
                 .name(user.getName())
                 .age(user.getAge())

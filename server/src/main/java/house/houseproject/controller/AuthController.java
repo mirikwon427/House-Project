@@ -1,10 +1,12 @@
 package house.houseproject.controller;
-
 import house.houseproject.domain.HUser;
+import house.houseproject.domain.Message;
+import house.houseproject.domain.StatusEnum;
 import house.houseproject.dto.LoginDto;
 import house.houseproject.dto.TokenDto;
 import house.houseproject.jwt.JwtFilter;
 import house.houseproject.jwt.TokenProvider;
+import house.houseproject.service.HUserDetailsService;
 import house.houseproject.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -15,13 +17,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-
 import jakarta.validation.Valid;
-
 import java.util.List;
 import java.util.Map;
 
@@ -32,11 +33,14 @@ public class AuthController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final UserService userService;
+    private final HUserDetailsService userDetailsService;
 
-    public AuthController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder,UserService userService) {
+    public AuthController(
+            TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder,UserService userService, HUserDetailsService userDetailsService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.userService = userService;
+        this.userDetailsService = userDetailsService;
     }
 
     class ErrorResponse {
@@ -67,6 +71,7 @@ public class AuthController {
 
         try {
             // 로그인 성공 시
+            UserDetails userDetails = userDetailsService.loadUserByUsername(loginDto.getEmail());
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
@@ -79,10 +84,15 @@ public class AuthController {
 
             HUser loginUser = userService.findByEmail(loginDto.getEmail());
 
-            TokenDto loginResponse = new TokenDto(jwt, loginUser.getId(), loginUser.getEmail(), loginUser.getName(),
+            LoginDto loginResponse = new LoginDto(loginUser.getId(),loginUser.getEmail(),loginUser.getName(),
                     loginUser.getAge(), loginUser.getPhone(), loginUser.getAddress());
 
-            return new ResponseEntity<>(loginResponse, httpHeaders, HttpStatus.OK);
+            Message message = new Message();
+            message.setSuccess(StatusEnum.TURE);
+            message.setToken(jwt);
+            message.setUser(loginResponse);
+
+            return new ResponseEntity<>(message, HttpStatus.OK);
 
         } catch (BadCredentialsException e) {
             // 비밀번호가 틀렸을 때

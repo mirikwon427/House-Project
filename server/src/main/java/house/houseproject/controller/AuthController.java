@@ -1,5 +1,7 @@
 package house.houseproject.controller;
 import house.houseproject.domain.HUser;
+import house.houseproject.domain.Message;
+import house.houseproject.domain.StatusEnum;
 import house.houseproject.dto.LoginDto;
 import house.houseproject.dto.TokenDto;
 import house.houseproject.jwt.JwtFilter;
@@ -82,10 +84,15 @@ public class AuthController {
 
             HUser loginUser = userService.findByEmail(loginDto.getEmail());
 
-            TokenDto loginResponse = new TokenDto(jwt, loginUser.getId(), loginUser.getEmail(), loginUser.getName(),
+            LoginDto loginResponse = new LoginDto(loginUser.getId(),loginUser.getEmail(),loginUser.getName(),
                     loginUser.getAge(), loginUser.getPhone(), loginUser.getAddress());
 
-            return new ResponseEntity<>(loginResponse, httpHeaders, HttpStatus.OK);
+            Message message = new Message();
+            message.setSuccess(StatusEnum.TURE);
+            message.setToken(jwt);
+            message.setUser(loginResponse);
+
+            return new ResponseEntity<>(message, HttpStatus.OK);
 
         } catch (BadCredentialsException e) {
             // 비밀번호가 틀렸을 때

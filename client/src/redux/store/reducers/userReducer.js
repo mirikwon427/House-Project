@@ -28,15 +28,9 @@ const userSlice = createSlice({
 
       window.location.href = '/';
       sessionStorage.setItem('token', action.payload.token);
+      sessionStorage.setItem('id', action.payload.user.id)
 
-      state.user = {
-        id: action.payload.id,
-        email: action.payload.enauk,
-        name: action.payload.name,
-        phone: action.payload.phone,
-        age: action.payload.age,
-        address: action.payload.address,
-      };
+      state.user = action.payload.user;
       state.token = action.payload.token;
     },
     loginUserFail(state, action) {
@@ -44,6 +38,27 @@ const userSlice = createSlice({
       sessionStorage.removeItem('token');
 
       state.errMsg = action.payload.msg;
+      state.isErr = true;
+    },
+    signUpReq(state, action) {
+      state.isloading = true;
+      state.errMsg = '';
+      state.isErr = false;
+    },
+    signUpSuc(state, action) {
+      state.isloading = false;
+      sessionStorage.clear();
+      window.location.href = '/login'
+      
+      state.errMsg = action.payload.msg;
+      state.isErr = true;
+    },
+    signUpFail(state, action) {
+      state.isloading = false;
+      sessionStorage.removeItem('token');
+    
+      state.errMsg = action.payload.msg;
+      alert(state.errMsg);
       state.isErr = true;
     },
   },

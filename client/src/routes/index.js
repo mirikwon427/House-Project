@@ -21,7 +21,7 @@ function DefaultRouter() {
             <Route path="/login" element={<LogIn />}></Route>
             <Route path="/search" element={<Search />}></Route>
             <Route path="/profile" element={<Profile />}></Route>
-            <Route path="/signin" element={<SignUp />}></Route>
+            <Route path="/signUp" element={<SignUp />}></Route>
             <Route path="/house/:id" element={<HouseDetail />}></Route>
           </Routes>
         </div>

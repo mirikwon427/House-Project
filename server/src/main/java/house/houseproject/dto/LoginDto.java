@@ -22,17 +22,20 @@ public class LoginDto {
     @Size(min = 3, max = 100)
     private String password;
 
+
     private Integer id;
+
 
     private String name;
 
-    private int age;
+    private Integer age;
+
 
     private String phone;
 
     private String address;
 
-    public LoginDto(int id, String email, String name, int age, String phone, String address) {
+    public LoginDto(Integer id, String email, String name, int age, String phone, String address) {
         this.id = id;
         this.email = email;
         this.name = name;

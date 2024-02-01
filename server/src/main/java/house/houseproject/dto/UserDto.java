@@ -30,7 +30,7 @@ public class UserDto {
     private String name;
 
     @NotNull
-    private int age;
+    private Integer age;
 
     @NotNull
     @Size(min = 3, max = 50)

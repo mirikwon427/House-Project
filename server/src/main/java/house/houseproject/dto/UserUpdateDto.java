@@ -1,5 +1,6 @@
 package house.houseproject.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,12 +10,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserUpdateDto {
 
+    @NotNull
     private String email;
+    @NotNull
     private String password;
+    @NotNull
     private String name;
+    @NotNull
     private String phone;
+    @NotNull
     private String address;
-    private int age;
+    @NotNull
+    private Integer age;
 
     public UserUpdateDto(String email, String password, String name, int age, String phone, String address) {
         this.email = email;

@@ -2,10 +2,12 @@ package house.houseproject.service;
 
 import house.houseproject.Repository.HUserRepository;
 import house.houseproject.domain.HUser;
+import house.houseproject.dto.LoginDto;
 import house.houseproject.dto.UserUpdateDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -19,7 +21,8 @@ public class MypageService{
         this.passwordEncoder = passwordEncoder;
     }
 
-    public long userUpdate(UserUpdateDto userUpdateDto) {
+    @Transactional
+    public Integer userUpdate(UserUpdateDto userUpdateDto) {
 
         HUser huser = userRepository.findByEmail(userUpdateDto.getEmail());
 

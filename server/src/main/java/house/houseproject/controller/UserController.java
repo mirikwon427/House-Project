@@ -1,5 +1,4 @@
 package house.houseproject.controller;
-
 import house.houseproject.dto.UserDto;
 import house.houseproject.exception.DuplicateMemberException;
 import house.houseproject.service.UserService;
@@ -9,10 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -24,21 +21,17 @@ import java.util.Map;
 @RequestMapping("/api")
 public class UserController {
     private final UserService userService;
-
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
     @GetMapping("/hello")
     public ResponseEntity<String> hello() {
         return ResponseEntity.ok("hello");
     }
-
     @PostMapping("/test-redirect")
     public void testRedirect(HttpServletResponse response) throws IOException {
         response.sendRedirect("/api/user");
     }
-
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody UserDto userDto) {
         try {
@@ -63,4 +56,5 @@ public class UserController {
     public ResponseEntity<UserDto> getUserInfo(@PathVariable String email) {
         return ResponseEntity.ok(userService.getUserWithAuthorities(email));
     }
+
 }

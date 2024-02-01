@@ -5,8 +5,9 @@ import Footer from '../components/Footer';
 import LogIn from '../pages/login';
 import Search from '../pages/search';
 import Profile from '../pages/profile';
-import SignUp from '../pages/signup';
 import HouseDetail from '../pages/houseDetail';
+import SignUp from '../pages/signup';
+
 
 function DefaultRouter() {
   return (

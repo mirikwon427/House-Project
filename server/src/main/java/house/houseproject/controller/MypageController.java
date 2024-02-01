@@ -18,7 +18,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@RequestMapping("/api/mypage")
+@RequestMapping("/api/user")
 @RestController
 @RequiredArgsConstructor
 public class MypageController{
@@ -38,10 +38,8 @@ public class MypageController{
         return "/update";
     }
 
-
-
-        @PostMapping(value = "/update")
-        public ResponseEntity<?> updateMember(@Valid @RequestBody UserUpdateDto userUpdateDto, Model model) {
+        @PutMapping(value = "/update")
+        public ResponseEntity<?> updateMember(@PathVariable int id, @Valid @RequestBody UserUpdateDto userUpdateDto, Model model) {
 
         try {
 
@@ -53,10 +51,10 @@ public class MypageController{
             ,update.getPhone(),update.getAddress());
 
 
-            Message message = new Message("Success", user, "null");
+            Message message = new Message(true, user, "success");
             return ResponseEntity.ok(message);
         } catch(Exception e) {
-           Message message = new Message("failed", null, "Bad Request");
+           Message message = new Message(false, null, "Bad Request");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
         }
 

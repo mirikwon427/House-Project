@@ -10,7 +10,7 @@ import house.houseproject.dto.LoginDto;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Message {
 
-    private String common;
+    private boolean common;
     private StatusEnum success;
     private String message;
     private Object data;
@@ -25,7 +25,7 @@ public class Message {
         this.message = null;
     }
 
-    public Message(String common, UserUpdateDto updateUser, String message) {
+    public Message(boolean common, UserUpdateDto updateUser, String message) {
         this.common = common;
         this.updateUser = updateUser;
         this.message = message;

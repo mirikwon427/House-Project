@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface RegisteredHouseRepository extends JpaRepository<RegisteredHouse, Integer> {
     Optional<RegisteredHouse> findByRegisteredHouseId(int registeredHouseId);
+
+    boolean existsByRegisteredHouseIdAndUserId(int registeredHouseId, int userId);
 }

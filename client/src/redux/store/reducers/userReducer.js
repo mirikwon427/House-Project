@@ -41,6 +41,7 @@ const userSlice = createSlice({
       state.errMsg = action.payload.msg;
       state.isErr = true;
     },
+    //Signup
     signUpReq(state, action) {
       state.isloading = true;
       state.errMsg = '';
@@ -57,9 +58,37 @@ const userSlice = createSlice({
     signUpFail(state, action) {
       state.isloading = false;
       sessionStorage.removeItem('token');
-    
+
       state.errMsg = action.payload.msg;
       alert(state.errMsg);
+      state.isErr = true;
+    },
+
+    // Logout
+    logoutUserReq(state, action) {
+      state.isloading = true;
+      state.errMsg = '';
+      state.isErr = false;
+    },
+    logoutUserSuc(state, action) {
+      state.isloading = false;
+
+      window.location.href = '/login';
+      sessionStorage.clear();
+
+      state.user = {
+        id: '',
+        email: '',
+        name: '',
+        phone: '',
+        age: '',
+        address: '',
+      };
+      state.token = '';
+    },
+    logoutUserFail(state, action) {
+      state.isloading = false;
+      state.errMsg = action.payload.msg;
       state.isErr = true;
     },
   },

@@ -9,7 +9,7 @@ function* loginUserApi(action) {
     yield put(userActions.loginUserSuc(data));
   } catch (e) {
     yield put(
-      userActions.loginUserFail({ success: false, msg: '서버에러입니다.' }),
+      userActions.loginUserFail({ success: false, msg: '회원정보가 일치하지 않습니다.' }),
     );
   }
 }

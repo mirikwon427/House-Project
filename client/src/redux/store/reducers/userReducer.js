@@ -35,7 +35,8 @@ const userSlice = createSlice({
     },
     loginUserFail(state, action) {
       state.isloading = false;
-      sessionStorage.removeItem('token');
+      sessionStorage.clear();
+      alert(action.payload.msg);
 
       state.errMsg = action.payload.msg;
       state.isErr = true;

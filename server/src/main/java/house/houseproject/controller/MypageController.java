@@ -49,16 +49,14 @@ public class MypageController{
                return ResponseEntity.ok("hello");
     }
 
-    @GetMapping("/likeHouse")
-    public String likedHouse(@AuthenticationPrincipal UserDetails userDetails, ModelMap model) {
-        String loginEmail = userDetails.getUsername();
-
-        HUser user = userService.findByEmail(loginEmail);
-        List<Liked> likedList = likedRepository.findAllByUserId(user.getId());
+    @GetMapping("/liked/{id}")
+    public  String likedHouse(@PathVariable int id, ModelMap model) {
+        List<Liked> likedList = likedRepository.findAllByUserId(id);
 
         model.addAttribute("likedList", likedList);
+
         log.info("likedList : {}", likedList);
-        return "/likedHouse";
+        return "/liked/{id}";
     }
 
 }

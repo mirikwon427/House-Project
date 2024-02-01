@@ -1,7 +1,4 @@
 package house.houseproject.service;
-
-import java.util.Collections;
-
 import house.houseproject.Repository.HUserRepository;
 import house.houseproject.domain.Authority;
 import house.houseproject.domain.HUser;
@@ -61,5 +58,7 @@ public class UserService {
                         .orElseThrow(() -> new NotFoundMemberException("Member not found"))
         );
     }
+
+
 
 }

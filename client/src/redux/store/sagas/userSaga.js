@@ -1,6 +1,6 @@
 import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 import { userActions } from '../reducers/userReducer';
-import { loginUser, logoutUser } from '../api/userApi';
+import { loginUser, signUp, logoutUser } from '../api/userApi';
 
 // Login
 function* loginUserApi(action) {
@@ -10,30 +10,48 @@ function* loginUserApi(action) {
     yield put(userActions.loginUserSuc(data));
   } catch (e) {
     yield put(
-      userActions.loginUserFail({ success: false, msg: '서버에러입니다.' }),
+      userActions.loginUserFail({ success: false, msg: '회원정보가 일치하지 않습니다.' }),
     );
   }
 }
-function* watchLoginUser() {
-  yield takeLatest(userActions.loginUserReq, loginUserApi);
+
+// Signup
+function* signUpApi(action) {
+  try {
+    const { data } = yield call(signUp, action.payload);
+
+    yield put(userActions.signUpSuc(data));
+  } catch (e) {
+    yield put(
+      userActions.signUpFail({ success: false, msg: '서버에러입니다.' }),
+    );
+  }
 }
 
 // Logout
 function* logoutUserApi(action) {
   try {
     const { data } = yield call(logoutUser);
-
+    
     yield put(userActions.logoutUserSuc(data));
   } catch (e) {
     yield put(
       userActions.logoutUserFail({ success: false, msg: '서버에러입니다.' }),
-    );
-  }
+      );
+    }
 }
 function* watchLogoutUser() {
   yield takeLatest(userActions.logoutUserReq, logoutUserApi);
 }
 
+function* watchLoginUser() {
+  yield takeLatest(userActions.loginUserReq, loginUserApi);
+}
+
+function* watchSignUp() {
+  yield takeLatest(userActions.signUpReq, signUpApi);
+}
+
 export default function* userSaga() {
-  yield all([fork(watchLoginUser), fork(watchLogoutUser)]);
+  yield all([fork(watchLoginUser), fork(watchSignUp), fork(watchLogoutUser)]);
 }

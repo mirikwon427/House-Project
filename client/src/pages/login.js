@@ -1,10 +1,11 @@
 import CInput from '../components/common/CInput';
 import { useInput } from '../hooks/useInput';
 import CButton from '../components/common/CButton';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { useCallback } from 'react';
 import { userActions } from '../redux/store/reducers/userReducer';
+
 
 export default function LogIn() {
   const id = useInput('');
@@ -74,13 +75,13 @@ export default function LogIn() {
 
               <div className="text-center text-sm text-gray-400 mt-8">
                 Not a Member?{' '}
-                <Link to="/register">
+                <Link to="/signUp">
                   <span className="text-blue-500">Sign Up</span>
                 </Link>
               </div>
 
               <div className="text-center mt-2">
-                <Link to="/register">
+                <Link to="/signUp">
                   <span className="text-sm text-gray-400 hover:underline cursor-pointer">
                     Forgot your password?
                   </span>

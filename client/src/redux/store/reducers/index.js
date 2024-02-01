@@ -7,7 +7,6 @@ const rootReducer = (state, action) => {
   switch (action.type) {
     default:
       return combineReducers({
-        // user: userSlice.reducer
         user: userReducer,
       })(state, action);
   }

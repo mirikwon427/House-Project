@@ -5,11 +5,9 @@ import Footer from '../components/Footer';
 import LogIn from '../pages/login';
 import Search from '../pages/search';
 import Profile from '../pages/profile';
-<<<<<<< HEAD
-import SignUp from '../pages/signup';
-=======
 import HouseDetail from '../pages/houseDetail';
->>>>>>> dc513d4 (Detail Page Publishing)
+import SignUp from '../pages/signup';
+
 
 function DefaultRouter() {
   return (
@@ -23,11 +21,8 @@ function DefaultRouter() {
             <Route path="/login" element={<LogIn />}></Route>
             <Route path="/search" element={<Search />}></Route>
             <Route path="/profile" element={<Profile />}></Route>
-<<<<<<< HEAD
             <Route path="/signin" element={<SignUp />}></Route>
-=======
             <Route path="/house/:id" element={<HouseDetail />}></Route>
->>>>>>> dc513d4 (Detail Page Publishing)
           </Routes>
         </div>
       </div>

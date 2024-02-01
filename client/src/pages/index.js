@@ -1,5 +1,6 @@
 import MainSwiper from '../components/main/MainSwiper';
 import MainMap from '../components/main/MainMap';
+import { useSelector } from 'react-redux';
 
 const likedProducts = [
   // {
@@ -94,6 +95,10 @@ const recommendedSwiperData = {
 };
 
 export default function Main() {
+  const { user } = useSelector((state) => state.user);
+
+  console.log('user:::', user);
+
   return (
     <div>
       {/* 거래 많은 지역 */}

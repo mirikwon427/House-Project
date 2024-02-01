@@ -13,6 +13,7 @@ public class Message {
     private Object data;
     private String token;
     private LoginDto user;
+    private int registeredHouseId;
 
     public Message() {
         this.success = StatusEnum.BAD_REQUEST;
@@ -31,5 +32,10 @@ public class Message {
         this.user = user;
         this.success = StatusEnum.BAD_REQUEST;
         this.message = message;
+    }
+
+    public Message(int registeredHouseId, boolean success) {
+        this.registeredHouseId = registeredHouseId;
+        this.success = StatusEnum.BAD_REQUEST;
     }
 }

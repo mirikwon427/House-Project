@@ -45,8 +45,8 @@ function* updateUserApi(action) {
   try {
     const { data } = yield call(updateUser, action.payload);
     yield put(userActions.updateUserSuc(data));
-  } catch (e) {
-    console.error(e.message);
+  } catch (err) {
+    console.log(err.message);
     yield put(
       userActions.updateUserFail({ success: false, msg: '서버에러입니다.'}),
       );

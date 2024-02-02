@@ -46,7 +46,7 @@ export default function Profile() {
         }
       ));
     },
-    [dispatch, email, pw, name, age, phone, address, token],
+    [dispatch, email, pw, name, age, phone, address, token, user],
   );  
 
 

@@ -1,5 +1,7 @@
 package house.houseproject.controller;
 import house.houseproject.domain.HUser;
+import house.houseproject.domain.Message;
+import house.houseproject.domain.StatusEnum;
 import house.houseproject.dto.LoginDto;
 import house.houseproject.dto.TokenDto;
 import house.houseproject.jwt.JwtFilter;
@@ -85,12 +87,14 @@ public class AuthController {
             HUser loginUser = userService.findByEmail(loginDto.getEmail());
 
 
+
             LoginDto loginResponse = new LoginDto(loginUser.getId(),loginUser.getEmail(),loginUser.getName(),
                     loginUser.getAge(), loginUser.getPhone(), loginUser.getAddress());
 
 
             Message message = new Message();
             message.setSuccess(StatusEnum.TRUE);
+
             message.setToken(jwt);
             message.setUser(loginResponse);
 

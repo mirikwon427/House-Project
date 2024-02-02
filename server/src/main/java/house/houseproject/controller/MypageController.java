@@ -1,9 +1,14 @@
 package house.houseproject.controller;
+import house.houseproject.Repository.LikedRepository;
 import house.houseproject.domain.HUser;
+
 import house.houseproject.domain.Message;
 import house.houseproject.domain.StatusEnum;
 import house.houseproject.dto.LoginDto;
 import org.springframework.http.HttpStatus;
+
+import house.houseproject.domain.Liked;
+
 import house.houseproject.dto.UserUpdateDto;
 import house.houseproject.service.MypageService;
 import house.houseproject.service.UserService;
@@ -21,8 +26,10 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 import java.util.Map;
 import java.util.stream.Collectors;
+
 
 @Slf4j
 @RequestMapping("/api")
@@ -32,6 +39,7 @@ public class MypageController{
 
     private final MypageService mypageService;
     private final UserService userService;
+    private final LikedRepository likedRepository;
 
     @GetMapping("/user/{id}")
     public String userUpdate(@AuthenticationPrincipal UserDetails userDetails, ModelMap model) {
@@ -82,8 +90,21 @@ public class MypageController{
         }
 
 
-        }
+        
 
 
 
     }
+
+    @GetMapping("/liked/{id}")
+    public  String likedHouse(@PathVariable int id, ModelMap model) {
+        List<Liked> likedList = likedRepository.findAllByUserId(id);
+
+        model.addAttribute("likedList", likedList);
+
+        log.info("likedList : {}", likedList);
+        return "/liked/{id}";
+    }
+
+}
+

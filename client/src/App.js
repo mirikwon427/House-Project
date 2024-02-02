@@ -6,14 +6,21 @@ import DefaultRouter from './routes';
 import { BrowserRouter } from 'react-router-dom';
 import AntdProvider from './components/AntdProvider';
 
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
+
 function App() {
+  const persistor = persistStore(store);
+
   return (
     <AntdProvider>
-      <Provider store={store}>
-        <BrowserRouter>
-          <DefaultRouter />
-        </BrowserRouter>
-      </Provider>
+      <BrowserRouter>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <DefaultRouter />
+          </PersistGate>
+        </Provider>
+      </BrowserRouter>
     </AntdProvider>
   );
 }

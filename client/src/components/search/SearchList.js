@@ -1,5 +1,8 @@
+import { useEffect, useState } from 'react';
 import CCard from '../common/CCard';
 import { Pagination } from 'antd';
+import { bgFixed } from '../../utils/utils';
+import { useLocation } from 'react-router-dom';
 
 const recommendedProducts = [
   {
@@ -130,30 +133,75 @@ const recommendedProducts = [
   },
 ];
 
-export default function SearchList() {
+export default function SearchList({ handleFilter }) {
+  const location = useLocation();
+  const [currentPage, setCurrentpage] = useState(1);
+
+  // 필터 조건은 실제 데이터 받아오면 달라짐
+  const [houses, setHouses] = useState(
+    recommendedProducts.filter((v, i) => i >= 0 && i < 15),
+  );
+
+  // 상세 페이지에서 뒤로가기 했을때, 원래 있던 페이지로 이동도 필요함
+  useEffect(() => {
+    setHouses(
+      recommendedProducts.filter(
+        (v, i) => i >= 15 * (currentPage - 1) && i < 15 * currentPage,
+      ),
+    );
+  }, [currentPage, location]);
+
   const onChangePage = (e) => {
-    console.log('event:::', e);
+    setCurrentpage(e);
+
+    let data = recommendedProducts.filter(
+      (v, i) => i >= 15 * (e - 1) && i < 15 * e,
+    );
+    setHouses(data);
   };
 
   return (
     <div>
       {recommendedProducts.length > 0 ? (
-        <div className="w-full grid grid-cols-3 gap-11 gap-y-14">
-          {recommendedProducts.map((v) => {
-            return (
-              <div key={v.id}>
-                <CCard data={v} />
-              </div>
-            );
-          })}
+        <div>
+          <div className="w-full grid grid-cols-3 gap-8 gap-y-14">
+            {houses.map((v) => {
+              return (
+                <div key={v.id}>
+                  <CCard data={v} />
+                </div>
+              );
+            })}
+          </div>
+          <div className="w-full flex justify-center mt-16">
+            <Pagination
+              defaultCurrent={currentPage}
+              defaultPageSize={15}
+              total={recommendedProducts.length}
+              onChange={onChangePage}
+            />
+          </div>
         </div>
       ) : (
-        <div>검색 조건에 해당하는 매물이 없습니다.</div>
+        <div className="w-full h-[540px] bg-[#F4F6F5] rounded-3xl flex justify-center flex-col">
+          <div className="h-fit w-full flex flex-col gap-4">
+            <div className="text-[#9b9b9b] text-lg text-center">
+              검색 조건에 해당하는 매물이 없습니다.
+            </div>
+            <div className="w-full h-fit flex justify-center">
+              <button
+                className="w-fit h-12 px-8 py-2 border-[#d3d3d3] border rounded-full bg-white text-base mx-auto"
+                onClick={() => {
+                  handleFilter(true);
+                  bgFixed();
+                }}
+              >
+                필터 재설정
+              </button>
+            </div>
+          </div>
+        </div>
       )}
-
-      <div className="w-full flex justify-center mt-16">
-        <Pagination defaultCurrent={1} total={50} onChange={onChangePage} />
-      </div>
     </div>
   );
 }

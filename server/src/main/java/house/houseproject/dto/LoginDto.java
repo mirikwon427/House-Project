@@ -24,18 +24,20 @@ public class LoginDto {
 
 
     private Integer id;
-
+ 
 
     private String name;
 
-    private Integer age;
+    private int age;
 
 
     private String phone;
 
     private String address;
 
+
     public LoginDto(Integer id, String email, String name, int age, String phone, String address) {
+
         this.id = id;
         this.email = email;
         this.name = name;

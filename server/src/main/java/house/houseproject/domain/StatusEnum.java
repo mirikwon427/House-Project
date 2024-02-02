@@ -1,5 +1,6 @@
 package house.houseproject.domain;
 
+
 import org.springframework.boot.web.server.ErrorPage;
 
 public enum StatusEnum {
@@ -16,4 +17,4 @@ public enum StatusEnum {
         this.statusCode = statusCode;
         this.code = code;
     }
-}
+

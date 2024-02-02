@@ -43,7 +43,7 @@ public class LikedHouseController {
             likedService.insert(likedDto);
             Message message = new Message();
 
-            message.setSuccess(StatusEnum.TURE);
+            message.setSuccess(StatusEnum.TRUE);
             message.setMessage("매물이 찜목록에 추가되었습니다.");
 
             return new ResponseEntity<>(message, HttpStatus.OK);
@@ -68,7 +68,7 @@ public class LikedHouseController {
         likedService.delete(likedDto);
         Message message = new Message();
 
-        message.setSuccess(StatusEnum.TURE);
+        message.setSuccess(StatusEnum.TRUE);
         message.setMessage("매물이 찜목록에서 삭제되었습니다.");
 
         return new ResponseEntity<>(message, HttpStatus.OK);

@@ -18,3 +18,4 @@ public enum StatusEnum {
         this.code = code;
     }
 
+}

@@ -48,7 +48,7 @@ public class RegisteredHouseController {
             RegisteredHouseDto register = registeredHouseService.registeredHouse(registeredHouseDto);
             log.info("Successfully registered a house: {}", register.getRegisteredHouse_id());
             Message message = new Message();
-            message.setSuccess(StatusEnum.TURE);
+            message.setSuccess(StatusEnum.TRUE);
             message.setRegisteredHouseId(register.getRegisteredHouse_id());
             return new ResponseEntity<>(message, HttpStatus.OK);
         } catch (DuplicateMemberException e) {

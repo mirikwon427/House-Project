@@ -54,7 +54,8 @@ public class MypageController{
     }
 
         @PutMapping(value = "/user/{id}")
-        public ResponseEntity<?> updateMember(@PathVariable Integer id, @Valid @RequestBody UserUpdateDto userUpdateDto, Model model, BindingResult bindingResult) {
+        public ResponseEntity<?> updateMember(@PathVariable Integer id,
+                                              @Valid @RequestBody UserUpdateDto userUpdateDto, Model model, BindingResult bindingResult) {
 
 
             log.info("if 문 밖");
@@ -70,13 +71,13 @@ public class MypageController{
 
         try {
 
-            mypageService.userUpdate(userUpdateDto);
+
             HUser update = userService.findById(id);
 
-            model.addAttribute("user", userUpdateDto);
-             UserUpdateDto user = new UserUpdateDto(update.getEmail(), update.getPassword(), update.getName(), update.getAge()
-            ,update.getPhone(), update.getAddress());
-
+            UserUpdateDto user = new UserUpdateDto(userUpdateDto.getId(),userUpdateDto.getEmail(), userUpdateDto.getPassword(), userUpdateDto.getName(), userUpdateDto.getAge()
+            ,userUpdateDto.getPhone(), userUpdateDto.getAddress());
+            mypageService.userUpdate(user);
+            model.addAttribute("user", user);
             Message message = new Message();
             message.setSuccess(StatusEnum.TRUE);
             message.setUser(user);

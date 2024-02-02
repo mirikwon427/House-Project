@@ -22,7 +22,7 @@ public class Message {
     private UserUpdateDto updateUser;
 
 
-    private int registeredHouseId;
+    private Integer registeredHouseId;
 
 
     public Message() {

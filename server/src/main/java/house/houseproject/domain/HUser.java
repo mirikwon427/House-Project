@@ -54,6 +54,10 @@ public class HUser implements UserDetails {
     public void updateAddress(String address) {
         this.address = address;
     }
+    public void updateAge(int age) {
+        this.age = age;
+    }
+
 
     @Override
     public String getPassword() {

@@ -29,6 +29,7 @@ public class MypageService{
         huser.updateName(userUpdateDto.getName());
         huser.updateAddress(userUpdateDto.getAddress());
         huser.updatePhone(userUpdateDto.getPhone());
+        huser.updateAge(userUpdateDto.getAge());
 
         String encodePw = passwordEncoder.encode(userUpdateDto.getPassword());
         huser.updatePassword(encodePw);

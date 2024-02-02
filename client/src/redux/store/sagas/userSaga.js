@@ -10,7 +10,7 @@ function* loginUserApi(action) {
     yield put(userActions.loginUserSuc(data));
   } catch (e) {
     yield put(
-      userActions.loginUserFail({ success: false, msg: '회원정보가 일치하지 않습니다.' }),
+      userActions.loginUserFail({ success: false, msg: e.message}),
     );
   }
 }
@@ -23,7 +23,7 @@ function* signUpApi(action) {
     yield put(userActions.signUpSuc(data));
   } catch (e) {
     yield put(
-      userActions.signUpFail({ success: false, msg: '서버에러입니다.' }),
+      userActions.signUpFail({ success: false, msg:e.message }),
     );
   }
 }
@@ -43,12 +43,14 @@ function* logoutUserApi(action) {
 
 function* updateUserApi(action) {
   try {
+    console.log('사가시작');
+    console.log(action.payload);
     const { data } = yield call(updateUser, action.payload);
     yield put(userActions.updateUserSuc(data));
   } catch (err) {
     console.log(err.message);
     yield put(
-      userActions.updateUserFail({ success: false, msg: '서버에러입니다.'}),
+      userActions.updateUserFail({ success: false, msg: err.message}),
       );
     }
 }

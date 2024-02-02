@@ -17,7 +17,8 @@ export const logoutUser = async () => {
 
 export const updateUser = async (user) => {
   const url = `/api/user/${user.user.id}`
-  console.log('클릭됨')
+  console.log('put 요청 들어감')
+  console.log(url)
   return await axios({
                 method: 'put',
                 url: url,

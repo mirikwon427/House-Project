@@ -32,6 +32,7 @@ export default function Profile() {
       e.preventDefault();
       
       console.log('버튼 클릭')
+      // console.log(user.id)
       dispatch(userActions.updateUserReq({
         headers: token,
         user: {

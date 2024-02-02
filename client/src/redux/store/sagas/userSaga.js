@@ -1,6 +1,6 @@
 import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 import { userActions } from '../reducers/userReducer';
-import { loginUser, signUp, logoutUser } from '../api/userApi';
+import { loginUser, signUp, logoutUser, updateUser } from '../api/userApi';
 
 // Login
 function* loginUserApi(action) {
@@ -40,6 +40,21 @@ function* logoutUserApi(action) {
       );
     }
 }
+
+function* updateUserApi(action) {
+  try {
+    const { data } = yield call(updateUser, action.payload);
+    yield put(userActions.updateUserSuc(data));
+  } catch (err) {
+    console.log(err.message);
+    yield put(
+      userActions.updateUserFail({ success: false, msg: '서버에러입니다.'}),
+      );
+    }
+}
+
+
+
 function* watchLogoutUser() {
   yield takeLatest(userActions.logoutUserReq, logoutUserApi);
 }
@@ -52,6 +67,10 @@ function* watchSignUp() {
   yield takeLatest(userActions.signUpReq, signUpApi);
 }
 
+function* watchUpdateUser() {
+  yield takeLatest(userActions.updateUserReq, updateUserApi);
+}
+
 export default function* userSaga() {
-  yield all([fork(watchLoginUser), fork(watchSignUp), fork(watchLogoutUser)]);
+  yield all([fork(watchLoginUser), fork(watchSignUp), fork(watchLogoutUser), fork(watchUpdateUser)]);
 }

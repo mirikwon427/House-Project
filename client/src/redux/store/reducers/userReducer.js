@@ -91,7 +91,24 @@ const userSlice = createSlice({
       state.errMsg = action.payload.msg;
       state.isErr = true;
     },
-  },
+
+    //updateUser
+    updateUserReq(state, action) {
+      state.isloading = true;
+      state.errMsg = '';
+      state.isErr = false;
+    },
+    updateUserSuc(state, action) {
+      state.isloading = false;
+      state.user = action.payload.user;
+    },
+    updateUserFail(state, action) {
+      state.isloading = false;
+      alert(action.payload.msg);
+      state.errMsg = action.payload.msg;
+      state.isErr = true;
+    },
+  }
 });
 
 export const userActions = userSlice.actions;

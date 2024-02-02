@@ -14,3 +14,14 @@ export const signUp = async (user) => {
 export const logoutUser = async () => {
   return await axios.post('/api/logout');
 };
+
+export const updateUser = async (user) => {
+  const url = `/api/user/${user.user.id}`
+  console.log('클릭됨')
+  return await axios({
+                method: 'put',
+                url: url,
+                data: user.user,
+                headers: user.headers,
+              })
+};

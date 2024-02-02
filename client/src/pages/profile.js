@@ -1,22 +1,22 @@
 // import Card from "../components/common/CCard"
 import CButton from "../components/common/CButton"
 import CInput from "../components/common/CInput"
-import axios from "axios"
 import { useInput } from "../hooks/useInput"
 import {useDispatch, useSelector} from "react-redux"
 import { useState, useCallback} from "react"
-import { useNavigate } from "react-router-dom"
 import { userActions } from "../redux/store/reducers/userReducer"
 
 export default function Profile() {
-  const name = useInput('');
-  const address = useInput('');
-  const age = useInput('');
-  const phoneNumber = useInput('');
-  const email = useInput('');
+  const { user } = useSelector((state) => state.user);
+  const {token } = useSelector((state) => state.user);
+
+  const name = useInput(user.name);
+  const address = useInput(user.address);
+  const age = useInput(user.age);
+  const phone = useInput(user.phone);
+  const email = useInput(user.email);
   const pw = useInput('');
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [edit, useEdit ]= useState();
 
 
@@ -26,23 +26,29 @@ export default function Profile() {
     },
     [dispatch],
   );  
-  
-  const updateUser = () => {
-        axios({
-          method: 'put',
-          url: '/api/user',
-          data: {
-            email: email.value,
-            password: pw.value,
-            name: name.value,
-            age: age.value,
-            phone: phoneNumber.value,
-            address: address.value,
-          },
-          headers: 'jwtToken'
+
+  const onClickUserUpdate = useCallback(
+    (e) => {
+      e.preventDefault();
+      
+      console.log('버튼 클릭')
+      dispatch(userActions.updateUserReq({
+        headers: token,
+        user: {
+          id: user.id,
+          email: email.value,
+          password: pw.value,
+          name: name.value,
+          age: age.value,
+          phone: phone.value,
+          address: address.value,
         }
-        )
-    }
+        }
+      ));
+    },
+    [dispatch, email, pw, name, age, phone, address, token],
+  );  
+
 
 
   return (
@@ -53,8 +59,8 @@ export default function Profile() {
         <CInput {...name}></CInput>
         <CInput {...address}></CInput>
         <CInput {...age}></CInput>
-        <CInput {...phoneNumber}></CInput>
-        <CButton title={'회원정보 수정'} onClick={updateUser}></CButton>
+        <CInput {...phone}></CInput>
+        <CButton title={'회원정보 수정'} onClick={onClickUserUpdate}></CButton>
         <CButton title={'로그아웃'} onClick={onClickLogout}></CButton>
         {/* <Card></Card> */}
       </div>

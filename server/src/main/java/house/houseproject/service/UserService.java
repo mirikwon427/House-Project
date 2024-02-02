@@ -41,8 +41,13 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public HUser findByEmail(String email){
+    public HUser findByEmail(String email) {
         return userRepository.findOneWithAuthoritiesByEmail(email).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."));
+    }
+
+    @Transactional(readOnly = true)
+    public HUser findById(Integer id) {
+        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."));
     }
 
     @Transactional(readOnly = true)
@@ -58,6 +63,8 @@ public class UserService {
                         .orElseThrow(() -> new NotFoundMemberException("Member not found"))
         );
     }
+
+
 
 
 

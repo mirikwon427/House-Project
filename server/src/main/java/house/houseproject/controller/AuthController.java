@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import house.houseproject.domain.Message;
+import house.houseproject.domain.StatusEnum;
 
 @Slf4j
 @RestController
@@ -84,11 +86,15 @@ public class AuthController {
 
             HUser loginUser = userService.findByEmail(loginDto.getEmail());
 
+
+
             LoginDto loginResponse = new LoginDto(loginUser.getId(),loginUser.getEmail(),loginUser.getName(),
                     loginUser.getAge(), loginUser.getPhone(), loginUser.getAddress());
 
+
             Message message = new Message();
-            message.setSuccess(StatusEnum.TURE);
+            message.setSuccess(StatusEnum.TRUE);
+
             message.setToken(jwt);
             message.setUser(loginResponse);
 

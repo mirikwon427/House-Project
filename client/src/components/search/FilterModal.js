@@ -1,14 +1,96 @@
+import { Slider } from 'antd';
 import { cancelBgFixed } from '../../utils/utils';
 import CButton from '../common/CButton';
 import CCheckBtn from '../common/CCheckBtn';
+import { useState } from 'react';
 
-export default function FilterModal({ setModalOpen }) {
-  const onSubmit = (e) => {
-    setModalOpen(false);
+const locVal = [
+  { id: '도봉구', title: '도봉구', checked: false },
+  { id: '노원구', title: '노원구', checked: false },
+  { id: '강북구', title: '강북구', checked: false },
+  { id: '중랑구', title: '중랑구', checked: false },
+  { id: '동대문구', title: '동대문구', checked: false },
+  { id: '성북구', title: '성북구', checked: false },
+  { id: '종로구', title: '종로구', checked: false },
+  { id: '은평구', title: '은평구', checked: false },
+  { id: '서대문구', title: '서대문구', checked: false },
+  { id: '마포구', title: '마포구', checked: false },
+  { id: '용산구', title: '용산구', checked: false },
+  { id: '중구', title: '중구', checked: false },
+  { id: '성동구', title: '성동구', checked: false },
+  { id: '광진구', title: '광진구', checked: false },
+  { id: '강동구', title: '강동구', checked: false },
+  { id: '송파구', title: '송파구', checked: false },
+  { id: '강남구', title: '강남구', checked: false },
+  { id: '서초구', title: '서초구', checked: false },
+  { id: '동작구', title: '동작구', checked: false },
+  { id: '관악구', title: '관악구', checked: false },
+  { id: '영등포구', title: '영등포구', checked: false },
+  { id: '금천구', title: '금천구', checked: false },
+  { id: '구로구', title: '구로구', checked: false },
+  { id: '양천구', title: '양천구', checked: false },
+  { id: '강서구', title: '강서구', checked: false },
+];
+const typeVal = [
+  { id: '원룸', title: '원룸', checked: false },
+  { id: '투,쓰리룸', title: '투,쓰리룸', checked: false },
+  { id: '오피스텔', title: '오피스텔', checked: false },
+  { id: '아파트', title: '아파트', checked: false },
+];
+
+export default function FilterModal({ setModalOpen, handleFilter, data }) {
+  const [startPrice, setStartPrice] = useState(data.startPrice);
+  const [endPrice, setEndPrice] = useState(data.endPrice);
+  const [startSquare, setStartSquare] = useState(data.startSquare);
+  const [endSquare, setEndSquare] = useState(data.endSquare);
+  const [location, setLocation] = useState(
+    locVal.map((v) => {
+      return { ...v, checked: data.locationVal.includes(v.id) };
+    }),
+  );
+  const [type, setType] = useState(
+    typeVal.map((v) => {
+      return { ...v, checked: data.typeVal.includes(v.id) };
+    }),
+  );
+
+  const handlePrice = (e) => {
+    setStartPrice(e[0]);
+    setEndPrice(e[1]);
+  };
+  const handleSquare = (e) => {
+    setStartSquare(e[0]);
+    setEndSquare(e[1]);
+  };
+  const onCheckLocation = (e) => {
+    const data = location.map((v) => {
+      if (v.id === e.id) return { ...v, checked: e.checked };
+      return v;
+    });
+    setLocation(data);
+  };
+  const onCheckType = (e) => {
+    const data = type.map((v) => {
+      if (v.id === e.id) return { ...v, checked: e.checked };
+      return v;
+    });
+    setType(data);
   };
 
-  const onCheck = (e) => {
-    console.log('check!!');
+  const onSubmit = () => {
+    setModalOpen(false);
+
+    const data = {
+      startPrice,
+      endPrice,
+      startSquare,
+      endSquare,
+      location: location.filter((v) => v.checked),
+      type: type.filter((v) => v.checked),
+    };
+
+    handleFilter(data);
+    cancelBgFixed();
   };
 
   return (
@@ -17,44 +99,60 @@ export default function FilterModal({ setModalOpen }) {
         <div className="w-full h-full px-12 py-12 overflow-auto">
           <div className="text-4xl font-bold mb-12">검색 조건</div>
 
-          <div className="text-xl font-bold mb-4">금액</div>
+          <div className="text-xl font-bold mb-4">
+            금액&nbsp;&nbsp;
+            <span className="text-base font-normal">
+              ({startPrice}억 ~ {endPrice}억)
+            </span>
+          </div>
           <div className="w-full flex gap-4 mb-6 flex-wrap">
-            <CCheckBtn data={'1억 이하'} onClick={onCheck} />
-            <CCheckBtn data={'1억~2억'} onClick={onCheck} />
-            <CCheckBtn data={'2억~3억'} onClick={onCheck} />
-            <CCheckBtn data={'3억~4억'} onClick={onCheck} />
-            <CCheckBtn data={'4억~5억'} onClick={onCheck} />
-            <CCheckBtn data={'5억~6억'} onClick={onCheck} />
-            <CCheckBtn data={'6억~7억'} onClick={onCheck} />
-            <CCheckBtn data={'무제한'} onClick={onCheck} />
+            <Slider
+              range
+              defaultValue={[startPrice, endPrice]}
+              max={7}
+              className="w-full"
+              onChange={handlePrice}
+            />
+          </div>
+
+          <div className="text-xl font-bold mb-4">
+            평수&nbsp;&nbsp;
+            <span className="text-base font-normal">
+              ({startSquare}평 ~ {endSquare}평)
+            </span>
+          </div>
+          <div className="w-full flex gap-4 flex-wrap mb-6">
+            <Slider
+              range
+              defaultValue={[startSquare, endSquare]}
+              max={40}
+              className="w-full"
+              onChange={handleSquare}
+            />
           </div>
 
           <div className="text-xl font-bold mb-4">지역</div>
           <div className="w-full flex gap-4 mb-6 flex-wrap">
-            <CCheckBtn data={'금천구'} onClick={onCheck} />
-            <CCheckBtn data={'영등포구'} onClick={onCheck} />
-            <CCheckBtn data={'중구'} onClick={onCheck} />
-            <CCheckBtn data={'은평구'} onClick={onCheck} />
+            {location.map((v) => (
+              <CCheckBtn
+                key={v.id}
+                data={v}
+                onClick={onCheckLocation}
+                checked={v.checked}
+              />
+            ))}
           </div>
 
           <div className="text-xl font-bold mb-4">건물 형태</div>
-          <div className="w-full flex gap-4 mb-6 flex-wrap">
-            <CCheckBtn data={'원룸'} onClick={onCheck} />
-            <CCheckBtn data={'투, 쓰리룸'} onClick={onCheck} />
-            <CCheckBtn data={'오피스텔'} onClick={onCheck} />
-            <CCheckBtn data={'아파트'} onClick={onCheck} />
-          </div>
-
-          <div className="text-xl font-bold mb-4">평수</div>
           <div className="w-full flex gap-4 flex-wrap">
-            <CCheckBtn data={'10평 이하'} onClick={onCheck} />
-            <CCheckBtn data={'10평~15평'} onClick={onCheck} />
-            <CCheckBtn data={'15평~20평'} onClick={onCheck} />
-            <CCheckBtn data={'20평~25평'} onClick={onCheck} />
-            <CCheckBtn data={'25평~30평'} onClick={onCheck} />
-            <CCheckBtn data={'30평~35평'} onClick={onCheck} />
-            <CCheckBtn data={'35평~40평'} onClick={onCheck} />
-            <CCheckBtn data={'무제한'} onClick={onCheck} />
+            {type.map((v) => (
+              <CCheckBtn
+                key={v.id}
+                data={v}
+                onClick={onCheckType}
+                checked={v.checked}
+              />
+            ))}
           </div>
 
           <div className="w-full mt-12 flex justify-end">

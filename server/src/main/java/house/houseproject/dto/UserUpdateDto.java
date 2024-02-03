@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserUpdateDto {
 
+    private Integer id;
     @NotNull
     private String email;
     @NotNull
@@ -23,7 +24,8 @@ public class UserUpdateDto {
     @NotNull
     private Integer age;
 
-    public UserUpdateDto(String email, String password, String name, int age, String phone, String address) {
+    public UserUpdateDto(int id,String email, String password, String name, int age, String phone, String address) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;

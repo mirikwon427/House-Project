@@ -8,7 +8,6 @@ import Profile from '../pages/profile';
 import HouseDetail from '../pages/houseDetail';
 import SignUp from '../pages/signup';
 
-
 function DefaultRouter() {
   return (
     <div className="w-full">

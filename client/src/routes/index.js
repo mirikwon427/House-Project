@@ -7,6 +7,7 @@ import Search from '../pages/search';
 import Profile from '../pages/profile';
 import HouseDetail from '../pages/houseDetail';
 import SignUp from '../pages/signup';
+import MypageSample from '../pages/profileSample';
 
 function DefaultRouter() {
   return (
@@ -22,6 +23,7 @@ function DefaultRouter() {
             <Route path="/profile" element={<Profile />}></Route>
             <Route path="/signUp" element={<SignUp />}></Route>
             <Route path="/house/:id" element={<HouseDetail />}></Route>
+            <Route path="/mypagesample" element={<MypageSample />}></Route>
           </Routes>
         </div>
       </div>

@@ -24,10 +24,10 @@ public class LikedService {
     public void insert(LikedDto likedDto) throws Exception {
 
         HUser user = userRepository.findById(likedDto.getUserId())
-                .orElseThrow(() -> new NotFoundMemberException("Could not find user with id: " + likedDto.getUserId()));
+                .orElseThrow(() -> new NotFoundMemberException("사용자를 찾을 수 없습니다." + likedDto.getUserId()));
 
         RegisteredHouse registeredHouse = registeredHouseRepository.findByRegisteredHouseId(likedDto.getRegisteredHouseId())
-                .orElseThrow(() -> new NotFoundMemberException("Could not find registeredHouse with id: " + likedDto.getRegisteredHouseId()));
+                .orElseThrow(() -> new NotFoundMemberException("매물을 찾을 수 없습니다." + likedDto.getRegisteredHouseId()));
 
         // 중복 체크
         if (likedRepository.findByUserAndRegisteredHouse(user, registeredHouse).isPresent()) {
@@ -46,13 +46,13 @@ public class LikedService {
     @Transactional
     public void delete(LikedDto likedDto) {
         HUser user = userRepository.findById(likedDto.getUserId())
-                .orElseThrow(() -> new NotFoundMemberException("Could not found user id : " + likedDto.getUserId()));
+                .orElseThrow(() -> new NotFoundMemberException("사용자를 찾을 수 없습니다." + likedDto.getUserId()));
 
         RegisteredHouse registeredHouse = registeredHouseRepository.findByRegisteredHouseId(likedDto.getRegisteredHouseId())
-                .orElseThrow(() -> new NotFoundMemberException("Could not found registerdHouse id : " + likedDto.getRegisteredHouseId()));
+                .orElseThrow(() -> new NotFoundMemberException("매물을 찾을 수 없습니다." + likedDto.getRegisteredHouseId()));
 
         Liked liked = likedRepository.findByUserAndRegisteredHouse(user, registeredHouse)
-                .orElseThrow(() -> new NotFoundMemberException("Could not found liked id"));
+                .orElseThrow(() -> new NotFoundMemberException("매물을 찜하지 않았습니다."));
 
         likedRepository.delete(liked);
     }

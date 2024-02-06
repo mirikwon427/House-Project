@@ -7,7 +7,6 @@ import house.houseproject.dto.LikedDto;
 import house.houseproject.exception.DuplicateMemberException;
 import house.houseproject.service.LikedService;
 import house.houseproject.service.UserService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

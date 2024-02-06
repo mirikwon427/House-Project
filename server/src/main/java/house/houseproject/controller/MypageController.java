@@ -1,13 +1,10 @@
 package house.houseproject.controller;
 import house.houseproject.Repository.LikedRepository;
-import house.houseproject.domain.HUser;
+import house.houseproject.Repository.RegisteredHouseRepository;
+import house.houseproject.domain.*;
 
-import house.houseproject.domain.Message;
-import house.houseproject.domain.StatusEnum;
-import house.houseproject.dto.LoginDto;
+import house.houseproject.dto.RegisteredHouseDto;
 import org.springframework.http.HttpStatus;
-
-import house.houseproject.domain.Liked;
 
 import house.houseproject.dto.UserUpdateDto;
 import house.houseproject.service.MypageService;
@@ -25,9 +22,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -40,6 +39,7 @@ public class MypageController{
     private final MypageService mypageService;
     private final UserService userService;
     private final LikedRepository likedRepository;
+    private final RegisteredHouseRepository registeredHouseRepository;
 
     @GetMapping("/user/{id}")
     public String userUpdate(@AuthenticationPrincipal UserDetails userDetails, ModelMap model) {
@@ -98,13 +98,28 @@ public class MypageController{
     }
 
     @GetMapping("/liked/{id}")
-    public  String likedHouse(@PathVariable int id, ModelMap model) {
-        List<Liked> likedList = likedRepository.findAllByUserId(id);
+    public ResponseEntity<?> likedHouse(@PathVariable int id, @AuthenticationPrincipal UserDetails userDetails, ModelMap model) {
+        if (userDetails == null) {
+            log.error("userDetails == null");
+            return new ResponseEntity<>(Map.of("success", false, "message", "로그인 후 조회가 가능합니다."), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        ArrayList<Integer> registeredHouseIdList = likedRepository.findRegisteredHouseIdsByUserId(id);
+        ArrayList<RegisteredHouseDto> registeredHouseDtoList = new ArrayList<>();
+        for (Integer registeredHouseId : registeredHouseIdList) {
+            Optional<RegisteredHouse> registeredHouseOptional = registeredHouseRepository.findByRegisteredHouseId(registeredHouseId);
 
-        model.addAttribute("likedList", likedList);
+            registeredHouseOptional.ifPresent(registeredHouse -> {
+                RegisteredHouseDto registeredHouseDto = RegisteredHouseDto.from(registeredHouse);
+                registeredHouseDtoList.add(registeredHouseDto);
+            });
+        }
 
-        log.info("likedList : {}", likedList);
-        return "/liked/{id}";
+        model.addAttribute("registeredHouse", registeredHouseDtoList);
+
+        Message message = new Message();
+        message.setSuccess(StatusEnum.TRUE);
+        message.setRegisteredHouse(registeredHouseDtoList);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
 }

@@ -6,6 +6,7 @@ import org.springframework.boot.web.server.ErrorPage;
 public enum StatusEnum {
 
     TRUE(200, "true"),
+    FALSE(401,"FALSE"),
     BAD_REQUEST(400, "BAD_REQUEST"),
     NOT_FOUND(404, "NOT_FOUND"),
     INTERNAL_SERER_ERROR(500, "INTERNAL_SERVER_ERROR");

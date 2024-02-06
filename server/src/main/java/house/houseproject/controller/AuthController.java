@@ -68,7 +68,7 @@ public class AuthController {
             for (ObjectError error : errors) {
                 log.error("Validation Error: {}", error.getDefaultMessage());
             }
-            return new ResponseEntity<>(new ErrorResponse("Validation failed"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Map.of("success", false, "message", "아이디, 비밀번호 모두 입력해주세요."), HttpStatus.BAD_REQUEST);
         }
 
         try {

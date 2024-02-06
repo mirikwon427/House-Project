@@ -36,6 +36,7 @@ public class UpdateHouseService {
 
                     registeredHouse.setAcc_year(updateHouseDto.getAcc_year());
                     registeredHouse.setSgg_cd(updateHouseDto.getSgg_cd());
+                    registeredHouse.setSgg_nm(updateHouseDto.getSgg_nm());
                     registeredHouse.setBjdong_cd(updateHouseDto.getBjdong_cd());
                     registeredHouse.setBjdong_nm(updateHouseDto.getBjdong_nm());
                     registeredHouse.setLand_gbm(updateHouseDto.getLand_gbm());

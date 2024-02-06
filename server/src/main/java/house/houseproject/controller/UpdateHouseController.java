@@ -63,7 +63,7 @@ public class UpdateHouseController {
 
             Message message = new Message();
             message.setSuccess(StatusEnum.TRUE);
-          //  message.setUser(house); // id
+            message.setRegisteredHouseId(updateHouseDto.getRegisteredHouse_id());
 
 
             return new ResponseEntity<>(message,HttpStatus.OK);

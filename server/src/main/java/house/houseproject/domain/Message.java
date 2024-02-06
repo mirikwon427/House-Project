@@ -2,11 +2,13 @@ package house.houseproject.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import house.houseproject.dto.RegisteredHouseDto;
 import house.houseproject.dto.UserUpdateDto;
 import lombok.Data;
-import org.springframework.boot.web.server.ErrorPage;
 
 import house.houseproject.dto.LoginDto;
+
+import java.util.ArrayList;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -23,6 +25,10 @@ public class Message {
 
 
     private Integer registeredHouseId;
+
+    private ArrayList<RegisteredHouseDto> registeredHouse;
+    private RegisteredHouseDto registeredHouseDto;
+    private StatusEnum isLiked;
 
 
     public Message() {

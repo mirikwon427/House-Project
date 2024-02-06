@@ -62,7 +62,7 @@ public class UpdateHouseController {
             model.addAttribute("house", updateHouseDto);
 
             Message message = new Message();
-            message.setSuccess(StatusEnum.TURE);
+            message.setSuccess(StatusEnum.TRUE);
           //  message.setUser(house); // id
 
 
@@ -80,10 +80,5 @@ public class UpdateHouseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("status", 500, "success", false, "message", "Internal server error", "fieldErrors", List.of()));
         }
-
-
-
-
-
     }
 }

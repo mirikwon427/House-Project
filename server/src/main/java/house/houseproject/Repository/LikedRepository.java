@@ -14,6 +14,12 @@ import java.util.Optional;
 public interface LikedRepository extends JpaRepository<Liked, Integer> {
    Optional<Liked> findByUserAndRegisteredHouse(HUser user, RegisteredHouse registeredHouse);
 
+
    @Query("SELECT l.registeredHouse.registeredHouseId FROM Liked l WHERE l.user.id = :userId")
    ArrayList<Integer> findRegisteredHouseIdsByUserId(@Param("userId") int userId);
+
+
+   @Query("SELECT l FROM Liked l WHERE l.user.id = :userId AND l.registeredHouse.registeredHouseId = :registeredHouseId")
+   List<Liked> findAllByUserIdAndRegisteredId(@Param("userId") int userId, @Param("registeredHouseId") int registeredHouseId);
+
 }

@@ -1,10 +1,11 @@
 package house.houseproject.controller;
 
-import house.houseproject.domain.HUser;
-import house.houseproject.domain.Message;
-import house.houseproject.domain.StatusEnum;
+import house.houseproject.Repository.LikedRepository;
+import house.houseproject.Repository.RegisteredHouseRepository;
+import house.houseproject.domain.*;
 import house.houseproject.dto.RegisteredHouseDto;
 import house.houseproject.exception.DuplicateMemberException;
+import house.houseproject.exception.NotFoundMemberException;
 import house.houseproject.service.RegisteredHouseService;
 import house.houseproject.service.UserService;
 import jakarta.validation.Valid;
@@ -14,10 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -29,10 +28,17 @@ import java.util.Map;
 public class RegisteredHouseController {
     private final RegisteredHouseService registeredHouseService;
     private final UserService userService;
+    private final RegisteredHouseRepository registeredHouseRepository;
+    private final LikedRepository likedRepository;
+
     @PostMapping("/house")
     public ResponseEntity<?> registeredHouse(
             @Valid @RequestBody RegisteredHouseDto registeredHouseDto,
             @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            log.error("userDetails == null");
+            return new ResponseEntity<>(Map.of("success", false, "message", "로그인 후 매물 등록이 가능합니다."), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         try {
             log.info("Trying to register a house: {}", registeredHouseDto);
@@ -57,7 +63,7 @@ public class RegisteredHouseController {
 
 
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(Map.of("status", 409, "success", false, "message", errorMessage, "fieldErrors", List.of()));
+                    .body(Map.of("status", 409, "success", false, "message", "매물등록에 실패했습니다.", "fieldErrors", List.of()));
         }
     }
 
@@ -68,6 +74,45 @@ public class RegisteredHouseController {
             return Integer.parseInt(username);
         } catch (NumberFormatException e) {
             throw new RuntimeException("userId를 찾을 수 없습니다.");
+        }
+    }
+
+    @GetMapping("/house/{registeredHouseId}")
+    public ResponseEntity<?> HouseDetail(@PathVariable int registeredHouseId, @AuthenticationPrincipal UserDetails userDetails,
+                                         ModelMap model) {
+        RegisteredHouse registeredHouse = registeredHouseRepository.findByRegisteredHouseId(registeredHouseId)
+                .orElseThrow(() -> new NotFoundMemberException("Could not found registerdHouse id : " + registeredHouseId));
+
+        RegisteredHouseDto registeredHouseDto = RegisteredHouseDto.from(registeredHouse);
+        model.addAttribute("registeredHouse", registeredHouseDto);
+        Message message = new Message();
+
+        message.setSuccess(StatusEnum.TRUE);
+        message.setIsLiked(StatusEnum.FALSE);
+        message.setRegisteredHouseDto(registeredHouseDto);
+        if (userDetails == null) {
+            log.error("userDetails == null");
+
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            String loginEmail = userDetails.getUsername();
+            HUser user = userService.findByEmail(loginEmail);
+
+            List<Liked> liked = likedRepository.findAllByUserIdAndRegisteredId(user.getId(), registeredHouseId);
+
+            int liked_Id = 0;
+            for (Liked liked1 : liked) {
+                liked_Id = liked1.getLike_id();
+            }
+            log.error("liked_Id : {} ", liked_Id);
+            if(liked_Id != 0) {
+                log.error("liked is not null");
+                message.setIsLiked(StatusEnum.TRUE);
+                return new ResponseEntity<>(message, HttpStatus.OK);
+            } else {
+                log.error("liked is null");
+                return new ResponseEntity<>(message, HttpStatus.OK);
+            }
         }
     }
 }

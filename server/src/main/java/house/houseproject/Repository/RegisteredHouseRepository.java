@@ -11,4 +11,6 @@ public interface RegisteredHouseRepository extends JpaRepository<RegisteredHouse
     Optional<RegisteredHouse> findByRegisteredHouseId(int registeredHouseId);
 
     boolean existsByRegisteredHouseIdAndUserId(int registeredHouseId, int userId);
+
+    
 }

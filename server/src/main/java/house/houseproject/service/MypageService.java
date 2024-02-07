@@ -3,6 +3,7 @@ package house.houseproject.service;
 import house.houseproject.Repository.HUserRepository;
 import house.houseproject.domain.HUser;
 import house.houseproject.dto.LoginDto;
+import house.houseproject.dto.UserDto;
 import house.houseproject.dto.UserUpdateDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +23,7 @@ public class MypageService{
     }
 
     @Transactional
-    public Integer userUpdate(UserUpdateDto userUpdateDto) {
+    public UserDto userUpdate(UserUpdateDto userUpdateDto) {
 
         HUser huser = userRepository.findByEmail(userUpdateDto.getEmail());
 
@@ -36,7 +37,7 @@ public class MypageService{
 
         userRepository.save(huser);
 
-        return huser.getId();
+        return UserDto.from(userRepository.save(huser));
     }
 
 }

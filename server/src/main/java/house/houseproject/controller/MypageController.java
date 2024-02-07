@@ -1,9 +1,11 @@
 package house.houseproject.controller;
+import house.houseproject.Repository.HUserRepository;
 import house.houseproject.Repository.LikedRepository;
 import house.houseproject.Repository.RegisteredHouseRepository;
 import house.houseproject.domain.*;
 
 import house.houseproject.dto.RegisteredHouseDto;
+import house.houseproject.dto.UserDto;
 import org.springframework.http.HttpStatus;
 
 import house.houseproject.dto.UserUpdateDto;
@@ -21,6 +23,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,20 +43,35 @@ public class MypageController{
     private final UserService userService;
     private final LikedRepository likedRepository;
     private final RegisteredHouseRepository registeredHouseRepository;
+    private final HUserRepository hUserRepository;
 
     @GetMapping("/user/{id}")
-    public String userUpdate(@AuthenticationPrincipal UserDetails userDetails, ModelMap model) {
-        String loginEmail = userDetails.getUsername();
+    public ResponseEntity<?> getUser(@PathVariable Integer id,
+                                     @AuthenticationPrincipal UserDetails userDetails, ModelMap model) {
 
-        HUser user = userService.findByEmail(loginEmail);
+        if (userDetails == null) {
+            log.error("userDetails == null");
+            return new ResponseEntity<>(Map.of("success", false, "message", "로그인 후 이용가능합니다."), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-        model.addAttribute("user", user);
-        log.info("User email: {}", user.getEmail());
+        HUser huser = hUserRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not found user id : " + id));
 
-        return "/user";
+        String userId = userDetails.getUsername();
+
+        log.info("현재userId: {}", userId);
+
+
+        UserDto userDto = UserDto.from(huser);
+        model.addAttribute("User", userDto);
+        Message message = new Message();
+        message.setSuccess(StatusEnum.TRUE);
+        message.setUser(userDto);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-        @PutMapping(value = "/user/{id}")
+
+    @PutMapping(value = "/user/{id}")
         public ResponseEntity<?> updateMember(@PathVariable Integer id,
                                               @Valid @RequestBody UserUpdateDto userUpdateDto, Model model, BindingResult bindingResult) {
 
@@ -72,15 +90,17 @@ public class MypageController{
         try {
 
 
-            HUser update = userService.findById(id);
 
-            UserUpdateDto user = new UserUpdateDto(userUpdateDto.getId(),userUpdateDto.getEmail(), userUpdateDto.getPassword(), userUpdateDto.getName(), userUpdateDto.getAge()
-            ,userUpdateDto.getPhone(), userUpdateDto.getAddress());
-            mypageService.userUpdate(user);
+            UserUpdateDto user = new UserUpdateDto(userUpdateDto.getId(), userUpdateDto.getEmail(), userUpdateDto.getPassword(), userUpdateDto.getName(), userUpdateDto.getAge()
+                    , userUpdateDto.getPhone(), userUpdateDto.getAddress());
+            UserDto userDto = mypageService.userUpdate(user);
+
+
             model.addAttribute("user", user);
             Message message = new Message();
             message.setSuccess(StatusEnum.TRUE);
-            message.setUser(user);
+            message.setUser(userDto);
+
 
 
             return new ResponseEntity<>(message,HttpStatus.OK);

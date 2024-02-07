@@ -79,6 +79,7 @@ public class UserController {
         }
     }
 
+    /**
     @GetMapping("/user")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<UserDto> getMyUserInfo(HttpServletRequest request) {
@@ -90,5 +91,5 @@ public class UserController {
     public ResponseEntity<UserDto> getUserInfo(@PathVariable String email) {
         return ResponseEntity.ok(userService.getUserWithAuthorities(email));
     }
-
+    **/
 }

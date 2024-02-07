@@ -20,7 +20,7 @@ public class UserDto {
     @Size(min = 3, max = 200)
     private String email;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull
     @Size(min = 3, max = 100)
     private String password;
@@ -47,6 +47,7 @@ public class UserDto {
         return UserDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())
+                .password(user.getPassword())
                 .name(user.getName())
                 .age(user.getAge())
                 .phone(user.getPhone())

@@ -56,7 +56,7 @@ public class UpdateHouseService {
                     registeredHouse.setRight_gbn(updateHouseDto.getRight_gbn());
                     registeredHouse.setCntl_ymd(updateHouseDto.getCntl_ymd());
                     registeredHouse.setBuild_year(updateHouseDto.getBuild_year());
-                    registeredHouse.setHous_type(updateHouseDto.getHous_type());
+                    registeredHouse.setHouse_type(updateHouseDto.getHouse_type());
                     registeredHouse.setReq_gbn(updateHouseDto.getReq_gbn());
                     registeredHouse.setRdealer_lawdnm(updateHouseDto.getRdealer_lawdnm());
                     // 나머지 필드 설정

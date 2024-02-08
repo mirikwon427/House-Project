@@ -47,10 +47,10 @@ public class UpdateHouseDto {
     private String dal_ymd;
 
     @NotNull
-    private String obj_amt;
+    private int obj_amt;
 
     @NotNull
-    private String bldg_area;
+    private int bldg_area;
 
     @NotNull
     private String tot_area;
@@ -66,7 +66,7 @@ public class UpdateHouseDto {
     private String build_year;
 
     @NotNull
-    private String hous_type;
+    private String house_type;
 
     @NotNull
     private String req_gbn;

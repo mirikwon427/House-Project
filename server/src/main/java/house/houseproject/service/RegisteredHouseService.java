@@ -4,10 +4,15 @@ import house.houseproject.Repository.HUserRepository;
 import house.houseproject.Repository.RegisteredHouseRepository;
 import house.houseproject.domain.HUser;
 import house.houseproject.domain.RegisteredHouse;
+import house.houseproject.domain.RegisteredHouseCondition;
 import house.houseproject.dto.RegisteredHouseDto;
 import house.houseproject.exception.DuplicateMemberException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+@Slf4j
 @Service
 public class RegisteredHouseService {
     private final RegisteredHouseRepository registeredHouseRepository;
@@ -50,7 +55,7 @@ public class RegisteredHouseService {
                 .right_gbn(registeredHouseDto.getRight_gbn())
                 .cntl_ymd(registeredHouseDto.getCntl_ymd())
                 .build_year(registeredHouseDto.getBuild_year())
-                .hous_type(registeredHouseDto.getHous_type())
+                .house_type(registeredHouseDto.getHouse_type())
                 .req_gbn(registeredHouseDto.getReq_gbn())
                 .rdealer_lawdnm(registeredHouseDto.getRdealer_lawdnm())
                 .build();
@@ -58,5 +63,14 @@ public class RegisteredHouseService {
         return RegisteredHouseDto.from(registeredHouseRepository.save(registeredHouse));
     }
 
+    @Transactional
+    public List<RegisteredHouse> search(RegisteredHouseCondition condition) {
+        log.info("condition : {}", condition);
+        List<RegisteredHouse> registeredHousesList =
+                registeredHouseRepository.findBySearchOption(condition);
+
+        log.info("registeredHousesList : {}",registeredHousesList);
+        return registeredHousesList;
+    }
 
 }

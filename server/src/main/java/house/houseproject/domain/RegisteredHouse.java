@@ -33,14 +33,14 @@ public class RegisteredHouse {
     private String bubeon;
     private String bldg_nm;
     private String dal_ymd;
-    private String obj_amt;
-    private String bldg_area;
+    private int obj_amt;
+    private int bldg_area;
     private String tot_area;
     private String h_floor;
     private String right_gbn;
     private String cntl_ymd;
     private String build_year;
-    private String hous_type;
+    private String house_type;
     private String req_gbn;
     private String rdealer_lawdnm;
 

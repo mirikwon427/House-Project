@@ -23,7 +23,7 @@ function DefaultRouter() {
             <Route path="/profile" element={<Profile />}></Route>
             <Route path="/signUp" element={<SignUp />}></Route>
             <Route path="/house/:id" element={<HouseDetail />}></Route>
-            <Route path="/mypagesample" element={<MypageSample />}></Route>
+            <Route path="/mypage" element={<MypageSample />}></Route>
           </Routes>
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { Link, useNavigate } from 'react-router-dom';
 import CButton from '../components/common/CButton';
 import MypageSwiper from '../components/mypage/MypageSwiper';
 
@@ -165,8 +166,13 @@ const registerdProducts = [
 
 // 일단은 샘플이라고 이름 붙여놓은거라 나중에 프로필 수정 넣으시면서 이름이랑 url 라우팅까지 바꿔주시면 ㅎㅎㅎㅎ
 export default function MypageSample() {
+
+  const navigate = useNavigate();
   const gotoUpdateUser = () => {
     // 프로필 수정 페이지로 이동하거나 해당 컴포넌트로 전환하거나 해주세요 ㅎㅎㅎㅎ
+    console.log("clicked");
+    // <Link to="/profile"></Link>
+    navigate('/profile');
   };
 
   return (

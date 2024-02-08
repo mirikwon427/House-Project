@@ -101,6 +101,7 @@ const userSlice = createSlice({
     updateUserSuc(state, action) {
       state.isloading = false;
       state.user = action.payload.user;
+      window.document.href = '/profile';
     },
     updateUserFail(state, action) {
       state.isloading = false;
@@ -108,6 +109,24 @@ const userSlice = createSlice({
       state.errMsg = action.payload.msg;
       state.isErr = true;
     },
+    
+    //getUser
+    getUserReq(state, action) {
+      state.isloading = true;
+      state.errMsg = '';
+      state.isErr = false;
+    },
+    getUserSuc(state, action) {
+      state.isloading = false;
+      state.user = action.payload.user;
+    },
+    getUserFail(state, action) {
+      state.isloading = false;
+      alert(action.payload.msg);
+      state.errMsg = action.payload.msg;
+      state.isErr = true;
+    },
+    
   }
 });
 

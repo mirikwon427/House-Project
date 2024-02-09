@@ -3,6 +3,8 @@ package house.houseproject.controller;
 import house.houseproject.domain.HUser;
 import house.houseproject.domain.Message;
 import house.houseproject.domain.StatusEnum;
+import house.houseproject.dto.DeleteHouseDto;
+import house.houseproject.dto.LikedDto;
 import house.houseproject.dto.UpdateHouseDto;
 import house.houseproject.service.UpdateHouseService;
 import house.houseproject.service.UserService;
@@ -81,4 +83,39 @@ public class UpdateHouseController {
                     .body(Map.of("status", 500, "success", false, "message", "Internal server error", "fieldErrors", List.of()));
         }
     }
+
+    @DeleteMapping("/house/{id}")
+    public ResponseEntity<?> deleteHouse(@PathVariable int id, @AuthenticationPrincipal UserDetails userDetails) {
+    try {
+        if (userDetails == null) {
+            log.error("userDetails == null");
+            return new ResponseEntity<>(Map.of("success", false, "message", "로그인 후 삭제 가능합니다."), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        String email = userDetails.getUsername();
+        HUser user = userService.findByEmail(email);
+
+        if (user == null) {
+            return new ResponseEntity<>(Map.of("success", false, "message", "사용자를 찾을 수 없습니다."), HttpStatus.NOT_FOUND);
+        }
+
+
+        boolean delete = updateHouseService.deleteHouse(id);
+
+        if (delete) {
+            Message message = new Message();
+            message.setSuccess(StatusEnum.TRUE);
+            message.setMessage("매물이 삭제되었습니다.");
+
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(Map.of("success", false, "message", "매물 삭제에 실패하였습니다."), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    } catch (Exception e) {
+        log.error("Error deleting house with ID: " + id, e);
+        return new ResponseEntity<>(Map.of("success", false, "message", "서버에서 에러가 발생했습니다."), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    }
+
 }

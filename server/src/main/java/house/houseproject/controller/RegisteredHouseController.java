@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -114,5 +115,36 @@ public class RegisteredHouseController {
                 return new ResponseEntity<>(message, HttpStatus.OK);
             }
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> search(
+            @RequestParam(value="sgg_nm",required = false) String sggNm,
+            @RequestParam(value="house_type",required = false) String houseType,
+            @RequestParam(value="obj_amt",required=false) Integer objAmount,
+            @RequestParam(value="bldg_area",required=false) Integer bldgArea, ModelMap model ) {
+        RegisteredHouseCondition condition = new RegisteredHouseCondition(sggNm, houseType, objAmount, bldgArea);
+        log.info("condition : {}", condition);
+
+        List<RegisteredHouse> registeredHouseList = registeredHouseService.search(condition);
+        log.info("registeredHouseList : {}", registeredHouseList);
+
+        log.info("sggNm : {}", sggNm);
+        log.info("houseType : {}", houseType);
+        log.info("objAmount : {}", objAmount);
+        log.info("bldgArea : {}", bldgArea);
+
+        ArrayList<RegisteredHouseDto> registeredHouseDtoList = new ArrayList<>();
+        for (RegisteredHouse registeredHouse : registeredHouseList) {
+            RegisteredHouseDto registeredHouseDto = RegisteredHouseDto.from(registeredHouse);
+            registeredHouseDtoList.add(registeredHouseDto);
+        }
+        log.error("registeredHouseDtoList : {}", registeredHouseDtoList);
+        model.addAttribute("registeredHouse", registeredHouseDtoList);
+
+        Message message = new Message();
+        message.setSuccess(StatusEnum.TRUE);
+        message.setRegisteredHouse(registeredHouseDtoList);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

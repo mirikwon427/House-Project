@@ -11,7 +11,7 @@ export default function Navigation() {
     if (sessionStorage.getItem('id') === null) {
       navigate('/login');
     } else {
-      navigate('/profile');
+      navigate('/mypage');
     }
   };
 
@@ -35,7 +35,7 @@ export default function Navigation() {
           <Link to="/search">통합검색</Link>
         </button>
         <button>트렌드</button>
-        <CButton title="Profile" onClick={OnClickProfile} />
+        <CButton title="Mypage" onClick={OnClickProfile} />
       </div>
     </div>
   );

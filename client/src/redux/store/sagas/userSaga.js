@@ -1,6 +1,6 @@
 import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 import { userActions } from '../reducers/userReducer';
-import { loginUser, signUp, logoutUser, updateUser } from '../api/userApi';
+import { loginUser, signUp, logoutUser, updateUser, getUser } from '../api/userApi';
 
 // Login
 function* loginUserApi(action) {
@@ -43,8 +43,8 @@ function* logoutUserApi(action) {
 
 function* updateUserApi(action) {
   try {
-    console.log('사가시작');
-    console.log(action.payload);
+    // console.log('사가시작');
+    // console.log(action.payload);
     const { data } = yield call(updateUser, action.payload);
     yield put(userActions.updateUserSuc(data));
   } catch (err) {
@@ -55,6 +55,20 @@ function* updateUserApi(action) {
     }
 }
 
+
+function* getUserApi(action) {
+  try{
+    console.log('get User API 실행');
+    console.log(action.payload)
+    const { data } = yield call(getUser, action.payload);
+    yield put(userActions.getUserScu(data));
+  } catch (err) {
+    console.log(err.message);
+    yield put(
+      userActions.getUserFail({success: false, msg: err.message})
+    )
+  }
+}
 
 
 function* watchLogoutUser() {
@@ -73,6 +87,10 @@ function* watchUpdateUser() {
   yield takeLatest(userActions.updateUserReq, updateUserApi);
 }
 
+function* watchGetUser() {
+  yield takeLatest(userActions.getUserReq, getUserApi);
+}
+
 export default function* userSaga() {
-  yield all([fork(watchLoginUser), fork(watchSignUp), fork(watchLogoutUser), fork(watchUpdateUser)]);
+  yield all([fork(watchLoginUser), fork(watchSignUp), fork(watchLogoutUser), fork(watchUpdateUser), fork(watchGetUser)]);
 }

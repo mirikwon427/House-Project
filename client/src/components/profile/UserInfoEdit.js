@@ -1,38 +1,23 @@
-import CInput from '../components/common/CInput';
-import CButton from '../components/common/CButton';
-import { useInput } from '../hooks/useInput';
-import { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { userActions } from '../redux/store/reducers/userReducer';
+import CButton from "../common/CButton"
+import CInput from "../common/CInput"
+import { useInput } from "../../hooks/useInput"
+import {useDispatch, useSelector} from "react-redux"
+import { useCallback, useState} from "react"
+import { userActions } from "../../redux/store/reducers/userReducer"
 
+export default function UserInfoEdit({edit, logout}) {
+  const { user } = useSelector((state) => state.user);
+  const { token } = useSelector((state) => state.user);
 
-
-
-const accountSid = "ACa37b34e5946eebc4b77f7733568dec20";
-const authToken = "a9acaafc3b910be8522880821f121e29";
-const subaccountSid = "VA358ac8aae5ed84ffe814aec83f07b2fa";
-// const twilio = require("twilio");
-// const bodyParser = require("body-parser");
-// const MessagingResponse = require("twilio").twiml.MessagingResponse;
-
-
-function send_message (phone) {
-  // const prequal = twilio.webhook(authToken)
-  // console.log(prequal)
-  // return  prequal
-}
-
-
-export default function SignUp() {
-  const email = useInput('');
+  const name = useInput(user.name);
+  const address = useInput(user.address);
+  const age = useInput(user.age);
+  const phone = useInput(user.phone);
+  const email = useInput(user.email);
   const pw = useInput('');
   const pwCorrect = useInput('');
-  const name = useInput('');
-  const phoneNumber = useInput('');
-  const address = useInput('');
-  const age = useInput('');
-
   const dispatch = useDispatch();
+
 
   // 정규표현식 및 유효성 검사 후 true / false
   const [isEmail, setIsEmail] = useState(false);
@@ -41,6 +26,7 @@ export default function SignUp() {
   const [isAdress, setIsAdress] = useState(false);
   const [isName, setIsName] = useState(false);
   const [isPhone, setIsPhone] = useState(false);
+  const [isPhoneConfirm, setIsPhoneConfirm] = useState(false);
   const [isAge, setIsAge] = useState(false);
 
   const [nameMessage, setNameMessage] = useState('');
@@ -51,14 +37,14 @@ export default function SignUp() {
   const [addressMessage, setAddressMessage] = useState('');
   const [ageMessage, setAgeMessage] = useState('');
 
-  const handlePhoneAuthentication = async(e) => {
+  
+  const handlePhoneAuthentication = (e) => {
     e.preventDefault();
-    // 휴대폰 인증 해주세염
-    // 저는 예전에 Naver Sens Service 썼습니당
-    console.log('인증 클릭');
-    
+    // 휴대폰 인증 어떻게 구현할지
+    // 
   };
 
+  
   const onClickSignup = useCallback(
     (e) => {
       e.preventDefault();
@@ -88,7 +74,7 @@ export default function SignUp() {
         setIsPw(true);
       }
 
-      if (pw.value !== pwCorrect.value) {
+      if (pw.value !== phone.value) {
         setPwConfirmMessage('일치하지 않습니다.');
         setIsPwCorrect(false);
       } else {
@@ -96,7 +82,7 @@ export default function SignUp() {
         setIsPwCorrect(true);
       }
 
-      if (!phoneRule.test(phoneNumber.value)) {
+      if (!phoneRule.test(phone.value)) {
         setPhoneMessage('010-1234-5678 형식으로 입력해주세요.');
         setIsPhone(false);
       } else {
@@ -138,24 +124,27 @@ export default function SignUp() {
         isAge
       ) {
         console.log('passed');
-        dispatch(
-          userActions.signUpReq({
-            name: name.value,
-            age: age.value,
+        dispatch(userActions.updateUserReq({
+          headers: token,
+          user: {
+            id: user.id,
             email: email.value,
             password: pw.value,
-            phone: phoneNumber.value,
+            name: name.value,
+            age: age.value,
+            phone: phone.value,
             address: address.value,
-          }),
-        );
+          }
+          }
+  
+        ));
       }
     },
     [
       dispatch,
       email,
       pw,
-      phoneNumber,
-      pwCorrect,
+      phone,
       address,
       name,
       isAdress,
@@ -166,16 +155,52 @@ export default function SignUp() {
       isPw,
       isPwCorrect,
       isPhone,
+      token,
+      user,
     ],
   );
+
+  const onClickLogout = useCallback(
+    (e) => {
+      dispatch(userActions.logoutUserReq());
+    },
+    [dispatch],
+  );
+
+
+
+  const onClickUserUpdate = useCallback(
+    (e) => {
+      e.preventDefault();
+      
+      console.log('유저정보 수정 버튼 클릭')
+      dispatch(userActions.updateUserReq({
+        headers: token,
+        user: {
+          id: user.id,
+          email: email.value,
+          password: pw.value,
+          name: name.value,
+          age: age.value,
+          phone: phone.value,
+          address: address.value,
+        }
+        }
+
+      ));
+    },
+    [dispatch, email, pw, name, age, phone, address, token, user],
+  );  
+
+
 
   return (
     <div className="w-full flex justify-center my-16">
       <div className="w-full h-fit py-36 bg-gray-50 rounded-2xl flex justify-center items-center">
         <div className="w-[640px] h-fit bg-white shadow-lg rounded-md flex p-20">
           <div className="w-full">
-            <div className="text-center text-4xl font-bold mb-12">Sign Up</div>
-            <form onSubmit={onClickSignup} className="flex flex-col gap-4">
+            <div className="text-center text-4xl font-bold mb-12">User Info Edit</div>
+            <form onSubmit={onClickUserUpdate} className="flex flex-col gap-4">
               <CInput
                 {...email}
                 type="email"
@@ -203,7 +228,7 @@ export default function SignUp() {
               <CInput
                 {...pw}
                 type="password"
-                placeholder="비밀번호를 입력해주세요."
+                placeholder="새로운 비밀번호를 입력해주세요."
                 label="비밀번호"
                 isErr={!isPw}
                 errMsg={pwMessage}
@@ -277,7 +302,7 @@ export default function SignUp() {
                 <div className="w-full flex gap-4">
                   <div className="flex-1">
                     <CInput
-                      {...phoneNumber}
+                      {...phone}
                       type="text"
                       placeholder="핸드폰 번호를 입력해주세요."
                     >
@@ -358,11 +383,15 @@ export default function SignUp() {
                 </svg>
               </CInput>
 
-              <CButton title="SIGN UP" onClick={onClickSignup} />
+              <CButton title="Update Info" onClick={onClickUserUpdate} />
             </form>
+            <div className="flex flex-col gap-4 mt-4">
+              <CButton title="Log Out" onClick={logout} />
+            </div>
           </div>
         </div>
       </div>
     </div>
+    // 수정 이후
   );
 }

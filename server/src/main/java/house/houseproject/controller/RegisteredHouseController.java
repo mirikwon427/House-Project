@@ -119,8 +119,8 @@ public class RegisteredHouseController {
 
     @GetMapping("/search")
     public ResponseEntity<?> search(
-            @RequestParam(value="sgg_nm",required = false) String sggNm,
-            @RequestParam(value="house_type",required = false) String houseType,
+            @RequestParam(value="sgg_nm",required = false) List<String> sggNm,
+            @RequestParam(value="house_type",required = false) List<String> houseType,
             @RequestParam(value="obj_amt",required=false) Integer objAmount,
             @RequestParam(value="bldg_area",required=false) Integer bldgArea, ModelMap model ) {
         RegisteredHouseCondition condition = new RegisteredHouseCondition(sggNm, houseType, objAmount, bldgArea);

@@ -8,10 +8,4 @@ module.exports = function (app) {
     }),
   );
 
-  // app.use(
-  //   createProxyMiddleware('/sms',{
-  //     target: 'https://sens.apigw.ntruss.com',
-  //     changeOrigin: true,
-  //   }),
-  // );
 };

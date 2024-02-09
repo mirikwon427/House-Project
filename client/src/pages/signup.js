@@ -5,9 +5,23 @@ import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { userActions } from '../redux/store/reducers/userReducer';
 
-function send_message(phone) {
-  // 휴대폰 인증
+
+
+
+const accountSid = "ACa37b34e5946eebc4b77f7733568dec20";
+const authToken = "a9acaafc3b910be8522880821f121e29";
+const subaccountSid = "VA358ac8aae5ed84ffe814aec83f07b2fa";
+// const twilio = require("twilio");
+// const bodyParser = require("body-parser");
+// const MessagingResponse = require("twilio").twiml.MessagingResponse;
+
+
+function send_message (phone) {
+  // const prequal = twilio.webhook(authToken)
+  // console.log(prequal)
+  // return  prequal
 }
+
 
 export default function SignUp() {
   const email = useInput('');
@@ -42,7 +56,7 @@ export default function SignUp() {
     // 휴대폰 인증 해주세염
     // 저는 예전에 Naver Sens Service 썼습니당
     console.log('인증 클릭');
-    const response = await send_message(phoneNumber.value)
+    
   };
 
   const onClickSignup = useCallback(

@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux"
 import { useCallback, useState} from "react"
 import { userActions } from "../../redux/store/reducers/userReducer"
 
-export default function UserInfoEdit({edit}) {
+export default function UserInfoEdit({edit, logout}) {
   const { user } = useSelector((state) => state.user);
   const { token } = useSelector((state) => state.user);
 
@@ -384,8 +384,10 @@ export default function UserInfoEdit({edit}) {
               </CInput>
 
               <CButton title="Update Info" onClick={onClickUserUpdate} />
-              <CButton title="Log Out" onClick={onClickLogout} />
             </form>
+            <div className="flex flex-col gap-4 mt-4">
+              <CButton title="Log Out" onClick={logout} />
+            </div>
           </div>
         </div>
       </div>

@@ -24,11 +24,9 @@ export default function Profile() {
   return (
     <>
       
-      {edit? <UserInfoEdit edit={edit} /> :
+      {edit? <UserInfoEdit edit={edit} logout={onClickLogout}/> :
       <>
       <UserInfo edit={OnClickUserEdit} logout={onClickLogout}/>
-      {/* <CButton title={'회원정보 수정'} onClick={OnClickUserEdit}></CButton>
-      <CButton title={'로그아웃'} onClick={onClickLogout}></CButton> */}
       </>}
     </>
   )

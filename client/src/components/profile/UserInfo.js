@@ -65,8 +65,10 @@ export default function UserInfo({edit, logout}) {
               > 주소: {address}
               </div>
               <CButton title="User Info Edit" onClick={edit} />
-              <CButton title="Log Out" onClick={onClickLogout} />
             </form>
+            <div className="flex flex-col gag-4 mt-4">
+              <CButton title="Log Out" onClick={logout} />
+            </div>
           </div>
         </div>
       </div>

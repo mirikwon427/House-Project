@@ -1,8 +1,10 @@
 package house.houseproject.service;
 
 import house.houseproject.Repository.HUserRepository;
+import house.houseproject.Repository.LikedRepository;
 import house.houseproject.Repository.RegisteredHouseRepository;
 import house.houseproject.domain.HUser;
+import house.houseproject.domain.Liked;
 import house.houseproject.domain.RegisteredHouse;
 import house.houseproject.dto.DeleteHouseDto;
 import house.houseproject.dto.UpdateHouseDto;
@@ -12,6 +14,7 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 @Slf4j
@@ -19,11 +22,11 @@ import java.util.Optional;
 public class UpdateHouseService {
 
     private final RegisteredHouseRepository registeredHouseRepository;
-    private final HUserRepository userRepository;
+    private final LikedRepository likedRepository;
 
-    public UpdateHouseService(RegisteredHouseRepository registeredHouseRepository, HUserRepository userRepository) {
+    public UpdateHouseService(RegisteredHouseRepository registeredHouseRepository, LikedRepository likedRepository) {
         this.registeredHouseRepository = registeredHouseRepository;
-        this.userRepository = userRepository;
+        this.likedRepository = likedRepository;
     }
         @Transactional
         public UpdateHouseDto updateHouse(UpdateHouseDto updateHouseDto) throws Exception {
@@ -86,12 +89,19 @@ private UpdateHouseDto updateHouseDto(RegisteredHouse registeredHouse) {
 }
 
     @Transactional
-    public boolean deleteHouse(int houseId) {
+    public boolean deleteHouse(int userId, int houseId) {
         try {
 
             RegisteredHouse registeredHouse = registeredHouseRepository.findById(houseId)
                     .orElseThrow(ChangeSetPersister.NotFoundException::new);
 
+            List<Liked> likedList = likedRepository.findAllByUserIdAndRegisteredId(userId, houseId);
+
+            if(likedList != null) {
+                // 조회된 찜한 매물 삭제
+                likedRepository.deleteAll(likedList);
+
+            }
 
             registeredHouseRepository.delete(registeredHouse);
 

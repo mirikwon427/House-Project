@@ -139,12 +139,20 @@ public class RegisteredHouseController {
             RegisteredHouseDto registeredHouseDto = RegisteredHouseDto.from(registeredHouse);
             registeredHouseDtoList.add(registeredHouseDto);
         }
-        log.error("registeredHouseDtoList : {}", registeredHouseDtoList);
-        model.addAttribute("registeredHouse", registeredHouseDtoList);
+        if (registeredHouseDtoList.isEmpty()) {
+            log.error("registeredHouseDtoList is empty");
+            model.addAttribute("registeredHouse", registeredHouseDtoList);
 
-        Message message = new Message();
-        message.setSuccess(StatusEnum.TRUE);
-        message.setRegisteredHouse(registeredHouseDtoList);
-        return new ResponseEntity<>(message, HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("status", 409, "success", false, "message", "해당하는 매물이 없습니다."));
+        } else {
+            log.error("registeredHouseDtoList : {}", registeredHouseDtoList);
+            model.addAttribute("registeredHouse", registeredHouseDtoList);
+
+            Message message = new Message();
+            message.setSuccess(StatusEnum.TRUE);
+            message.setRegisteredHouse(registeredHouseDtoList);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
     }
 }

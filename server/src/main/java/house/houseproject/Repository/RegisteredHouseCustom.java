@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface RegisteredHouseCustom {
     List<RegisteredHouse> findBySearchOption(RegisteredHouseCondition condition);
+
+    String getLikedRegisteredHouseCountBySggNm(int userId);
 }

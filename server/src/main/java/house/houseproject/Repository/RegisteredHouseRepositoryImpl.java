@@ -1,6 +1,7 @@
 package house.houseproject.Repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import house.houseproject.domain.RegisteredHouse;
 import house.houseproject.domain.RegisteredHouseCondition;
@@ -35,15 +36,39 @@ public class RegisteredHouseRepositoryImpl implements RegisteredHouseCustom{
                         objAmtContains(condition.getObjAmt()),
                         bldgAreaLoe(condition.getBldgArea())
                 )
+                .orderBy(
+                        registeredHouse.sgg_nm.asc(),
+                        registeredHouse.house_type.asc(),
+                        registeredHouse.obj_amt.asc(),
+                        registeredHouse.bldg_area.asc()
+                )
                 .fetch();
     }
 
-    private BooleanExpression ssgNmContains(String ssgNm) {
-        return hasText(ssgNm) ? registeredHouse.sgg_nm.contains(ssgNm) : null;
+    private BooleanExpression ssgNmContains(List<String> ssgNm) {
+        if (ssgNm != null && !ssgNm.isEmpty()) {
+            BooleanExpression[] expressions = ssgNm.stream()
+                    .filter(s -> s != null && !s.isEmpty())
+                    .map(s -> registeredHouse.sgg_nm.like("%" + s + "%")) // 각 문자열에 대해 like 연산 적용
+                    .toArray(BooleanExpression[]::new);
+            return Expressions.anyOf(expressions); //
+        } else {
+            // 빈 리스트를 전달하여 항상 true를 반환하도록 설정
+            return null;
+        }
     }
 
-    private BooleanExpression houseTypeContains(String houseType) {
-        return hasText(houseType) ? registeredHouse.house_type.contains(houseType) : null;
+    private BooleanExpression houseTypeContains(List<String> houseType) {
+        if (houseType != null && !houseType.isEmpty()) {
+            BooleanExpression[] expressions = houseType.stream()
+                    .filter(s -> s != null && !s.isEmpty())
+                    .map(s -> registeredHouse.house_type.like("%" + s + "%")) // 각 문자열에 대해 like 연산 적용
+                    .toArray(BooleanExpression[]::new);
+            return Expressions.anyOf(expressions); //
+        } else {
+            // 빈 리스트를 전달하여 항상 true를 반환하도록 설정
+            return null;
+        }
     }
 
     private BooleanExpression objAmtContains(Integer objAmt) {

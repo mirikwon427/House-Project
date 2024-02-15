@@ -1,7 +1,9 @@
 package house.houseproject.Repository;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import house.houseproject.domain.RegisteredHouse;
 import house.houseproject.domain.RegisteredHouseCondition;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static house.houseproject.domain.QLiked.liked;
 import static house.houseproject.domain.QRegisteredHouse.registeredHouse;
 import static io.jsonwebtoken.lang.Strings.hasText;
 
@@ -82,6 +85,26 @@ public class RegisteredHouseRepositoryImpl implements RegisteredHouseCustom{
     private BooleanExpression bldgAreaLoe(Integer bldgArea) {
         if (bldgArea != null && bldgArea > 0) {
             return registeredHouse.bldg_area.loe(3.31 * bldgArea);
+        } else {
+            return null;
+        }
+    }
+
+    public String getLikedRegisteredHouseCountBySggNm(int userId) {
+        Tuple result =  queryFactory.select( registeredHouse.sgg_nm, registeredHouse.count())
+                .from(registeredHouse)
+                .where(registeredHouse.registeredHouseId.in(
+                        JPAExpressions.select(liked.registeredHouse.registeredHouseId)
+                                .from(liked)
+                                .where(liked.user.Id.eq(userId))
+                ))
+                .groupBy(registeredHouse.sgg_nm)
+                .orderBy(registeredHouse.count().desc())
+                .fetchFirst();
+
+        if (result != null) {
+            log.info("result.get(registeredHouse.sgg_nm) : {}", result.get(registeredHouse.sgg_nm));
+            return result.get(registeredHouse.sgg_nm);
         } else {
             return null;
         }

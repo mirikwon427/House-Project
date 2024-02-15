@@ -100,7 +100,7 @@ public class UpdateHouseController {
         }
 
 
-        boolean delete = updateHouseService.deleteHouse(id);
+        boolean delete = updateHouseService.deleteHouse(user.getId(), id);
 
         if (delete) {
             Message message = new Message();
@@ -109,7 +109,7 @@ public class UpdateHouseController {
 
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(Map.of("success", false, "message", "매물 삭제에 실패하였습니다."), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(Map.of("success", false, "message", "삭제할 매물이 없습니다."), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     } catch (Exception e) {
         log.error("Error deleting house with ID: " + id, e);

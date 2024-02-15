@@ -91,7 +91,7 @@ public class MypageController{
 
 
 
-            UserUpdateDto user = new UserUpdateDto(userUpdateDto.getId(), userUpdateDto.getEmail(), userUpdateDto.getPassword(), userUpdateDto.getName(), userUpdateDto.getAge()
+            UserUpdateDto user = new UserUpdateDto(id, userUpdateDto.getEmail(), userUpdateDto.getPassword(), userUpdateDto.getName(), userUpdateDto.getAge()
                     , userUpdateDto.getPhone(), userUpdateDto.getAddress());
             UserDto userDto = mypageService.userUpdate(user);
 

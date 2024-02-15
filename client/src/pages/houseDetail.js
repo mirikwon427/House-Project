@@ -1,42 +1,32 @@
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import 'swiper/css';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import Chart from '../components/detail/Chart';
 import DetailMap from '../components/detail/DetailMap';
-import { useState } from 'react';
-
-const data = {
-  id: 0,
-  acc_year: '2010년', // 접수연도
-  sgg_nm: '서초구', // 자치구명
-  sgg_cd: '', // 자치구코드
-  bjdong_nm: '반포동', // 법정동명
-  bjdong_cd: '', // 법정동코드
-  land_gbm: '신반포로 270', // 지번구분
-  land_gbn_nm: '', // 지번구분명
-  bonbeon: '', // 본번
-  bubeon: '', // 부번
-  bldg_nm: '반포자이', // 건물명
-  dal_ymd: '2012년 12월 12일', // 계약일
-  obj_amt: '560,000', // 물건금액(만원)
-  tot_area: '80', // 토지면적
-  floor: '29', // 층
-  right_gbn: '', // 권리구분
-  cntl_ymd: '2016년 4월 16일', // 취소일
-  build_year: '2008년', // 건축년도
-  hous_type: '아파트', // 건물용도
-  req_gbn: '', // 신고구분
-  rdealer_lawdnm: '', // 신고한 개업공인중개사 시군구명
-};
+import { houseActions } from '../redux/store/reducers/houseReducer';
 
 export default function HouseDetail() {
-  const [isLiked, setIsLiked] = useState(false);
+  const [liked, setLiked] = useState(false);
   const [isAlert, setIsAlert] = useState(false);
   const [alertTitle, setAlertTitle] = useState('abc');
 
-  const onClickLiked = () => {
-    setIsLiked(!isLiked);
+  const { house, isLiked } = useSelector((state) => state.house);
 
-    if (isLiked) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(houseActions.getHouseReq(1));
+  }, [dispatch]);
+
+  useEffect(() => {
+    setLiked(isLiked);
+  }, [isLiked]);
+
+  const onClickLiked = () => {
+    setLiked(!liked);
+
+    if (liked) {
       setIsAlert(true);
       setAlertTitle('해당 매물이 찜 목록에서 제거되었습니다.');
 
@@ -80,7 +70,7 @@ export default function HouseDetail() {
         </div>
 
         <div className="text-3xl font-extrabold mt-12 flex items-center justify-between">
-          <div>{data.bldg_nm}</div>
+          <div>{house.bldg_nm}</div>
 
           <div
             className={`cursor-pointer w-12 h-12 rounded-full bg-white items-center flex justify-center border border-gray-300`}
@@ -88,10 +78,10 @@ export default function HouseDetail() {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill={isLiked ? '#ef5777' : '#fff'}
+              fill={liked ? '#ef5777' : '#fff'}
               viewBox="0 0 24 24"
               strokeWidth={1.5}
-              stroke={isLiked ? '#ef5777' : '#000'}
+              stroke={liked ? '#ef5777' : '#000'}
               className="w-7 h-7"
             >
               <path
@@ -112,14 +102,14 @@ export default function HouseDetail() {
                 건물명
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {data.bldg_nm}
+                {house.bldg_nm}
               </div>
 
               <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
                 가격
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {data.obj_amt} 만원
+                {house.obj_amt} 만원
               </div>
             </div>
 
@@ -128,14 +118,14 @@ export default function HouseDetail() {
                 접수연도
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {data.acc_year}
+                {house.acc_year}
               </div>
 
               <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
                 계약일
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {data.dal_ymd}
+                {house.dal_ymd}
               </div>
             </div>
 
@@ -144,14 +134,14 @@ export default function HouseDetail() {
                 토지면적
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {data.tot_area} 평
+                {house.tot_area} 평
               </div>
 
               <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
                 층
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {data.floor} 층
+                {house.floor} 층
               </div>
             </div>
 
@@ -160,14 +150,14 @@ export default function HouseDetail() {
                 권리구분
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {data.right_gbn}
+                {house.right_gbn}
               </div>
 
               <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
                 취소일
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {data.cntl_ymd}
+                {house.cntl_ymd}
               </div>
             </div>
 
@@ -176,14 +166,14 @@ export default function HouseDetail() {
                 건축년도
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {data.build_year}
+                {house.build_year}
               </div>
 
               <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
                 건물용도
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {data.hous_type}
+                {house.hous_type}
               </div>
             </div>
 
@@ -192,14 +182,14 @@ export default function HouseDetail() {
                 신고구분
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {data.req_gbn}
+                {house.req_gbn}
               </div>
 
               <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
                 공인중개사 시군구명
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {data.rdealer_lawdnm}
+                {house.rdealer_lawdnm}
               </div>
             </div>
 
@@ -208,15 +198,15 @@ export default function HouseDetail() {
                 주소
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                서울시&nbsp;{data.sgg_nm}&nbsp;{data.land_gbm}&nbsp;(
-                {data.bjdong_nm})
+                서울시&nbsp;{house.sgg_nm}&nbsp;{house.land_gbm}&nbsp;(
+                {house.bjdong_nm})
               </div>
             </div>
           </div>
         </div>
 
         <div className="text-2xl font-bold mb-6 mt-12">위치</div>
-        <DetailMap center={`서울특별시 ${data.sgg_nm} ${data.land_gbm}`} />
+        <DetailMap center={`서울특별시 ${house.sgg_nm}`} />
       </div>
 
       {/* 왼쪽 */}

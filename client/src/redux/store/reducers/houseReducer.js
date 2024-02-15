@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   isLoading: false,
   house: {
-    id: '',
+    registerdHouse_id: 0,
     sgg_cd: '',
     sgg_nm: '',
     land_gbm: '',
@@ -14,7 +14,7 @@ const initialState = {
     dal_ymd: '',
     obj_amt: 0,
     bldg_area: 0,
-    tot_area: 0,
+    tot_area: '',
     h_floor: '',
     build_year: '',
     house_type: '',
@@ -25,14 +25,32 @@ const initialState = {
     right_gbn: '',
     cntl_ymd: '',
     rdealer_lawdnm: '',
+    user_id: 0,
   },
   isErr: false,
+  isLiked: false,
 };
 
 const houseSlice = createSlice({
   name: 'house',
   initialState,
   reducers: {
+    getHouseReq(state, action) {
+      state.isLoading = true;
+      state.errMsg = '';
+      state.isErr = false;
+    },
+    getHouseSuc(state, action) {
+      state.isLoading = false;
+
+      state.house = action.payload.registeredHouseDto;
+      state.isLiked = action.payload.isLiked === 'TRUE';
+    },
+    getHouseFail(state, action) {
+      state.isLoading = false;
+      state.isErr = true;
+    },
+
     registerHouseReq(state, action) {
       state.isLoading = true;
       state.errMsg = '';

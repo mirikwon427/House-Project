@@ -1,9 +1,8 @@
-import { Link } from 'react-router-dom';
-import CButton from './common/CButton';
-import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import { userActions } from '../redux/store/reducers/userReducer';
+import CButton from './common/CButton';
 
 export default function Navigation() {
   const navigate = useNavigate();
@@ -30,7 +29,9 @@ export default function Navigation() {
       </div>
 
       <div className="flex gap-12 items-center">
-        <button>집값 예측</button>
+        <button>
+          <Link to="/register/house">매물 등록</Link>
+        </button>
         <button>
           <Link to="/search">통합검색</Link>
         </button>

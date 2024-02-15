@@ -19,17 +19,17 @@ export default function UserInfo({edit, logout}) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // dispatch(userActions.getUserReq({
-    //   id:user.id
-    //   headers: token
-    // }));
+    dispatch(userActions.getUserReq({
+      id:user.id,
+      headers: token
+    }));
 
     setName(user.name);
     setAddress(user.address);
     setAge(user.age);
     setPhone(user.phone)
     setEmail(user.email);
-  },[dispatch, user]);
+  },[dispatch, user, token]);
 
   const onClickEdit = () => {
   }

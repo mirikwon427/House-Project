@@ -31,9 +31,9 @@ function* signUpApi(action) {
 // Logout
 function* logoutUserApi(action) {
   try {
-    const { data } = yield call(logoutUser);
+    // const { data } = yield call(logoutUser);
     
-    yield put(userActions.logoutUserSuc(data));
+    yield put(userActions.logoutUserSuc());
   } catch (e) {
     yield put(
       userActions.logoutUserFail({ success: false, msg: '서버에러입니다.' }),
@@ -61,7 +61,7 @@ function* getUserApi(action) {
     console.log('get User API 실행');
     console.log(action.payload)
     const { data } = yield call(getUser, action.payload);
-    yield put(userActions.getUserScu(data));
+    yield put(userActions.getUserSuc(data));
   } catch (err) {
     console.log(err.message);
     yield put(

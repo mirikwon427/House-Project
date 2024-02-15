@@ -2,6 +2,10 @@ import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:8080';
 
+export const getHouse = async (id) => {
+  return await axios.get(`/api/house/${id}`);
+};
+
 export const registerHouse = async (data) => {
   console.log('house:::', data);
   const requestData = {

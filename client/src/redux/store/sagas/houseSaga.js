@@ -1,6 +1,22 @@
 import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
-import { registerHouse } from '../api/houseApi';
+import { getHouse, registerHouse } from '../api/houseApi';
 import { houseActions } from '../reducers/houseReducer';
+
+// Get House
+function* getHouseApi(action) {
+  try {
+    const { data } = yield call(getHouse, action.payload);
+
+    yield put(houseActions.getHouseSuc(data));
+  } catch (e) {
+    console.error(e);
+    yield put(houseActions.getHouseFail({ success: false, msg: e.message }));
+  }
+}
+
+function* watchGetHouse() {
+  yield takeLatest(houseActions.getHouseReq, getHouseApi);
+}
 
 // Register House
 function* registerHouseApi(action) {
@@ -23,5 +39,5 @@ function* watchRegisterHouse() {
 }
 
 export default function* houseSaga() {
-  yield all([fork(watchRegisterHouse)]);
+  yield all([fork(watchRegisterHouse), fork(watchGetHouse)]);
 }

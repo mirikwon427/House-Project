@@ -6,16 +6,49 @@ export const getHouse = async (id) => {
   return await axios.get(`/api/house/${id}`);
 };
 
+export const likedHouse = async (data) => {
+  const requestData = {
+    method: 'post',
+    url: `/api/like/${data.id}`,
+    headers: { Authorization: `Bearer ${data.token}` },
+  };
+  return await axios(requestData);
+};
+
+export const unlikedHouse = async (data) => {
+  const requestData = {
+    method: 'delete',
+    url: `/api/like/${data.id}`,
+    headers: { Authorization: `Bearer ${data.token}` },
+  };
+  return await axios(requestData);
+};
+
 export const registerHouse = async (data) => {
-  console.log('house:::', data);
   const requestData = {
     method: 'post',
     url: '/api/house',
     data: data.house,
-    headers: data.token,
+    headers: { Authorization: `Bearer ${data.token}` },
   };
-  console.log('requestData:::', requestData);
-  //   return await axios.post('/api/house', house);
+
+  return await axios(requestData);
+};
+
+export const getLikedHouse = async (userId) => {
+  const requestData = {
+    method: 'get',
+    url: `/api/liked/${userId}`,
+  };
+
+  return await axios(requestData);
+};
+
+export const getRegisteredHouse = async (userId) => {
+  const requestData = {
+    method: 'get',
+    url: `/api/registered/${userId}`,
+  };
 
   return await axios(requestData);
 };

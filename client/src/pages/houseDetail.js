@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Chart from '../components/detail/Chart';
@@ -7,17 +8,20 @@ import DetailMap from '../components/detail/DetailMap';
 import { houseActions } from '../redux/store/reducers/houseReducer';
 
 export default function HouseDetail() {
+  const params = useParams();
+
   const [liked, setLiked] = useState(false);
   const [isAlert, setIsAlert] = useState(false);
   const [alertTitle, setAlertTitle] = useState('abc');
 
   const { house, isLiked } = useSelector((state) => state.house);
+  const { token } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(houseActions.getHouseReq(1));
-  }, [dispatch]);
+    dispatch(houseActions.getHouseReq(params.id));
+  }, [dispatch, params]);
 
   useEffect(() => {
     setLiked(isLiked);
@@ -25,24 +29,23 @@ export default function HouseDetail() {
 
   const onClickLiked = () => {
     setLiked(!liked);
+    setIsAlert(true);
+    setAlertTitle(
+      liked
+        ? '해당 매물이 찜 목록에서 제거되었습니다.'
+        : '해당 매물이 찜 목록에 추가되었습니다.',
+    );
 
-    if (liked) {
-      setIsAlert(true);
-      setAlertTitle('해당 매물이 찜 목록에서 제거되었습니다.');
+    let timer = setTimeout(() => {
+      setIsAlert(false);
+      clearTimeout(timer);
+    }, 1500);
 
-      let timer = setTimeout(() => {
-        setIsAlert(false);
-        clearTimeout(timer);
-      }, 1500);
-    } else {
-      setIsAlert(true);
-      setAlertTitle('해당 매물이 찜 목록에 추가되었습니다.');
-
-      let timer = setTimeout(() => {
-        setIsAlert(false);
-        clearTimeout(timer);
-      }, 1500);
-    }
+    dispatch(
+      liked
+        ? houseActions.unlikeHouseReq({ id: params.id, token })
+        : houseActions.likeHouseReq({ id: params.id, token }),
+    );
   };
 
   return (

@@ -17,20 +17,10 @@ export const logoutUser = async () => {
 export const updateUser = async (user) => {
   const url = `/api/user/${user.user.id}`;
 
-  console.log('updateUser:::', user);
   return await axios({
     method: 'put',
     url: url,
     data: user.user,
     headers: user.headers,
-  });
-};
-
-export const getUser = async (user) => {
-  const url = `/api/user/${user.id}`;
-
-  return await axios({
-    method: 'get',
-    url: url,
   });
 };

@@ -2,8 +2,14 @@ import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:8080';
 
-export const getHouse = async (id) => {
-  return await axios.get(`/api/house/${id}`);
+export const getHouse = async (data) => {
+  const requestData = {
+    method: 'get',
+    url: `/api/house/${data.id}`,
+    headers: { Authorization: `Bearer ${data.token}` },
+  };
+
+  return await axios(requestData);
 };
 
 export const likedHouse = async (data) => {
@@ -35,19 +41,21 @@ export const registerHouse = async (data) => {
   return await axios(requestData);
 };
 
-export const getLikedHouse = async (userId) => {
+export const getLikedHouse = async (data) => {
   const requestData = {
     method: 'get',
-    url: `/api/liked/${userId}`,
+    url: `/api/liked/${data.userId}`,
+    headers: { Authorization: `Bearer ${data.token}` },
   };
 
   return await axios(requestData);
 };
 
-export const getRegisteredHouse = async (userId) => {
+export const getRegisteredHouse = async (data) => {
   const requestData = {
     method: 'get',
-    url: `/api/registered/${userId}`,
+    url: `/api/registered/${data.userId}`,
+    headers: { Authorization: `Bearer ${data.token}` },
   };
 
   return await axios(requestData);

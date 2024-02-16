@@ -51,6 +51,34 @@ const houseSlice = createSlice({
       state.isErr = true;
     },
 
+    likeHouseReq(state, action) {
+      state.isLoading = true;
+      state.errMsg = '';
+      state.isErr = false;
+    },
+    likeHouseSuc(state, action) {
+      state.isLoading = false;
+      state.isLiked = true;
+    },
+    likeHouseFail(state, action) {
+      state.isLoading = false;
+      state.isErr = true;
+    },
+
+    unlikeHouseReq(state, action) {
+      state.isLoading = true;
+      state.errMsg = '';
+      state.isErr = false;
+    },
+    unlikeHouseSuc(state, action) {
+      state.isLoading = false;
+      state.isLiked = false;
+    },
+    unlikeHouseFail(state, action) {
+      state.isLoading = false;
+      state.isErr = true;
+    },
+
     registerHouseReq(state, action) {
       state.isLoading = true;
       state.errMsg = '';
@@ -59,10 +87,35 @@ const houseSlice = createSlice({
     registerHouseSuc(state, action) {
       state.isLoading = false;
 
-      window.location.href = `/house/${action.payload.house.id}`;
-      state.house = action.payload.house;
+      window.location.href = `/house/${action.payload.registeredHouseId}`;
     },
     registerHouseFail(state, action) {
+      state.isLoading = false;
+      state.isErr = true;
+    },
+
+    getLikedHouseReq(state, action) {
+      state.isLoading = true;
+      state.errMsg = '';
+      state.isErr = false;
+    },
+    getLikedHouseSuc(state, action) {
+      state.isLoading = false;
+    },
+    getLikedHouseFail(state, action) {
+      state.isLoading = false;
+      state.isErr = true;
+    },
+
+    getRegisteredHouseReq(state, action) {
+      state.isLoading = true;
+      state.errMsg = '';
+      state.isErr = false;
+    },
+    getRegisteredHouseSuc(state, action) {
+      state.isLoading = false;
+    },
+    getRegisteredHouseFail(state, action) {
       state.isLoading = false;
       state.isErr = true;
     },

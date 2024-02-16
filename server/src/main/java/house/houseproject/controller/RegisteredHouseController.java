@@ -18,9 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -154,5 +152,30 @@ public class RegisteredHouseController {
             message.setRegisteredHouse(registeredHouseDtoList);
             return new ResponseEntity<>(message, HttpStatus.OK);
         }
+    }
+
+    @GetMapping("/getHouse")
+    public  ResponseEntity<?> house(@AuthenticationPrincipal UserDetails userDetails, ModelMap model) {
+        if (userDetails == null) {
+            log.error("userDetails == null");
+            return new ResponseEntity<>(Map.of("success", false, "message", "로그인 후 조회가 가능합니다."), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        HUser user = userService.findByEmail(userDetails.getUsername());
+        ArrayList<Integer> houseIdList = registeredHouseRepository.findRegisteredHouseIdByUserId(user.getId());
+        ArrayList<RegisteredHouseDto> registeredHouseDtoList = new ArrayList<>();
+        for (Integer registeredHouseId : houseIdList) {
+            Optional<RegisteredHouse> registeredHouseOptional = registeredHouseRepository.findByRegisteredHouseId(registeredHouseId);
+
+            registeredHouseOptional.ifPresent(registeredHouse -> {
+                RegisteredHouseDto registeredHouseDto = RegisteredHouseDto.from(registeredHouse);
+                registeredHouseDtoList.add(registeredHouseDto);
+            });
+        }
+        model.addAttribute("registeredHouse", registeredHouseDtoList); // DTO 리스트도 모델에 추가
+
+        Message message = new Message();
+        message.setSuccess(StatusEnum.TRUE);
+        message.setRegisteredHouse(registeredHouseDtoList);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

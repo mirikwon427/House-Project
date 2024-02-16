@@ -8,8 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
+import java.util.ArrayList;
 
 @Repository
 public interface RegisteredHouseRepository extends JpaRepository<RegisteredHouse, Integer>, RegisteredHouseCustom {
@@ -19,4 +21,7 @@ public interface RegisteredHouseRepository extends JpaRepository<RegisteredHouse
 
     @Query("SELECT rh FROM RegisteredHouse rh WHERE rh.sgg_nm = :sggNm")
     Page<RegisteredHouse> findBySggNm(String sggNm, Pageable pageable);
+
+    @Query("SELECT rh.registeredHouseId FROM RegisteredHouse rh WHERE rh.user.id = :userId")
+    ArrayList<Integer> findRegisteredHouseIdByUserId(@Param("userId") int userId);
 }

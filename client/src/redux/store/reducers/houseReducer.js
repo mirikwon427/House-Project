@@ -27,6 +27,7 @@ const initialState = {
     rdealer_lawdnm: '',
     user_id: 0,
   },
+  likedHouses: [],
   isErr: false,
   isLiked: false,
 };
@@ -38,7 +39,33 @@ const houseSlice = createSlice({
     getHouseReq(state, action) {
       state.isLoading = true;
       state.errMsg = '';
+      state.house = {
+        registerdHouse_id: 0,
+        sgg_cd: '',
+        sgg_nm: '',
+        land_gbm: '',
+        land_gbn_nm: '',
+        bonbeon: '',
+        bubeon: '',
+        bldg_nm: '',
+        dal_ymd: '',
+        obj_amt: 0,
+        bldg_area: 0,
+        tot_area: '',
+        h_floor: '',
+        build_year: '',
+        house_type: '',
+        req_gbn: '',
+        acc_year: '',
+        bjdong_cd: '',
+        bjdong_nm: '',
+        right_gbn: '',
+        cntl_ymd: '',
+        rdealer_lawdnm: '',
+        user_id: 0,
+      };
       state.isErr = false;
+      state.isLiked = false;
     },
     getHouseSuc(state, action) {
       state.isLoading = false;
@@ -97,13 +124,17 @@ const houseSlice = createSlice({
     getLikedHouseReq(state, action) {
       state.isLoading = true;
       state.errMsg = '';
+      state.likedHouses = [];
       state.isErr = false;
     },
     getLikedHouseSuc(state, action) {
       state.isLoading = false;
+
+      state.likedHouses = action.payload.registeredHouse;
     },
     getLikedHouseFail(state, action) {
       state.isLoading = false;
+      state.likedHouses = [];
       state.isErr = true;
     },
 

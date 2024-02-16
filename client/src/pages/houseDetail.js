@@ -20,8 +20,8 @@ export default function HouseDetail() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(houseActions.getHouseReq(params.id));
-  }, [dispatch, params]);
+    dispatch(houseActions.getHouseReq({ id: params.id, token }));
+  }, [dispatch, params, token]);
 
   useEffect(() => {
     setLiked(isLiked);

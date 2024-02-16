@@ -1,13 +1,12 @@
-import CButton from "../common/CButton"
-import CInput from "../common/CInput"
-import { useInput } from "../../hooks/useInput"
-import {useDispatch, useSelector} from "react-redux"
-import { useCallback, useState} from "react"
-import { userActions } from "../../redux/store/reducers/userReducer"
+import { useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useInput } from '../../hooks/useInput';
+import { userActions } from '../../redux/store/reducers/userReducer';
+import CButton from '../common/CButton';
+import CInput from '../common/CInput';
 
-export default function UserInfoEdit({edit, logout}) {
-  const { user } = useSelector((state) => state.user);
-  const { token } = useSelector((state) => state.user);
+export default function UserInfoEdit() {
+  const { user, token } = useSelector((state) => state.user);
 
   const name = useInput(user.name);
   const address = useInput(user.address);
@@ -17,7 +16,6 @@ export default function UserInfoEdit({edit, logout}) {
   const pw = useInput('');
   const pwCorrect = useInput('');
   const dispatch = useDispatch();
-
 
   // 정규표현식 및 유효성 검사 후 true / false
   const [isEmail, setIsEmail] = useState(false);
@@ -37,94 +35,17 @@ export default function UserInfoEdit({edit, logout}) {
   const [addressMessage, setAddressMessage] = useState('');
   const [ageMessage, setAgeMessage] = useState('');
 
-  
   const handlePhoneAuthentication = (e) => {
     e.preventDefault();
     // 휴대폰 인증 어떻게 구현할지
-    // 
   };
 
-  
-  const onClickSignup = useCallback(
+  const onClickUserUpdate = useCallback(
     (e) => {
       e.preventDefault();
 
-      const phoneRule = /\d{3}-\d{3,4}-\d{4}/;
-      const emailRule = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-      const pwRule =
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!%*#?&])[A-Za-z\d@!%*#?&]{8,}$/;
-      const addressRule = /^.{4,}$/;
-      const ageRule = /\d{1,}$/;
-
-      if (!emailRule.test(email.value)) {
-        setEmailMessage('이메일 형식이 아닙니다.');
-        setIsEmail(false);
-      } else {
-        setEmailMessage('사용가능한 아이디 입니다.');
-        setIsEmail(true);
-      }
-
-      if (!pwRule.test(pw.value)) {
-        setpwMessage(
-          '최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자를 포함해서 최소 8자 이상 입력하세요',
-        );
-        setIsPw(false);
-      } else {
-        setpwMessage('사용가능한 비밀번호입니다.');
-        setIsPw(true);
-      }
-
-      if (pw.value !== phone.value) {
-        setPwConfirmMessage('일치하지 않습니다.');
-        setIsPwCorrect(false);
-      } else {
-        setPwConfirmMessage('일치');
-        setIsPwCorrect(true);
-      }
-
-      if (!phoneRule.test(phone.value)) {
-        setPhoneMessage('010-1234-5678 형식으로 입력해주세요.');
-        setIsPhone(false);
-      } else {
-        setPhoneMessage('');
-        setIsPhone(true);
-      }
-
-      if (name.value === '') {
-        setNameMessage('필수 입력사항입니다.');
-        setIsName(false);
-      } else {
-        setNameMessage('');
-        setIsName(true);
-      }
-
-      if (!addressRule.test(address.value)) {
-        setAddressMessage('최소 4글자 이상 입력하세요.');
-        setIsAdress(false);
-      } else {
-        setAddressMessage('');
-        setIsAdress(true);
-      }
-
-      if (!ageRule.test(age.value)) {
-        setAgeMessage('숫자만 입력가능합니다.');
-        setIsAge(false);
-      } else {
-        setAgeMessage('');
-        setIsAge(true);
-      }
-
-      if (
-        isEmail &&
-        isPw &&
-        isPwCorrect &&
-        isPhone &&
-        isName &&
-        isAdress &&
-        isAge
-      ) {
-        console.log('passed');
-        dispatch(userActions.updateUserReq({
+      dispatch(
+        userActions.updateUserReq({
           headers: token,
           user: {
             id: user.id,
@@ -134,72 +55,21 @@ export default function UserInfoEdit({edit, logout}) {
             age: age.value,
             phone: phone.value,
             address: address.value,
-          }
-          }
-  
-        ));
-      }
-    },
-    [
-      dispatch,
-      email,
-      pw,
-      phone,
-      address,
-      name,
-      isAdress,
-      age,
-      isAge,
-      isName,
-      isEmail,
-      isPw,
-      isPwCorrect,
-      isPhone,
-      token,
-      user,
-    ],
-  );
-
-  const onClickLogout = useCallback(
-    (e) => {
-      dispatch(userActions.logoutUserReq());
-    },
-    [dispatch],
-  );
-
-
-
-  const onClickUserUpdate = useCallback(
-    (e) => {
-      e.preventDefault();
-      
-      console.log('유저정보 수정 버튼 클릭')
-      dispatch(userActions.updateUserReq({
-        headers: token,
-        user: {
-          id: user.id,
-          email: email.value,
-          password: pw.value,
-          name: name.value,
-          age: age.value,
-          phone: phone.value,
-          address: address.value,
-        }
-        }
-
-      ));
+          },
+        }),
+      );
     },
     [dispatch, email, pw, name, age, phone, address, token, user],
-  );  
-
-
+  );
 
   return (
     <div className="w-full flex justify-center my-16">
       <div className="w-full h-fit py-36 bg-gray-50 rounded-2xl flex justify-center items-center">
         <div className="w-[640px] h-fit bg-white shadow-lg rounded-md flex p-20">
           <div className="w-full">
-            <div className="text-center text-4xl font-bold mb-12">User Info Edit</div>
+            <div className="text-center text-4xl font-bold mb-12">
+              User Info Edit
+            </div>
             <form onSubmit={onClickUserUpdate} className="flex flex-col gap-4">
               <CInput
                 {...email}
@@ -385,9 +255,6 @@ export default function UserInfoEdit({edit, logout}) {
 
               <CButton title="Update Info" onClick={onClickUserUpdate} />
             </form>
-            <div className="flex flex-col gap-4 mt-4">
-              <CButton title="Log Out" onClick={logout} />
-            </div>
           </div>
         </div>
       </div>

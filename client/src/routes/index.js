@@ -4,8 +4,8 @@ import Navigation from '../components/Navigation';
 import Main from '../pages';
 import HouseDetail from '../pages/houseDetail';
 import LogIn from '../pages/login';
+import Mypage from '../pages/mypage';
 import Profile from '../pages/profile';
-import MypageSample from '../pages/profileSample';
 import RegisterHouse from '../pages/registerHouse';
 import Search from '../pages/search';
 import SignUp from '../pages/signup';
@@ -26,7 +26,7 @@ function DefaultRouter() {
             <Route path="/profile/update" element={<UpdateProfile />}></Route>
             <Route path="/signUp" element={<SignUp />}></Route>
             <Route path="/house/:id" element={<HouseDetail />}></Route>
-            <Route path="/mypage" element={<MypageSample />}></Route>
+            <Route path="/mypage" element={<Mypage />}></Route>
             <Route path="/register/house" element={<RegisterHouse />}></Route>
           </Routes>
         </div>

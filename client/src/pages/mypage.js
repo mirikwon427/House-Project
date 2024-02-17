@@ -5,7 +5,7 @@ import CButton from '../components/common/CButton';
 import MypageSwiper from '../components/mypage/MypageSwiper';
 import { houseActions } from '../redux/store/reducers/houseReducer';
 
-export default function MypageSample() {
+export default function Mypage() {
   const { user, token } = useSelector((state) => state.user);
   const { likedHouses } = useSelector((state) => state.house);
 

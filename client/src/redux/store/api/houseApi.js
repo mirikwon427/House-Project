@@ -60,3 +60,13 @@ export const getRegisteredHouse = async (data) => {
 
   return await axios(requestData);
 };
+
+export const getRecommendedHouse = async (data) => {
+  const requestData = {
+    method: 'get',
+    url: `/api/recommend/${data.userId}`,
+    headers: { Authorization: `Bearer ${data.token}` },
+  };
+
+  return await axios(requestData);
+};

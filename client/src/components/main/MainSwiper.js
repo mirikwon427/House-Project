@@ -1,5 +1,6 @@
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Link } from 'react-router-dom';
 import 'swiper/css';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import CLargeCard from '../common/CLargeCard';
 
 export default function MainSwiper({ data }) {
@@ -13,8 +14,10 @@ export default function MainSwiper({ data }) {
         {items.length > 0 ? (
           items.map((v) => {
             return (
-              <SwiperSlide key={v.id} className="w-1/3">
-                <CLargeCard data={v} />
+              <SwiperSlide key={v.registeredHouse_id} className="w-1/3">
+                <Link to={`/house/${v.registeredHouse_id}`}>
+                  <CLargeCard data={v} />
+                </Link>
               </SwiperSlide>
             );
           })

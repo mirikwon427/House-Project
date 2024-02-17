@@ -29,6 +29,7 @@ const initialState = {
   },
   likedHouses: [],
   registeredHouses: [],
+  recommendedHouses: [],
   isErr: false,
   isLiked: false,
 };
@@ -153,6 +154,22 @@ const houseSlice = createSlice({
       state.isLoading = false;
       state.isErr = true;
       state.registeredHouses = [];
+    },
+
+    getRecommendedHouseReq(state, action) {
+      state.isLoading = true;
+      state.errMsg = '';
+      state.isErr = false;
+      state.recommendedHouses = [];
+    },
+    getRecommendedHouseSuc(state, action) {
+      state.isLoading = false;
+      state.recommendedHouses = action.payload.registeredHouse;
+    },
+    getRecommendedHouseFail(state, action) {
+      state.isLoading = false;
+      state.isErr = true;
+      state.recommendedHouses = [];
     },
   },
 });

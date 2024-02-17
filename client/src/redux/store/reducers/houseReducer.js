@@ -28,6 +28,7 @@ const initialState = {
     user_id: 0,
   },
   likedHouses: [],
+  registeredHouses: [],
   isErr: false,
   isLiked: false,
 };
@@ -142,13 +143,16 @@ const houseSlice = createSlice({
       state.isLoading = true;
       state.errMsg = '';
       state.isErr = false;
+      state.registeredHouses = [];
     },
     getRegisteredHouseSuc(state, action) {
       state.isLoading = false;
+      state.registeredHouses = action.payload.registeredHouse;
     },
     getRegisteredHouseFail(state, action) {
       state.isLoading = false;
       state.isErr = true;
+      state.registeredHouses = [];
     },
   },
 });

@@ -54,7 +54,7 @@ export const getLikedHouse = async (data) => {
 export const getRegisteredHouse = async (data) => {
   const requestData = {
     method: 'get',
-    url: `/api/registered/${data.userId}`,
+    url: `/api/getHouse`,
     headers: { Authorization: `Bearer ${data.token}` },
   };
 

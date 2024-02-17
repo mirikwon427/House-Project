@@ -7,13 +7,17 @@ import { houseActions } from '../redux/store/reducers/houseReducer';
 
 export default function Mypage() {
   const { user, token } = useSelector((state) => state.user);
-  const { likedHouses } = useSelector((state) => state.house);
+  const { likedHouses, registeredHouses } = useSelector((state) => state.house);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(houseActions.getLikedHouseReq({ userId: user.id, token }));
   }, [dispatch, user, token]);
+
+  useEffect(() => {
+    dispatch(houseActions.getRegisteredHouseReq({ token }));
+  }, [dispatch, token]);
 
   const navigate = useNavigate();
   const gotoUpdateUser = () => {
@@ -36,7 +40,7 @@ export default function Mypage() {
       </div>
 
       <MypageSwiper title="찜한 매물 목록" data={likedHouses} />
-      <MypageSwiper title="등록한 매물 목록" data={likedHouses} />
+      <MypageSwiper title="등록한 매물 목록" data={registeredHouses} />
     </div>
   );
 }

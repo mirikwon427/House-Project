@@ -1,5 +1,6 @@
 package house.houseproject.Repository;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -9,6 +10,9 @@ import house.houseproject.domain.RegisteredHouse;
 import house.houseproject.domain.RegisteredHouseCondition;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,35 +28,44 @@ public class RegisteredHouseRepositoryImpl implements RegisteredHouseCustom{
     private JPAQueryFactory queryFactory;
 
     @Override
-    public List<RegisteredHouse> findBySearchOption(RegisteredHouseCondition condition) {
-        log.info("condition.getSggNm() : {}", condition.getSggNm());
-        log.info("condition.getBldgArea() : {}", condition.getBldgArea());
+    public Page<RegisteredHouse> findBySearchOption(RegisteredHouseCondition condition, Pageable pageable) {
+        log.info("condition.getSsgNm() : {}", condition.getSsgNm());
+        log.info("condition.getSupplyArea1() : {}", condition.getSupplyArea1());
+        log.info("condition.getSupplyArea2() : {}", condition.getSupplyArea2());
         log.info("condition.getHouseType() : {}", condition.getHouseType());
-        log.info("condition.getObjAmt() : {}", condition.getObjAmt());
+        log.info("condition.getObjAmt1() : {}", condition.getObjAmt1());
+        log.info("condition.getObjAmt2() : {}", condition.getObjAmt2());
+        log.info("Executing findBySearchOption...");
 
-        return queryFactory
+        QueryResults<RegisteredHouse> queryResults = queryFactory
                 .select(registeredHouse)
                 .from(registeredHouse)
                 .where(
-                        ssgNmContains(condition.getSggNm()),
+                        ssgNmContains(condition.getSsgNm()),
                         houseTypeContains(condition.getHouseType()),
-                        objAmtContains(condition.getObjAmt()),
-                        bldgAreaLoe(condition.getBldgArea())
+                        objAmtInRange(condition.getObjAmt1(), condition.getObjAmt2()),
+                        supplyAreaInRange(condition.getSupplyArea1(), condition.getSupplyArea2())
                 )
                 .orderBy(
-                        registeredHouse.sgg_nm.asc(),
-                        registeredHouse.house_type.asc(),
-                        registeredHouse.obj_amt.asc(),
-                        registeredHouse.bldg_area.asc()
+                        registeredHouse.registeredHouseId.desc(),
+                        registeredHouse.sggNm.asc(),
+                        registeredHouse.houseType.asc(),
+                        registeredHouse.objAmt.asc(),
+                        registeredHouse.supplyArea.asc()
                 )
-                .fetch();
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        return new PageImpl<>(queryResults.getResults(), pageable, queryResults.getTotal());
     }
+
 
     private BooleanExpression ssgNmContains(List<String> ssgNm) {
         if (ssgNm != null && !ssgNm.isEmpty()) {
             BooleanExpression[] expressions = ssgNm.stream()
                     .filter(s -> s != null && !s.isEmpty())
-                    .map(s -> registeredHouse.sgg_nm.like("%" + s + "%")) // 각 문자열에 대해 like 연산 적용
+                    .map(s -> registeredHouse.sggNm.like("%" + s + "%")) // 각 문자열에 대해 like 연산 적용
                     .toArray(BooleanExpression[]::new);
             return Expressions.anyOf(expressions); //
         } else {
@@ -65,7 +78,7 @@ public class RegisteredHouseRepositoryImpl implements RegisteredHouseCustom{
         if (houseType != null && !houseType.isEmpty()) {
             BooleanExpression[] expressions = houseType.stream()
                     .filter(s -> s != null && !s.isEmpty())
-                    .map(s -> registeredHouse.house_type.like("%" + s + "%")) // 각 문자열에 대해 like 연산 적용
+                    .map(s -> registeredHouse.houseType.like("%" + s + "%")) // 각 문자열에 대해 like 연산 적용
                     .toArray(BooleanExpression[]::new);
             return Expressions.anyOf(expressions); //
         } else {
@@ -74,37 +87,37 @@ public class RegisteredHouseRepositoryImpl implements RegisteredHouseCustom{
         }
     }
 
-    private BooleanExpression objAmtContains(Integer objAmt) {
-        if (objAmt != null && objAmt > 0) {
-            return registeredHouse.obj_amt.loe(10000 * objAmt);
+    private BooleanExpression objAmtInRange(Integer objAmt1, Integer objAmt2) {
+        if (objAmt1 != null && objAmt2 != null && objAmt1 <= objAmt2 && objAmt1 >= 0) {
+            return registeredHouse.objAmt.between(10000 * objAmt1, 10000 * objAmt2);
         } else  {
             return null;
         }
     }
 
-    private BooleanExpression bldgAreaLoe(Integer bldgArea) {
-        if (bldgArea != null && bldgArea > 0) {
-            return registeredHouse.bldg_area.loe(3.31 * bldgArea);
+    private BooleanExpression supplyAreaInRange(Integer supplyArea1, Integer supplyArea2) {
+        if (supplyArea1 != null && supplyArea2 != null && supplyArea1 <= supplyArea2 && supplyArea1 >= 0) {
+            return registeredHouse.supplyArea.between(3.31 * supplyArea1, 3.31 * supplyArea2);
         } else {
             return null;
         }
     }
 
     public String getLikedRegisteredHouseCountBySggNm(int userId) {
-        Tuple result =  queryFactory.select( registeredHouse.sgg_nm, registeredHouse.count())
+        Tuple result =  queryFactory.select( registeredHouse.sggNm, registeredHouse.count())
                 .from(registeredHouse)
                 .where(registeredHouse.registeredHouseId.in(
                         JPAExpressions.select(liked.registeredHouse.registeredHouseId)
                                 .from(liked)
                                 .where(liked.user.Id.eq(userId))
                 ))
-                .groupBy(registeredHouse.sgg_nm)
+                .groupBy(registeredHouse.sggNm)
                 .orderBy(registeredHouse.count().desc())
                 .fetchFirst();
 
         if (result != null) {
-            log.info("result.get(registeredHouse.sgg_nm) : {}", result.get(registeredHouse.sgg_nm));
-            return result.get(registeredHouse.sgg_nm);
+            log.info("result.get(registeredHouse.sgg_nm) : {}", result.get(registeredHouse.sggNm));
+            return result.get(registeredHouse.sggNm);
         } else {
             return null;
         }

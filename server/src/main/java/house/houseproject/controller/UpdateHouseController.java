@@ -1,7 +1,9 @@
 package house.houseproject.controller;
 
+import house.houseproject.Repository.RegisteredHouseRepository;
 import house.houseproject.domain.HUser;
 import house.houseproject.domain.Message;
+import house.houseproject.domain.RegisteredHouse;
 import house.houseproject.domain.StatusEnum;
 import house.houseproject.dto.DeleteHouseDto;
 import house.houseproject.dto.LikedDto;
@@ -22,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -34,6 +37,7 @@ import java.util.NoSuchElementException;
 public class UpdateHouseController {
     private final UpdateHouseService updateHouseService;
     private final UserService userService;
+    private final RegisteredHouseRepository registeredHouseRepository;
 
 
     @PutMapping("/house/{id}")
@@ -49,38 +53,49 @@ public class UpdateHouseController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("status", 400, "success", false, "message", "값을 확인해주세요.", "fieldErrors", errorMessages));
         }
+        String email = userDetails.getUsername();
+        HUser user = userService.findByEmail(email);
+        int userId = user.getId();
+        int registeredHouseId = 0;
+        ArrayList<Integer> registeredHouseIds = registeredHouseRepository.findRegisteredHouseIdByUserId(userId);
+        for (Integer i : registeredHouseIds) {
+            if(i == id) {
+                registeredHouseId = i;
+                break;
+            }
+        }
+        if (registeredHouseId == id) {
+            try {
 
-        try {
+                updateHouseDto.setRegisteredHouse_id(id);
+                updateHouseDto.setUser_id(userId);
 
-                String email = userDetails.getUsername();
-                HUser user = userService.findByEmail(email);
-                int userId = user.getId();
+                UpdateHouseDto updateHouse = updateHouseService.updateHouse(updateHouseDto);
 
-            updateHouseDto.setRegisteredHouse_id(id);
-            updateHouseDto.setUser_id(userId);
+                model.addAttribute("house", updateHouseDto);
 
-            UpdateHouseDto updateHouse = updateHouseService.updateHouse(updateHouseDto);
-
-            model.addAttribute("house", updateHouseDto);
-
-            Message message = new Message();
-            message.setSuccess(StatusEnum.TRUE);
-            message.setRegisteredHouseId(updateHouseDto.getRegisteredHouse_id());
+                Message message = new Message();
+                message.setSuccess(StatusEnum.TRUE);
+                message.setRegisteredHouseId(updateHouseDto.getRegisteredHouse_id());
 
 
-            return new ResponseEntity<>(message,HttpStatus.OK);
+                return new ResponseEntity<>(message, HttpStatus.OK);
 
 
-        } catch (NoSuchElementException e) {
-            log.error("Error updating house with ID {}: {}",id, e.getMessage(), e);
+            } catch (NoSuchElementException e) {
+                log.error("Error updating house with ID {}: {}", id, e.getMessage(), e);
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("status", 404, "success", false, "message", "House not found", "fieldErrors", List.of()));
-        } catch (Exception e) {
-            log.error("Error updating house with ID {}: {}", id, e.getMessage(), e);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("status", 404, "success", false, "message", "매물을 찾을 수 없습니다.", "fieldErrors", List.of()));
+            } catch (Exception e) {
+                log.error("Error updating house with ID {}: {}", id, e.getMessage(), e);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("status", 500, "success", false, "message", "Internal server error", "fieldErrors", List.of()));
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(Map.of("status", 500, "success", false, "message", "서버 오류", "fieldErrors", List.of()));
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("status", 403, "success", false, "message", "본인이 올린 매물만 수정할 수 있습니다."));
         }
     }
 

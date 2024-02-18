@@ -9,6 +9,7 @@ import lombok.Data;
 import house.houseproject.dto.LoginDto;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,6 +28,7 @@ public class Message {
     private Integer registeredHouseId;
 
     private ArrayList<RegisteredHouseDto> registeredHouse;
+    private List<RegisteredHouseDto> registeredHouses;
     private RegisteredHouseDto registeredHouseDto;
     private StatusEnum isLiked;
 

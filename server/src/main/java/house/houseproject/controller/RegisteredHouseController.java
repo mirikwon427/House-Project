@@ -11,6 +11,10 @@ import house.houseproject.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -119,21 +123,35 @@ public class RegisteredHouseController {
     public ResponseEntity<?> search(
             @RequestParam(value="location",required = false) List<String> sggNm,
             @RequestParam(value="type",required = false) List<String> houseType,
-            @RequestParam(value="price",required=false) Integer objAmount,
-            @RequestParam(value="size",required=false) Integer bldgArea, ModelMap model ) {
-        RegisteredHouseCondition condition = new RegisteredHouseCondition(sggNm, houseType, objAmount, bldgArea);
+            @RequestParam(value="price1",required=false,defaultValue="0") Integer objAmount1,
+            @RequestParam(value="price2",required=false) Integer objAmount2,
+            @RequestParam(value="size1",required=false,defaultValue="0") Integer supplyArea1,
+            @RequestParam(value="size2",required=false) Integer supplyArea2,
+            @RequestParam(value="page", required = false, defaultValue = "1") int page, // 요청된 페이지 번호
+            ModelMap model) {
+
+        int pageSize = 15; // 한 페이지당 아이템 수
+
+        // 실제 페이지 번호 계산 (0부터 시작)
+        int actualPage = page - 1;
+
+        RegisteredHouseCondition condition = new RegisteredHouseCondition(sggNm, houseType, objAmount1, supplyArea1, objAmount2, supplyArea2);
         log.info("condition : {}", condition);
 
-        List<RegisteredHouse> registeredHouseList = registeredHouseService.search(condition);
-        log.info("registeredHouseList : {}", registeredHouseList);
+        Pageable pageable = PageRequest.of(actualPage, pageSize);
+
+        Page<RegisteredHouse> registeredHousePage = registeredHouseService.search(condition, pageable);
+        log.info("registeredHouseList : {}", registeredHousePage);
 
         log.info("sggNm : {}", sggNm);
         log.info("houseType : {}", houseType);
-        log.info("objAmount : {}", objAmount);
-        log.info("bldgArea : {}", bldgArea);
+        log.info("objAmount1 : {}", objAmount1);
+        log.info("supplyArea1 : {}", supplyArea1);
+        log.info("objAmount2 : {}", objAmount2);
+        log.info("supplyArea2 : {}", supplyArea2);
 
         ArrayList<RegisteredHouseDto> registeredHouseDtoList = new ArrayList<>();
-        for (RegisteredHouse registeredHouse : registeredHouseList) {
+        for (RegisteredHouse registeredHouse : registeredHousePage) {
             RegisteredHouseDto registeredHouseDto = RegisteredHouseDto.from(registeredHouse);
             registeredHouseDtoList.add(registeredHouseDto);
         }
@@ -153,7 +171,6 @@ public class RegisteredHouseController {
             return new ResponseEntity<>(message, HttpStatus.OK);
         }
     }
-
     @GetMapping("/getHouse")
     public  ResponseEntity<?> house(@AuthenticationPrincipal UserDetails userDetails, ModelMap model) {
         if (userDetails == null) {
@@ -178,4 +195,5 @@ public class RegisteredHouseController {
         message.setRegisteredHouse(registeredHouseDtoList);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
 }

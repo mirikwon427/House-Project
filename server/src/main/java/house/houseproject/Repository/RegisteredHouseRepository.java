@@ -19,7 +19,7 @@ public interface RegisteredHouseRepository extends JpaRepository<RegisteredHouse
 
     boolean existsByRegisteredHouseIdAndUserId(int registeredHouseId, int userId);
 
-    @Query("SELECT rh FROM RegisteredHouse rh WHERE rh.sgg_nm = :sggNm")
+    @Query("SELECT rh FROM RegisteredHouse rh WHERE rh.sggNm = :sggNm")
     Page<RegisteredHouse> findBySggNm(String sggNm, Pageable pageable);
 
     @Query("SELECT rh.registeredHouseId FROM RegisteredHouse rh WHERE rh.user.id = :userId")

@@ -8,6 +8,8 @@ import house.houseproject.domain.RegisteredHouseCondition;
 import house.houseproject.dto.RegisteredHouseDto;
 import house.houseproject.exception.DuplicateMemberException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,37 +39,35 @@ public class RegisteredHouseService {
 
         RegisteredHouse registeredHouse = RegisteredHouse.builder()
                 .user(user)
-                .acc_year(registeredHouseDto.getAcc_year())
-                .sgg_cd(registeredHouseDto.getSgg_cd())
-                .sgg_nm(registeredHouseDto.getSgg_nm())
-                .bjdong_cd(registeredHouseDto.getBjdong_cd())
-                . bjdong_nm(registeredHouseDto.getBjdong_nm())
-                .land_gbm(registeredHouseDto.getLand_gbm())
-                .land_gbn_nm(registeredHouseDto.getLand_gbn_nm())
-                .bonbeon(registeredHouseDto.getBonbeon())
-                .bubeon(registeredHouseDto.getBubeon())
-                .bldg_nm(registeredHouseDto.getBldg_nm())
-                .dal_ymd(registeredHouseDto.getDal_ymd())
-                .obj_amt(registeredHouseDto.getObj_amt())
-                .bldg_area(registeredHouseDto.getBldg_area())
-                .tot_area(registeredHouseDto.getTot_area())
-                .h_floor(registeredHouseDto.getH_floor())
-                .right_gbn(registeredHouseDto.getRight_gbn())
-                .cntl_ymd(registeredHouseDto.getCntl_ymd())
-                .build_year(registeredHouseDto.getBuild_year())
-                .house_type(registeredHouseDto.getHouse_type())
-                .req_gbn(registeredHouseDto.getReq_gbn())
-                .rdealer_lawdnm(registeredHouseDto.getRdealer_lawdnm())
+                .direction(registeredHouseDto.getDirection())
+                .entranceStructure(registeredHouseDto.getEntranceStructure())
+                .numberOfHouseholds(registeredHouseDto.getNumberOfHouseholds())
+                .address(registeredHouseDto.getAddress())
+                .addressRoad(registeredHouseDto.getAddressRoad())
+                .managementFee(registeredHouseDto.getManagementFee())
+                .sggNm(registeredHouseDto.getSggNm())
+                .bjdongNm(registeredHouseDto.getBjdongNm())
+                .parkingSpaces(registeredHouseDto.getParkingSpaces())
+                .description(registeredHouseDto.getDescription())
+                .floor(registeredHouseDto.getFloor())
+                .totalFloor(registeredHouseDto.getTotalFloor())
+                .room(registeredHouseDto.getRoom())
+                .bathroom(registeredHouseDto.getBathroom())
+                .supplyArea(registeredHouseDto.getSupplyArea())
+                .netLeasableArea(registeredHouseDto.getNetLeasableArea())
+                .houseType(registeredHouseDto.getHouseType())
+                .objAmt(registeredHouseDto.getObjAmt())
+                .bldgNm(registeredHouseDto.getBldgNm())
                 .build();
 
         return RegisteredHouseDto.from(registeredHouseRepository.save(registeredHouse));
     }
 
     @Transactional
-    public List<RegisteredHouse> search(RegisteredHouseCondition condition) {
+    public Page<RegisteredHouse> search(RegisteredHouseCondition condition, Pageable pageable) {
         log.info("condition : {}", condition);
-        List<RegisteredHouse> registeredHousesList =
-                registeredHouseRepository.findBySearchOption(condition);
+        Page<RegisteredHouse> registeredHousesList =
+                registeredHouseRepository.findBySearchOption(condition, pageable);
 
         log.info("registeredHousesList : {}",registeredHousesList);
         return registeredHousesList;

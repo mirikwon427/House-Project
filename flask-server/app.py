@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import joblib
 import pickle
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -11,11 +12,10 @@ def home():
 @app.route('/api/predict', methods = ['GET'])
 def predicted_price():
    data = request.json
-   loaded_model = joblib.load(open('./baseline_model2.pkl', 'rt', encoding='cp949'))
+   new_data = pd.DataFrame(data)
+   loaded_model = joblib.load('./baseline_model2.pkl')
 
-   # future_price = loaded_model.predict(data)
-   test_return = {'test': 'test'}
-   return jsonify(test_return)
+   future_price = loaded_model.predict(new_data)
    return jsonify(future_price)
 
 if __name__ == '__main__':  

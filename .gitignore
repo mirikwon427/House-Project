@@ -4,6 +4,10 @@ server/.gitignor
 server/local.properties
 server/SampleProject.iml
 server/src/main/generated/
+.DS_Store
+server/.DS_Store
+server/src/.DS_Store
+server/src/main/.DS_Store
 .vscode/
 APT/
 ETC/

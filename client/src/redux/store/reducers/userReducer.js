@@ -28,7 +28,7 @@ const userSlice = createSlice({
 
       window.location.href = '/';
       sessionStorage.setItem('token', action.payload.token);
-      sessionStorage.setItem('id', action.payload.user.id)
+      sessionStorage.setItem('id', action.payload.user.id);
 
       state.user = action.payload.user;
       state.token = action.payload.token;
@@ -50,8 +50,8 @@ const userSlice = createSlice({
     signUpSuc(state, action) {
       state.isloading = false;
       sessionStorage.clear();
-      window.location.href = '/login'
-      
+      window.location.href = '/login';
+
       state.errMsg = action.payload.msg;
       state.isErr = true;
     },
@@ -101,7 +101,8 @@ const userSlice = createSlice({
     updateUserSuc(state, action) {
       state.isloading = false;
       state.user = action.payload.user;
-      window.document.href = '/profile';
+
+      window.location.href = '/profile';
     },
     updateUserFail(state, action) {
       state.isloading = false;
@@ -109,25 +110,7 @@ const userSlice = createSlice({
       state.errMsg = action.payload.msg;
       state.isErr = true;
     },
-    
-    //getUser
-    getUserReq(state, action) {
-      state.isloading = true;
-      state.errMsg = '';
-      state.isErr = false;
-    },
-    getUserSuc(state, action) {
-      state.isloading = false;
-      state.user = action.payload.user;
-    },
-    getUserFail(state, action) {
-      state.isloading = false;
-      alert(action.payload.msg);
-      state.errMsg = action.payload.msg;
-      state.isErr = true;
-    },
-    
-  }
+  },
 });
 
 export const userActions = userSlice.actions;

@@ -1,27 +1,18 @@
-import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import CButton from './common/CButton';
-import { useNavigate } from 'react-router-dom';
-import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { userActions } from '../redux/store/reducers/userReducer';
 
 export default function Navigation() {
+  const { token } = useSelector((state) => state.user);
+
   const navigate = useNavigate();
   const OnClickProfile = () => {
-    if (sessionStorage.getItem('id') === null) {
+    if (token === '') {
       navigate('/login');
     } else {
       navigate('/mypage');
     }
   };
-
-  const dispatch = useDispatch();
-  const onClickLogout = useCallback(
-    (e) => {
-      dispatch(userActions.logoutUserReq());
-    },
-    [dispatch],
-  );
 
   return (
     <div className="w-full py-10 flex justify-between items-center">
@@ -30,12 +21,17 @@ export default function Navigation() {
       </div>
 
       <div className="flex gap-12 items-center">
-        <button>집값 예측</button>
+        <button>
+          <Link to="/register/house">매물 등록</Link>
+        </button>
         <button>
           <Link to="/search">통합검색</Link>
         </button>
         <button>트렌드</button>
-        <CButton title="Mypage" onClick={OnClickProfile} />
+        <CButton
+          title={`${token === '' ? 'Sign In' : 'Mypage'}`}
+          onClick={OnClickProfile}
+        />
       </div>
     </div>
   );

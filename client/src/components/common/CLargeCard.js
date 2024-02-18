@@ -5,7 +5,7 @@ export default function CLargeCard({ data }) {
   return (
     <div className="cursor-pointer">
       <img
-        src={data.image}
+        src="https://picsum.photos/id/27/200/300"
         alt="dummy"
         className="w-full h-[540px] bg-[#9C9C9C] rounded-xl"
       />

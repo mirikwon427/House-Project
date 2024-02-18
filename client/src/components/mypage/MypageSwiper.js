@@ -1,9 +1,9 @@
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import { Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 export default function MypageSwiper({ title, data }) {
   const [swiperSetting, setSwiperSetting] = useState(null);
@@ -45,11 +45,14 @@ export default function MypageSwiper({ title, data }) {
               nextEl: navigationNextRef.current,
             }}
           >
-            {data.map((v, idx) => (
-              <SwiperSlide key={v.id} className="group cursor-pointer">
-                <Link to={`/house/${v.id}`}>
+            {data.map((v) => (
+              <SwiperSlide
+                key={v.registeredHouse_id}
+                className="group cursor-pointer"
+              >
+                <Link to={`/house/${v.registeredHouse_id}`}>
                   <img
-                    src={v.image}
+                    src="https://picsum.photos/id/25/200/300"
                     alt="dummy"
                     className="w-[200px] h-[200px] bg-[#9C9C9C] rounded-sm"
                   />

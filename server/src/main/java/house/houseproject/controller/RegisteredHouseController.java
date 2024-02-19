@@ -134,13 +134,20 @@ public class RegisteredHouseController {
 
         // 실제 페이지 번호 계산 (0부터 시작)
         int actualPage = page - 1;
+        Pageable pageable = PageRequest.of(actualPage, pageSize);
 
         RegisteredHouseCondition condition = new RegisteredHouseCondition(sggNm, houseType, objAmount1, supplyArea1, objAmount2, supplyArea2);
         log.info("condition : {}", condition);
+        Page<RegisteredHouse> registeredHousePage;
+        if ((sggNm == null || sggNm.isEmpty()) &&
+                (houseType == null || houseType.isEmpty()) &&
+                (objAmount2 == null || objAmount2 == 0) &&
+                (supplyArea2 == null || supplyArea2 == 0)) {
+            registeredHousePage = registeredHouseService.houseList(pageable);
+        } else {
+            registeredHousePage = registeredHouseService.search(condition, pageable);
+        }
 
-        Pageable pageable = PageRequest.of(actualPage, pageSize);
-
-        Page<RegisteredHouse> registeredHousePage = registeredHouseService.search(condition, pageable);
         log.info("registeredHouseList : {}", registeredHousePage);
 
         log.info("sggNm : {}", sggNm);

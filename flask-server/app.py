@@ -6,9 +6,9 @@ from twilio.rest import Client
 
 
 
-account_sid = "ACa37b34e5946eebc4b77f7733568dec20"
-auth_token = "f76971eb4389dff42d9db42be20e77e4"
-verify_sid = "VA358ac8aae5ed84ffe814aec83f07b2fa"
+account_sid = ""
+auth_token = ""
+verify_sid = ""
 verified_number = "+821040374804"
 
 client = Client(account_sid, auth_token)

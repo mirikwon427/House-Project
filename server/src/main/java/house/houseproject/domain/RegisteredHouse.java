@@ -22,26 +22,24 @@ public class RegisteredHouse {
     @JoinColumn(name = "user_id", nullable = false)
     private HUser user;
 
-    private String acc_year;
-    private String sgg_cd;
-    private String sgg_nm;
-    private String bjdong_cd;
-    private String bjdong_nm;
-    private String land_gbm;
-    private String land_gbn_nm;
-    private String bonbeon;
-    private String bubeon;
-    private String bldg_nm;
-    private String dal_ymd;
-    private int obj_amt;
-    private int bldg_area;
-    private String tot_area;
-    private String h_floor;
-    private String right_gbn;
-    private String cntl_ymd;
-    private String build_year;
-    private String house_type;
-    private String req_gbn;
-    private String rdealer_lawdnm;
+    private String direction;
+    private String entranceStructure;
+    private String numberOfHouseholds;
+    private String address;
+    private String addressRoad;
+    private String managementFee;
+    private String sggNm;
+    private String bjdongNm;
+    private String parkingSpaces;
+    private String description;
+    private String floor;
+    private String totalFloor;
+    private String room;
+    private String bathroom;
+    private int supplyArea;
+    private String netLeasableArea;
+    private String houseType;
+    private int objAmt;
+    private String bldgNm;
 
 }

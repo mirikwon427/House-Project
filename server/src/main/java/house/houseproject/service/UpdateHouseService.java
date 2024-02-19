@@ -41,27 +41,25 @@ public class UpdateHouseService {
 
                     RegisteredHouse registeredHouse = update.get(); //null 인지 확인
 
-                    registeredHouse.setAcc_year(updateHouseDto.getAcc_year());
-                    registeredHouse.setSgg_cd(updateHouseDto.getSgg_cd());
-                    registeredHouse.setSgg_nm(updateHouseDto.getSgg_nm());
-                    registeredHouse.setBjdong_cd(updateHouseDto.getBjdong_cd());
-                    registeredHouse.setBjdong_nm(updateHouseDto.getBjdong_nm());
-                    registeredHouse.setLand_gbm(updateHouseDto.getLand_gbm());
-                    registeredHouse.setLand_gbn_nm(updateHouseDto.getLand_gbn_nm());
-                    registeredHouse.setBonbeon(updateHouseDto.getBonbeon());
-                    registeredHouse.setBubeon(updateHouseDto.getBubeon());
-                    registeredHouse.setBldg_nm(updateHouseDto.getBldg_nm());
-                    registeredHouse.setDal_ymd(updateHouseDto.getDal_ymd());
-                    registeredHouse.setObj_amt(updateHouseDto.getObj_amt());
-                    registeredHouse.setBldg_area(updateHouseDto.getBldg_area());
-                    registeredHouse.setTot_area(updateHouseDto.getTot_area());
-                    registeredHouse.setH_floor(updateHouseDto.getH_floor());
-                    registeredHouse.setRight_gbn(updateHouseDto.getRight_gbn());
-                    registeredHouse.setCntl_ymd(updateHouseDto.getCntl_ymd());
-                    registeredHouse.setBuild_year(updateHouseDto.getBuild_year());
-                    registeredHouse.setHouse_type(updateHouseDto.getHouse_type());
-                    registeredHouse.setReq_gbn(updateHouseDto.getReq_gbn());
-                    registeredHouse.setRdealer_lawdnm(updateHouseDto.getRdealer_lawdnm());
+                    registeredHouse.setDirection(updateHouseDto.getDirection());
+                    registeredHouse.setEntranceStructure(updateHouseDto.getEntranceStructure());
+                    registeredHouse.setNumberOfHouseholds(updateHouseDto.getNumberOfHouseholds());
+                    registeredHouse.setAddress(updateHouseDto.getAddress());
+                    registeredHouse.setAddressRoad(updateHouseDto.getAddressRoad());
+                    registeredHouse.setManagementFee(updateHouseDto.getManagementFee());
+                    registeredHouse.setSggNm(updateHouseDto.getSggNm());
+                    registeredHouse.setBjdongNm(updateHouseDto.getBjdongNm());
+                    registeredHouse.setParkingSpaces(updateHouseDto.getParkingSpaces());
+                    registeredHouse.setDescription(updateHouseDto.getDescription());
+                    registeredHouse.setFloor(updateHouseDto.getFloor());
+                    registeredHouse.setTotalFloor(updateHouseDto.getTotalFloor());
+                    registeredHouse.setRoom(updateHouseDto.getRoom());
+                    registeredHouse.setBathroom(updateHouseDto.getBathroom());
+                    registeredHouse.setSupplyArea(updateHouseDto.getSupplyArea());
+                    registeredHouse.setNetLeasableArea(updateHouseDto.getNetLeasableArea());
+                    registeredHouse.setHouseType(updateHouseDto.getHouseType());
+                    registeredHouse.setObjAmt(updateHouseDto.getObjAmt());
+                    registeredHouse.setBldgNm(updateHouseDto.getBldgNm());
                     // 나머지 필드 설정
 
 

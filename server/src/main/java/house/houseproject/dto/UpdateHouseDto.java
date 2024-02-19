@@ -15,61 +15,42 @@ public class UpdateHouseDto {
 
     private int user_id;
 
-
-    private String acc_year;
-
     @NotNull
-    private String sgg_cd;
-
+    private String direction;
     @NotNull
-    private String sgg_nm;
-
-    private String bjdong_cd;
-
-    private String bjdong_nm;
-
+    private String entranceStructure;
     @NotNull
-    private String land_gbm;
-
+    private String numberOfHouseholds;
     @NotNull
-    private String land_gbn_nm;
-
+    private String address;
     @NotNull
-    private String bonbeon;
-
+    private String addressRoad;
     @NotNull
-    private String bubeon;
-
+    private String managementFee;
     @NotNull
-    private String bldg_nm;
-
+    private String sggNm;
     @NotNull
-    private String dal_ymd;
-
+    private String bjdongNm;
     @NotNull
-    private int obj_amt;
-
+    private String parkingSpaces;
     @NotNull
-    private int bldg_area;
-
+    private String description;
     @NotNull
-    private String tot_area;
-
+    private String floor;
     @NotNull
-    private String h_floor;
-
-    private String right_gbn;
-
-    private String cntl_ymd;
-
+    private String totalFloor;
     @NotNull
-    private String build_year;
-
+    private String room;
     @NotNull
-    private String house_type;
-
+    private String bathroom;
     @NotNull
-    private String req_gbn;
-
-    private String rdealer_lawdnm;
+    private int supplyArea;
+    @NotNull
+    private String netLeasableArea;
+    @NotNull
+    private String houseType;
+    @NotNull
+    private int objAmt;
+    @NotNull
+    private String bldgNm;
 }

@@ -1,6 +1,6 @@
 package house.houseproject.controller;
 
-import ch.qos.logback.core.model.Model;
+
 import house.houseproject.Repository.HUserRepository;
 import house.houseproject.Repository.LikedRepository;
 import house.houseproject.Repository.RegisteredHouseRepository;
@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -47,25 +48,20 @@ public class RecommendController {
 
     @GetMapping("/recommend/{id}")
     public ResponseEntity<?> RecommendHouse(@PathVariable int id, @AuthenticationPrincipal UserDetails userDetails,
-                                            @RequestParam(defaultValue = "0") int page,
-                                            @RequestParam(defaultValue = "5") int size, Model model) {
+                                            @RequestParam(defaultValue = "1") int page,
+                                            @RequestParam(defaultValue = "6") int size, ModelMap model) {
 
         if (userDetails == null) {
             log.error("userDetails == null");
             return new ResponseEntity<>(Map.of("success", false, "message", "로그인 하세요."), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        recommend:
-
-        //  [1]. LIkedHouse 한 것들 중에서 가장 많은 지역구에 대해 조회?????? (
-        // 1. 회원 찜한 메물 조회
-        // 2. 매물 조회한
-
-        //2. LikedHouse가없으면  이면 자기 주소를 참조해서 해당 위치에 대한 매물만 조회 (해결)
 
 
         try {
-            PageRequest pageRequest = PageRequest.of(page, size);
+            page -= 1;
+
+            PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "registeredHouseId"));
             HUser user = userRepository.findById(id)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not found user id : " + id));
 
@@ -85,7 +81,7 @@ public class RecommendController {
                     registeredHouseList.add(registeredHouseDto);
                 }
             } else {
-                PageRequest pageRequest1 = PageRequest.of(page, size);
+                PageRequest pageRequest1 = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "registeredHouseId"));
                 // 주소에 해당되는 등록된 매물 가져오기
                 Page<RegisteredHouse> recommendHouses = recommendService.findUserAddress(userDto.getAddress(),pageRequest1);
 
@@ -96,6 +92,8 @@ public class RecommendController {
                     registeredHouseList.add(registeredHouseDto);
                 }
             }
+
+            model.addAttribute("recommendHouse", registeredHouseList);
 
             Message message = new Message();
             message.setSuccess(StatusEnum.TRUE);

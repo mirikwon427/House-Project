@@ -9,7 +9,9 @@ import house.houseproject.dto.RegisteredHouseDto;
 import house.houseproject.exception.DuplicateMemberException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,4 +75,13 @@ public class RegisteredHouseService {
         return registeredHousesList;
     }
 
+    @Transactional
+    public Page<RegisteredHouse> houseList(Pageable pageable) {
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("registeredHouseId").descending());
+        Page<RegisteredHouse> registeredHousesList =
+                registeredHouseRepository.findAll(sortedPageable);
+
+        log.info("registeredHousesList : {}",registeredHousesList);
+        return registeredHousesList;
+    }
 }

@@ -12,15 +12,15 @@ public class RegisteredHouseCondition {
     List<String> houseType;
     Integer objAmt1;
     Integer objAmt2;
-    Integer supplyArea1;
-    Integer supplyArea2;
+    double netLeasableArea1;
+    double netLeasableArea2;
 
-    public RegisteredHouseCondition(List<String> ssgNm, List<String> houseType, Integer objAmt1, Integer supplyArea1, Integer objAmt2, Integer supplyArea2) {
+    public RegisteredHouseCondition(List<String> ssgNm, List<String> houseType, Integer objAmt1, double netLeasableArea1, Integer objAmt2, double netLeasableArea2) {
         this.ssgNm = ssgNm;
         this.houseType = houseType;
         this.objAmt1 = objAmt1;
         this.objAmt2 = objAmt2;
-        this.supplyArea1 = supplyArea1;
-        this.supplyArea2 = supplyArea2;
+        this.netLeasableArea1 = netLeasableArea1;
+        this.netLeasableArea2 = netLeasableArea2;
     }
 }

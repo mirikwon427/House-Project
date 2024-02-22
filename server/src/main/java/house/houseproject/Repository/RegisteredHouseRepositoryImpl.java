@@ -30,8 +30,8 @@ public class RegisteredHouseRepositoryImpl implements RegisteredHouseCustom{
     @Override
     public Page<RegisteredHouse> findBySearchOption(RegisteredHouseCondition condition, Pageable pageable) {
         log.info("condition.getSsgNm() : {}", condition.getSsgNm());
-        log.info("condition.getSupplyArea1() : {}", condition.getSupplyArea1());
-        log.info("condition.getSupplyArea2() : {}", condition.getSupplyArea2());
+        log.info("condition.getNetLeasableArea1() : {}", condition.getNetLeasableArea1());
+        log.info("condition.getNetLeasableArea2() : {}", condition.getNetLeasableArea2());
         log.info("condition.getHouseType() : {}", condition.getHouseType());
         log.info("condition.getObjAmt1() : {}", condition.getObjAmt1());
         log.info("condition.getObjAmt2() : {}", condition.getObjAmt2());
@@ -44,14 +44,14 @@ public class RegisteredHouseRepositoryImpl implements RegisteredHouseCustom{
                         ssgNmContains(condition.getSsgNm()),
                         houseTypeContains(condition.getHouseType()),
                         objAmtInRange(condition.getObjAmt1(), condition.getObjAmt2()),
-                        supplyAreaInRange(condition.getSupplyArea1(), condition.getSupplyArea2())
+                        netLeasableAreaInRange(condition.getNetLeasableArea1(), condition.getNetLeasableArea2())
                 )
                 .orderBy(
                         registeredHouse.registeredHouseId.desc(),
                         registeredHouse.sggNm.asc(),
                         registeredHouse.houseType.asc(),
                         registeredHouse.objAmt.asc(),
-                        registeredHouse.supplyArea.asc()
+                        registeredHouse.netLeasableArea.asc()
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -95,9 +95,9 @@ public class RegisteredHouseRepositoryImpl implements RegisteredHouseCustom{
         }
     }
 
-    private BooleanExpression supplyAreaInRange(Integer supplyArea1, Integer supplyArea2) {
-        if (supplyArea1 != null && supplyArea2 != null && supplyArea1 <= supplyArea2 && supplyArea1 >= 0) {
-            return registeredHouse.supplyArea.between(3.31 * supplyArea1, 3.31 * supplyArea2);
+    private BooleanExpression netLeasableAreaInRange(double netLeasableArea1, double netLeasableArea2) {
+        if (netLeasableArea1 <= netLeasableArea2 && netLeasableArea1 >= 0) {
+            return registeredHouse.netLeasableArea.between(3.31 * netLeasableArea1, 3.31 * netLeasableArea2);
         } else {
             return null;
         }

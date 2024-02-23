@@ -33,7 +33,6 @@ public class RegisteredHouseController {
     private final UserService userService;
     private final RegisteredHouseRepository registeredHouseRepository;
     private final LikedRepository likedRepository;
-
     @PostMapping("/house")
     public ResponseEntity<?> registeredHouse(
             @Valid @RequestBody RegisteredHouseDto registeredHouseDto,
@@ -125,8 +124,8 @@ public class RegisteredHouseController {
             @RequestParam(value="type",required = false) List<String> houseType,
             @RequestParam(value="price1",required=false,defaultValue="0") Integer objAmount1,
             @RequestParam(value="price2",required=false) Integer objAmount2,
-            @RequestParam(value="size1",required=false,defaultValue="0") Integer supplyArea1,
-            @RequestParam(value="size2",required=false) Integer supplyArea2,
+            @RequestParam(value="size1",required=false,defaultValue="0") double netLeasableArea1,
+            @RequestParam(value="size2",required=false, defaultValue="0") double netLeasableArea2,
             @RequestParam(value="page", required = false, defaultValue = "1") int page, // 요청된 페이지 번호
             ModelMap model) {
 
@@ -136,13 +135,13 @@ public class RegisteredHouseController {
         int actualPage = page - 1;
         Pageable pageable = PageRequest.of(actualPage, pageSize);
 
-        RegisteredHouseCondition condition = new RegisteredHouseCondition(sggNm, houseType, objAmount1, supplyArea1, objAmount2, supplyArea2);
+        RegisteredHouseCondition condition = new RegisteredHouseCondition(sggNm, houseType, objAmount1, netLeasableArea1, objAmount2, netLeasableArea2);
         log.info("condition : {}", condition);
         Page<RegisteredHouse> registeredHousePage;
         if ((sggNm == null || sggNm.isEmpty()) &&
                 (houseType == null || houseType.isEmpty()) &&
                 (objAmount2 == null || objAmount2 == 0) &&
-                (supplyArea2 == null || supplyArea2 == 0)) {
+                netLeasableArea2 == 0) {
             registeredHousePage = registeredHouseService.houseList(pageable);
         } else {
             registeredHousePage = registeredHouseService.search(condition, pageable);
@@ -153,9 +152,9 @@ public class RegisteredHouseController {
         log.info("sggNm : {}", sggNm);
         log.info("houseType : {}", houseType);
         log.info("objAmount1 : {}", objAmount1);
-        log.info("supplyArea1 : {}", supplyArea1);
+        log.info("netLeasableArea1 : {}", netLeasableArea1);
         log.info("objAmount2 : {}", objAmount2);
-        log.info("supplyArea2 : {}", supplyArea2);
+        log.info("netLeasableArea2 : {}", netLeasableArea2);
 
         ArrayList<RegisteredHouseDto> registeredHouseDtoList = new ArrayList<>();
         for (RegisteredHouse registeredHouse : registeredHousePage) {

@@ -44,9 +44,9 @@ public class UpdateHouseDto {
     @NotNull
     private String bathroom;
     @NotNull
-    private int supplyArea;
+    private double supplyArea;
     @NotNull
-    private String netLeasableArea;
+    private double netLeasableArea;
     @NotNull
     private String houseType;
     @NotNull

@@ -36,8 +36,8 @@ public class RegisteredHouse {
     private String totalFloor;
     private String room;
     private String bathroom;
-    private int supplyArea;
-    private String netLeasableArea;
+    private double supplyArea;
+    private double netLeasableArea;
     private String houseType;
     private int objAmt;
     private String bldgNm;

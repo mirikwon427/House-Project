@@ -44,9 +44,9 @@ public class RegisteredHouseDto {
     @NotNull
     private String bathroom;
     @NotNull
-    private int supplyArea;
+    private double supplyArea;
     @NotNull
-    private String netLeasableArea;
+    private double netLeasableArea;
     @NotNull
     private String houseType;
     @NotNull
@@ -82,7 +82,7 @@ public class RegisteredHouseDto {
                 .build();
     }
     @QueryProjection
-    public RegisteredHouseDto(int registeredHouse_id, int user_id, String direction, String entranceStructure, String numberOfHouseholds, String address, String addressRoad, String managementFee, String sggNm, String bjdongNm, String parkingSpaces, String description, String floor, String totalFloor, String room, String bathroom, int supplyArea, String netLeasableArea, String houseType, int objAmt, String bldgNm) {
+    public RegisteredHouseDto(int registeredHouse_id, int user_id, String direction, String entranceStructure, String numberOfHouseholds, String address, String addressRoad, String managementFee, String sggNm, String bjdongNm, String parkingSpaces, String description, String floor, String totalFloor, String room, String bathroom, double supplyArea, double netLeasableArea, String houseType, int objAmt, String bldgNm) {
         this.registeredHouse_id = registeredHouse_id;
         this.user_id = user_id;
         this.direction = direction;

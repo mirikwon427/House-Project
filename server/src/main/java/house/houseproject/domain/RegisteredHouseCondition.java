@@ -8,15 +8,15 @@ import java.util.List;
 
 @Data
 public class RegisteredHouseCondition {
-    List<String> ssgNm;
+    List<String> sggNm;
     List<String> houseType;
     Integer objAmt1;
     Integer objAmt2;
     double netLeasableArea1;
     double netLeasableArea2;
 
-    public RegisteredHouseCondition(List<String> ssgNm, List<String> houseType, Integer objAmt1, double netLeasableArea1, Integer objAmt2, double netLeasableArea2) {
-        this.ssgNm = ssgNm;
+    public RegisteredHouseCondition(List<String> sggNm, List<String> houseType, Integer objAmt1, double netLeasableArea1, Integer objAmt2, double netLeasableArea2) {
+        this.sggNm = sggNm;
         this.houseType = houseType;
         this.objAmt1 = objAmt1;
         this.objAmt2 = objAmt2;

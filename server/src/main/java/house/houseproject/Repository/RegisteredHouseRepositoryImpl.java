@@ -29,7 +29,7 @@ public class RegisteredHouseRepositoryImpl implements RegisteredHouseCustom{
 
     @Override
     public Page<RegisteredHouse> findBySearchOption(RegisteredHouseCondition condition, Pageable pageable) {
-        log.info("condition.getSsgNm() : {}", condition.getSsgNm());
+        log.info("condition.getSsgNm() : {}", condition.getSggNm());
         log.info("condition.getNetLeasableArea1() : {}", condition.getNetLeasableArea1());
         log.info("condition.getNetLeasableArea2() : {}", condition.getNetLeasableArea2());
         log.info("condition.getHouseType() : {}", condition.getHouseType());
@@ -41,7 +41,7 @@ public class RegisteredHouseRepositoryImpl implements RegisteredHouseCustom{
                 .select(registeredHouse)
                 .from(registeredHouse)
                 .where(
-                        ssgNmContains(condition.getSsgNm()),
+                        sggNmContains(condition.getSggNm()),
                         houseTypeContains(condition.getHouseType()),
                         objAmtInRange(condition.getObjAmt1(), condition.getObjAmt2()),
                         netLeasableAreaInRange(condition.getNetLeasableArea1(), condition.getNetLeasableArea2())
@@ -61,15 +61,17 @@ public class RegisteredHouseRepositoryImpl implements RegisteredHouseCustom{
     }
 
 
-    private BooleanExpression ssgNmContains(List<String> ssgNm) {
-        if (ssgNm != null && !ssgNm.isEmpty()) {
-            BooleanExpression[] expressions = ssgNm.stream()
+    private BooleanExpression sggNmContains(List<String> sggNm) {
+        if (sggNm != null && !sggNm.isEmpty()) {
+            System.out.println("111111111111"+sggNm);
+            BooleanExpression[] expressions = sggNm.stream()
                     .filter(s -> s != null && !s.isEmpty())
-                    .map(s -> registeredHouse.sggNm.like("%" + s + "%")) // 각 문자열에 대해 like 연산 적용
+                    .map(s -> registeredHouse.sggNm.like("%" + s + "%"))
                     .toArray(BooleanExpression[]::new);
-            return Expressions.anyOf(expressions); //
+            return Expressions.anyOf(expressions);
         } else {
             // 빈 리스트를 전달하여 항상 true를 반환하도록 설정
+            System.out.println("222222222222"+sggNm);
             return null;
         }
     }
@@ -96,7 +98,7 @@ public class RegisteredHouseRepositoryImpl implements RegisteredHouseCustom{
     }
 
     private BooleanExpression netLeasableAreaInRange(double netLeasableArea1, double netLeasableArea2) {
-        if (netLeasableArea1 <= netLeasableArea2 && netLeasableArea1 >= 0) {
+        if (netLeasableArea1 <= netLeasableArea2 && netLeasableArea1 >= 0 && netLeasableArea2 != 0.0) {
             return registeredHouse.netLeasableArea.between(3.31 * netLeasableArea1, 3.31 * netLeasableArea2);
         } else {
             return null;

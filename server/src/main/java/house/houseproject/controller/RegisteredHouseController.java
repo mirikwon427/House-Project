@@ -155,7 +155,8 @@ public class RegisteredHouseController {
         log.info("netLeasableArea1 : {}", netLeasableArea1);
         log.info("objAmount2 : {}", objAmount2);
         log.info("netLeasableArea2 : {}", netLeasableArea2);
-
+        long totalCount = registeredHousePage.getTotalElements();
+        System.out.println(totalCount);
         ArrayList<RegisteredHouseDto> registeredHouseDtoList = new ArrayList<>();
         for (RegisteredHouse registeredHouse : registeredHousePage) {
             RegisteredHouseDto registeredHouseDto = RegisteredHouseDto.from(registeredHouse);
@@ -174,6 +175,7 @@ public class RegisteredHouseController {
             Message message = new Message();
             message.setSuccess(StatusEnum.TRUE);
             message.setRegisteredHouse(registeredHouseDtoList);
+            message.setTotalCount(totalCount);
             return new ResponseEntity<>(message, HttpStatus.OK);
         }
     }

@@ -24,7 +24,7 @@ public class Message {
     private Object user;
     private UserUpdateDto updateUser;
 
-
+    private Long totalCount;
     private Integer registeredHouseId;
 
     private ArrayList<RegisteredHouseDto> registeredHouse;

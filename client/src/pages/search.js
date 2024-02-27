@@ -108,19 +108,137 @@ export default function Search() {
     setPrice('');
     setStartPrice(0);
     setEndPrice(0);
+    let locPayload = [];
+    let typePayload = [];
+
+    if (locationVal.length > 0) {
+      locationVal.map((v) => {
+        locPayload.push(v.id);
+        return v;
+      });
+    }
+
+    if (typeVal.length > 0) {
+      typeVal.map((v) => {
+        typePayload.push(v.id);
+        return v;
+      });
+    }
+
+    let payload = {
+      price1: 0,
+      price2: 0,
+      location: locPayload,
+      type: typePayload,
+      size1: startSquare,
+      size2: endSquare,
+      page: 1,
+    };
+
+    const data = {
+      data: payload,
+      token: token,
+    };
+
+    dispatch(houseActions.searchHousesReq(data));
   };
   const deleteSquare = () => {
     setSquare('');
     setStartSquare(0);
     setEndSquare(0);
+    let locPayload = [];
+    let typePayload = [];
+
+    if (locationVal.length > 0) {
+      locationVal.map((v) => {
+        locPayload.push(v.id);
+        return v;
+      });
+    }
+
+    if (typeVal.length > 0) {
+      typeVal.map((v) => {
+        typePayload.push(v.id);
+        return v;
+      });
+    }
+
+    let payload = {
+      price1: startPrice,
+      price2: endPrice,
+      location: locPayload,
+      type: typePayload,
+      size1: 0,
+      size2: 0,
+      page: 1,
+    };
+
+    const data = {
+      data: payload,
+      token: token,
+    };
+
+    dispatch(houseActions.searchHousesReq(data));
   };
   const deleteLocation = () => {
     setLocation('');
     setLocationVal([]);
+
+    let typePayload = [];
+
+    if (typeVal.length > 0) {
+      typeVal.map((v) => {
+        typePayload.push(v.id);
+        return v;
+      });
+    }
+
+    let payload = {
+      price1: startPrice,
+      price2: endPrice,
+      location: [],
+      type: typePayload,
+      size1: startSquare,
+      size2: endSquare,
+      page: 1,
+    };
+
+    const data = {
+      data: payload,
+      token: token,
+    };
+
+    dispatch(houseActions.searchHousesReq(data));
   };
   const deleteType = () => {
     setType('');
     setTypeVal([]);
+
+    let locPayload = [];
+
+    if (locationVal.length > 0) {
+      locationVal.map((v) => {
+        locPayload.push(v.id);
+        return v;
+      });
+    }
+
+    let payload = {
+      price1: startPrice,
+      price2: endPrice,
+      location: locPayload,
+      type: [],
+      size1: startSquare,
+      size2: endSquare,
+      page: 1,
+    };
+
+    const data = {
+      data: payload,
+      token: token,
+    };
+
+    dispatch(houseActions.searchHousesReq(data));
   };
 
   // 다른 페이지에서 조건 걸고 들어올때 조건 같이 걸어줘야됨

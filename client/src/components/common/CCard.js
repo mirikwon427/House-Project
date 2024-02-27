@@ -4,18 +4,18 @@
 import { Link } from 'react-router-dom';
 
 // image: 이미지, bldg_nm: 건물명, sgg_nm: 주소
-export default function Card({ data }) {
+export default function CCard({ data }) {
   return (
-    <Link to={`/house/${data.id}`} className="cursor-pointer">
+    <Link to={`/house/${data.registeredHouse_id}`} className="cursor-pointer">
       <img
-        src={data.image}
+        src="https://picsum.photos/id/27/200/300"
         alt="dummy"
         className="w-full h-[320px] bg-[#9C9C9C] rounded-xl"
       />
       <div className="w-full flex justify-between mt-4">
         <div>
-          <div className="text-lg font-bold">{data.bldg_nm}</div>
-          <div className="text-[#7F7F7F] text-sm">{data.sgg_nm}</div>
+          <div className="text-lg font-bold">{data.bldgNm}</div>
+          <div className="text-[#7F7F7F] text-sm">{data.sggNm}</div>
         </div>
         <div className="flex flex-col justify-center">
           <svg

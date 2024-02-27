@@ -1,17 +1,26 @@
-import { useState } from 'react';
-import CFilterBtn from '../components/common/CFilterBtn';
-import SearchList from '../components/search/SearchList';
-import FilterModal from '../components/search/FilterModal';
-import { bgFixed } from '../utils/utils';
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import CButton from '../components/common/CButton';
+import CFilterBtn from '../components/common/CFilterBtn';
+import FilterModal from '../components/search/FilterModal';
+import SearchList from '../components/search/SearchList';
+import { houseActions } from '../redux/store/reducers/houseReducer';
+import { bgFixed } from '../utils/utils';
 
 export default function Search() {
+  const { token } = useSelector((state) => state.user);
+
+  const params = useParams();
+
+  const dispatch = useDispatch();
+
   const [modalOpen, setModalOpen] = useState(false);
 
   const [startPrice, setStartPrice] = useState(0);
-  const [endPrice, setEndPrice] = useState(1);
+  const [endPrice, setEndPrice] = useState(0);
   const [startSquare, setStartSquare] = useState(0);
-  const [endSquare, setEndSquare] = useState(10);
+  const [endSquare, setEndSquare] = useState(0);
   const [typeVal, setTypeVal] = useState([]);
   const [locationVal, setLocationVal] = useState([]);
 
@@ -20,9 +29,11 @@ export default function Search() {
   const [type, setType] = useState('');
   const [location, setLocation] = useState('');
 
+  const [page, setPage] = useState(1);
+
   const handleFilter = (e) => {
     let { startPrice, endPrice, startSquare, endSquare, location, type } = e;
-
+    setPage(1);
     setStartPrice(startPrice);
     setEndPrice(endPrice);
     setStartSquare(startSquare);
@@ -54,6 +65,40 @@ export default function Search() {
       });
       setType(val);
     }
+
+    let locPayload = [];
+    let typePayload = [];
+
+    if (location.length > 0) {
+      location.map((v) => {
+        locPayload.push(v.id);
+        return v;
+      });
+    }
+
+    if (type.length > 0) {
+      type.map((v) => {
+        typePayload.push(v.id);
+        return v;
+      });
+    }
+
+    let payload = {
+      price1: startPrice,
+      price2: endPrice,
+      location: locPayload,
+      type: typePayload,
+      size1: startSquare,
+      size2: endSquare,
+      page: 1,
+    };
+
+    const data = {
+      data: payload,
+      token: token,
+    };
+
+    dispatch(houseActions.searchHousesReq(data));
   };
 
   const deletePrice = () => {
@@ -74,6 +119,76 @@ export default function Search() {
     setType('');
     setTypeVal([]);
   };
+
+  // 다른 페이지에서 조건 걸고 들어올때 조건 같이 걸어줘야됨
+  useEffect(() => {
+    let payload = {
+      price1: 0,
+      price2: 0,
+      location: [],
+      type: [],
+      size1: 0,
+      size2: 0,
+      page: 1,
+    };
+
+    const data = {
+      data: payload,
+      token: token,
+    };
+
+    dispatch(houseActions.searchHousesReq(data));
+  }, [dispatch, token]);
+
+  const handleSearch = useCallback(
+    (e) => {
+      setPage(e);
+
+      let locPayload = [];
+      let typePayload = [];
+
+      if (locationVal.length > 0) {
+        locationVal.map((v) => {
+          locPayload.push(v.id);
+          return v;
+        });
+      }
+
+      if (typeVal.length > 0) {
+        typeVal.map((v) => {
+          typePayload.push(v.id);
+          return v;
+        });
+      }
+
+      let payload = {
+        price1: startPrice,
+        price2: endPrice,
+        location: locPayload,
+        type: typePayload,
+        size1: startSquare,
+        size2: endSquare,
+        page: e,
+      };
+
+      const data = {
+        data: payload,
+        token: token,
+      };
+
+      dispatch(houseActions.searchHousesReq(data));
+    },
+    [
+      dispatch,
+      token,
+      startPrice,
+      endPrice,
+      startSquare,
+      endSquare,
+      locationVal,
+      typeVal,
+    ],
+  );
 
   return (
     <div className="mt-4">
@@ -112,7 +227,11 @@ export default function Search() {
       </div>
 
       {/* 리스트 */}
-      <SearchList handleFilter={setModalOpen} />
+      <SearchList
+        handleFilter={setModalOpen}
+        handleSearch={handleSearch}
+        page={page}
+      />
 
       {modalOpen ? (
         <FilterModal

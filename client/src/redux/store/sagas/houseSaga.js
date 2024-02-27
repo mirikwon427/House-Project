@@ -6,6 +6,7 @@ import {
   getRegisteredHouse,
   likedHouse,
   registerHouse,
+  searchHouses,
   unlikedHouse,
 } from '../api/houseApi';
 import { houseActions } from '../reducers/houseReducer';
@@ -126,6 +127,25 @@ function* watchGetRecommendedHouse() {
   yield takeLatest(houseActions.getRecommendedHouseReq, getRecommendedHouseApi);
 }
 
+// Search House
+function* searchedHousesApi(action) {
+  try {
+    const { data } = yield call(searchHouses, action.payload);
+
+    console.log('response:::', data);
+
+    yield put(houseActions.searchHousesSuc(data));
+  } catch (e) {
+    yield put(
+      houseActions.searchHousesFail({ success: false, msg: e.message }),
+    );
+  }
+}
+
+function* watchSearchedHouses() {
+  yield takeLatest(houseActions.searchHousesReq, searchedHousesApi);
+}
+
 export default function* houseSaga() {
   yield all([
     fork(watchRegisterHouse),
@@ -135,5 +155,6 @@ export default function* houseSaga() {
     fork(watchGetRegisteredHouse),
     fork(watchGetLikedHouse),
     fork(watchGetRecommendedHouse),
+    fork(watchSearchedHouses),
   ]);
 }

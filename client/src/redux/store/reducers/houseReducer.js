@@ -30,8 +30,10 @@ const initialState = {
   likedHouses: [],
   registeredHouses: [],
   recommendedHouses: [],
+  searchedHouses: [],
   isErr: false,
   isLiked: false,
+  totalCnt: 0,
 };
 
 const houseSlice = createSlice({
@@ -170,6 +172,27 @@ const houseSlice = createSlice({
       state.isLoading = false;
       state.isErr = true;
       state.recommendedHouses = [];
+    },
+
+    searchHousesReq(state, action) {
+      state.isLoading = true;
+      state.errMsg = '';
+      state.isErr = false;
+      state.searchedHouses = [];
+      state.totalCnt = 0;
+    },
+    searchHousesSuc(state, action) {
+      state.isLoading = false;
+      state.isErr = false;
+      state.errMsg = '';
+      state.searchedHouses = action.payload.registeredHouse;
+      state.totalCnt = action.payload.totalCount;
+    },
+    searchHousesFail(state, action) {
+      state.isLoading = false;
+      state.isErr = true;
+      state.searchedHouses = [];
+      state.totalCnt = 0;
     },
   },
 });

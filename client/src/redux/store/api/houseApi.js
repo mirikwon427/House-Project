@@ -70,3 +70,34 @@ export const getRecommendedHouse = async (data) => {
 
   return await axios(requestData);
 };
+
+export const searchHouses = async (data) => {
+  console.log('request:::', data);
+  let queryStr = '';
+
+  if (data.data.price1 !== 0) queryStr += `&price1=${data.data.price1}`;
+  if (data.data.price2 !== 0) queryStr += `&price2=${data.data.price2}`;
+  if (data.data.size1 !== 0) queryStr += `&size1=${data.data.size1}`;
+  if (data.data.size2 !== 0) queryStr += `&size2=${data.data.size2}`;
+  if (data.data.location.length > 0) {
+    data.data.location.map((v) => {
+      queryStr += `&location=${v}`;
+      return v;
+    });
+  }
+  if (data.data.type.length > 0) {
+    data.data.type.map((v) => {
+      queryStr += `&type=${v}`;
+      return v;
+    });
+  }
+
+  console.log('url:::', `/api/search?page=${data.data.page}${queryStr}`);
+  const requestData = {
+    method: 'get',
+    url: `/api/search?page=${data.data.page}${queryStr}`,
+    headers: { Authorization: `Bearer ${data.token}` },
+  };
+
+  return await axios(requestData);
+};

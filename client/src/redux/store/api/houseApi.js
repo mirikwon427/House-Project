@@ -72,9 +72,9 @@ export const getRecommendedHouse = async (data) => {
 };
 
 export const searchHouses = async (data) => {
-  console.log('request:::', data);
   let queryStr = '';
 
+  console.log('data:::', data);
   if (data.data.price1 !== 0) queryStr += `&price1=${data.data.price1}`;
   if (data.data.price2 !== 0) queryStr += `&price2=${data.data.price2}`;
   if (data.data.size1 !== 0) queryStr += `&size1=${data.data.size1}`;
@@ -92,7 +92,6 @@ export const searchHouses = async (data) => {
     });
   }
 
-  console.log('url:::', `/api/search?page=${data.data.page}${queryStr}`);
   const requestData = {
     method: 'get',
     url: `/api/search?page=${data.data.page}${queryStr}`,

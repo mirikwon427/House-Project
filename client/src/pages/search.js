@@ -1,17 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import CButton from '../components/common/CButton';
 import CFilterBtn from '../components/common/CFilterBtn';
 import FilterModal from '../components/search/FilterModal';
 import SearchList from '../components/search/SearchList';
+import geojson from '../datas/geo.json';
 import { houseActions } from '../redux/store/reducers/houseReducer';
 import { bgFixed } from '../utils/utils';
 
 export default function Search() {
   const { token } = useSelector((state) => state.user);
 
-  const params = useParams();
+  const params = useLocation();
+
+  console.log('params:::', params);
 
   const dispatch = useDispatch();
 
@@ -122,10 +125,23 @@ export default function Search() {
 
   // 다른 페이지에서 조건 걸고 들어올때 조건 같이 걸어줘야됨
   useEffect(() => {
+    let loc = [];
+
+    if (params.search !== '') {
+      loc.push(
+        geojson.features.filter(
+          (v) => v.properties.SIG_ENG_NM === params.search.split('loc=')[1],
+        )[0].properties.SIG_KOR_NM,
+      );
+
+      let settingVal = [{ id: loc }];
+      setLocationVal(settingVal);
+    }
+
     let payload = {
       price1: 0,
       price2: 0,
-      location: [],
+      location: loc,
       type: [],
       size1: 0,
       size2: 0,
@@ -138,7 +154,7 @@ export default function Search() {
     };
 
     dispatch(houseActions.searchHousesReq(data));
-  }, [dispatch, token]);
+  }, [dispatch, token, params]);
 
   const handleSearch = useCallback(
     (e) => {

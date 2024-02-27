@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import CLargeCard from '../common/CLargeCard';
 
 export default function MainSwiper({ data }) {
-  const { title, items, errMsg, errBtn } = data;
+  const { title, items, errMsg, errBtn, errFunc } = data;
 
   return (
     <div>
@@ -26,7 +26,10 @@ export default function MainSwiper({ data }) {
             <div className="h-fit w-full flex flex-col gap-4">
               <div className="text-[#9b9b9b] text-lg text-center">{errMsg}</div>
               <div className="w-full h-fit flex justify-center">
-                <button className="w-[132px] h-12 px-4 py-2 border-[#d3d3d3] border rounded-full bg-white text-base mx-auto">
+                <button
+                  className="w-[132px] h-12 px-4 py-2 border-[#d3d3d3] border rounded-full bg-white text-base mx-auto"
+                  onClick={errFunc}
+                >
                   {errBtn}
                 </button>
               </div>

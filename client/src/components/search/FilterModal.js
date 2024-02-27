@@ -1,8 +1,8 @@
 import { Slider } from 'antd';
+import { useState } from 'react';
 import { cancelBgFixed } from '../../utils/utils';
 import CButton from '../common/CButton';
 import CCheckBtn from '../common/CCheckBtn';
-import { useState } from 'react';
 
 const locVal = [
   { id: '도봉구', title: '도봉구', checked: false },

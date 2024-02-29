@@ -1,17 +1,16 @@
 from flask import Flask, request, jsonify
-import joblib
-import pandas as pd
 import os
-# from twilio.rest import Client
-#
-#
-#
-# account_sid = ""
-# auth_token = ""
-# verify_sid = ""
-# verified_number = "+821040374804"
-#
-# client = Client(account_sid, auth_token)
+from twilio.rest import Client
+from past_house_price import past_price
+from predict_house_price import predict_price
+from best_SGG import best_SGG
+
+
+account_sid = ""
+auth_token = ""
+verify_sid = ""
+
+client = Client(account_sid, auth_token)
 
 app = Flask(__name__)
 

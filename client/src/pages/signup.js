@@ -4,23 +4,11 @@ import { useInput } from '../hooks/useInput';
 import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { userActions } from '../redux/store/reducers/userReducer';
+import { phoneAuth } from '../redux/store/api/userApi'
 
 
 
 
-const accountSid = "ACa37b34e5946eebc4b77f7733568dec20";
-const authToken = "a9acaafc3b910be8522880821f121e29";
-const subaccountSid = "VA358ac8aae5ed84ffe814aec83f07b2fa";
-// const twilio = require("twilio");
-// const bodyParser = require("body-parser");
-// const MessagingResponse = require("twilio").twiml.MessagingResponse;
-
-
-function send_message (phone) {
-  // const prequal = twilio.webhook(authToken)
-  // console.log(prequal)
-  // return  prequal
-}
 
 
 export default function SignUp() {
@@ -41,6 +29,7 @@ export default function SignUp() {
   const [isAdress, setIsAdress] = useState(false);
   const [isName, setIsName] = useState(false);
   const [isPhone, setIsPhone] = useState(false);
+  const [isPhoneAuth , setIsPhoneAuth] = useState(false);
   const [isAge, setIsAge] = useState(false);
 
   const [nameMessage, setNameMessage] = useState('');
@@ -53,8 +42,12 @@ export default function SignUp() {
 
   const handlePhoneAuthentication = async(e) => {
     e.preventDefault();
-    // 휴대폰 인증 해주세염
-    // 저는 예전에 Naver Sens Service 썼습니당
+    const result = phoneAuth({"phone" : phoneNumber.value})
+    if (result.success === true) {
+      alert("인증번호를 발송했습니다.")
+    } else {
+      alert("에러가 발생했습니다.")
+    }
     console.log('인증 클릭');
     
   };
@@ -63,7 +56,7 @@ export default function SignUp() {
     (e) => {
       e.preventDefault();
 
-      const phoneRule = /\d{3}-\d{3,4}-\d{4}/;
+      const phoneRule = /\d{3}\d{3,4}\d{4}/;
       const emailRule = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
       const pwRule =
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!%*#?&])[A-Za-z\d@!%*#?&]{8,}$/;
@@ -97,7 +90,7 @@ export default function SignUp() {
       }
 
       if (!phoneRule.test(phoneNumber.value)) {
-        setPhoneMessage('010-1234-5678 형식으로 입력해주세요.');
+        setPhoneMessage('-없이 숫자만 입력해주세요.');
         setIsPhone(false);
       } else {
         setPhoneMessage('');

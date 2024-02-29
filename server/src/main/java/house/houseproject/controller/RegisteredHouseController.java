@@ -6,6 +6,7 @@ import house.houseproject.domain.*;
 import house.houseproject.dto.RegisteredHouseDto;
 import house.houseproject.exception.DuplicateMemberException;
 import house.houseproject.exception.NotFoundMemberException;
+import house.houseproject.service.FlaskService;
 import house.houseproject.service.RegisteredHouseService;
 import house.houseproject.service.UserService;
 import jakarta.validation.Valid;
@@ -33,6 +34,7 @@ public class RegisteredHouseController {
     private final UserService userService;
     private final RegisteredHouseRepository registeredHouseRepository;
     private final LikedRepository likedRepository;
+    private final FlaskService flaskService;
     @PostMapping("/house")
     public ResponseEntity<?> registeredHouse(
             @Valid @RequestBody RegisteredHouseDto registeredHouseDto,
@@ -87,10 +89,13 @@ public class RegisteredHouseController {
 
         RegisteredHouseDto registeredHouseDto = RegisteredHouseDto.from(registeredHouse);
         model.addAttribute("registeredHouse", registeredHouseDto);
+        String flask = flaskService.sendToFlask(registeredHouseDto);
+        System.out.println(flask);
         Message message = new Message();
 
         message.setSuccess(StatusEnum.TRUE);
         message.setIsLiked(StatusEnum.FALSE);
+        message.setMessage(flask);
         message.setRegisteredHouseDto(registeredHouseDto);
         if (userDetails == null) {
             log.error("userDetails == null");

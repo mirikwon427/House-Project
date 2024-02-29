@@ -5,7 +5,22 @@ import CInput from '../components/common/CInput';
 import CSpinner from '../components/common/CSpinner';
 import { useInput } from '../hooks/useInput';
 import { userActions } from '../redux/store/reducers/userReducer';
-import { phoneAuth } from '../redux/store/api/userApi';
+import { phoneAuth, checkOtp } from '../redux/store/api/userApi';
+
+function formatPhoneNumber(phoneNumber) {
+  // 정규식을 사용하여 숫자만 추출
+  const numbersOnly = phoneNumber.replace(/\D/g, '');
+  // 앞에 0을 제거하고 +82를 앞에 붙임
+  const formattedNumber = '+82' + numbersOnly.slice(1);
+
+  return formattedNumber;
+}
+
+// 예시 사용법
+// const inputPhoneNumber = '01040374804';
+// const formattedPhoneNumber = formatPhoneNumber(inputPhoneNumber);
+// console.log(formattedPhoneNumber); // 출력: +821040374804
+
 
 export default function SignUp() {
   const { isLoading } = useSelector((state) => state.user);
@@ -17,6 +32,7 @@ export default function SignUp() {
   const phoneNumber = useInput('');
   const address = useInput('');
   const age = useInput('');
+  const otp = useInput('');
 
   const dispatch = useDispatch();
 
@@ -43,12 +59,27 @@ export default function SignUp() {
     e.preventDefault();
     // 휴대폰 인증 해주세염
     // 저는 예전에 Naver Sens Service 썼습니당
-    console.log('인증 클릭');
+    console.log('인증 번호 발송');
     try {
-        const status = phoneAuth(phoneNumber.value)
+        const phone_format = formatPhoneNumber(phoneNumber.value)
+        const status = phoneAuth({"phone":phone_format})
         if (status.success === true) {
           alert("인증번호를 발송했습니다.")
           setIsPhonePending(true)
+        }
+      } catch (e) {
+        console.log(e)
+      }
+  };
+
+  const confirmPhoneAuthentication = async (e) => {
+    e.preventDefault();
+    console.log('otp 확인');
+    try {
+        const status = checkOtp({"otp": otp.value})
+        if (status.success === true) {
+          alert("인증되었습니다.")
+          setIsPhoneAuth(true)
         }
       } catch (e) {
         console.log(e)
@@ -180,7 +211,7 @@ export default function SignUp() {
                 type="email"
                 placeholder="이메일을 입력해주세요."
                 label="이메일"
-                isErr={!isEmail}
+                isErr={isEmail}
                 errMsg={emailMessage}
               >
                 <svg
@@ -204,7 +235,7 @@ export default function SignUp() {
                 type="password"
                 placeholder="비밀번호를 입력해주세요."
                 label="비밀번호"
-                isErr={!isPw}
+                isErr={isPw}
                 errMsg={pwMessage}
               >
                 <svg
@@ -228,7 +259,7 @@ export default function SignUp() {
                 type="password"
                 placeholder="비밀번호 확인을 입력해주세요."
                 label="비밀번호 확인"
-                isErr={!isPwCorrect}
+                isErr={isPwCorrect}
                 errMsg={pwConfirmMessage}
               >
                 <svg
@@ -252,7 +283,7 @@ export default function SignUp() {
                 type="text"
                 placeholder="이름을 입력해주세요."
                 label="이름"
-                isErr={!isName}
+                isErr={isName}
                 errMsg={nameMessage}
               >
                 <svg
@@ -309,12 +340,53 @@ export default function SignUp() {
                 )}
               </div>
 
+              {isPhonePending &&( <div>
+                <div className="mb-2 font-medium text-sm">인증 번호</div>
+                <div className="w-full flex gap-4">
+                  <div className="flex-1">
+                    <CInput
+                      {...otp}
+                      type="text"
+                      placeholder="핸드폰으로 발송된 otp 번호를 입력해주세요."
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
+                        />
+                      </svg>
+                    </CInput>
+                  </div>
+
+                  <CButton
+                    title="확인"
+                    onClick={confirmPhoneAuthentication}
+                  />
+                </div>
+
+
+                
+                {!isPhone && (
+                  <div className="text-[#ea002c] text-xs mt-1 pl-4">
+                    {phoneMessage}
+                  </div>
+                )}
+              </div>)}
+
               <CInput
                 {...age}
                 type="text"
                 placeholder="나이를 입력해주세요."
                 label="나이"
-                isErr={!isAge}
+                isErr={isAge}
                 errMsg={ageMessage}
               >
                 <svg
@@ -338,7 +410,7 @@ export default function SignUp() {
                 type="text"
                 placeholder="주소를 입력해주세요."
                 label="주소"
-                isErr={!isAdress}
+                isErr={isAdress}
                 errMsg={addressMessage}
               >
                 <svg

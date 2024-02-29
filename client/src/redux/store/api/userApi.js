@@ -29,7 +29,16 @@ export const phoneAuth = async (phone) => {
 
   return await axios({
     method: 'post',
-    url: "http://localhost:5000/api/sendOTP",
+    url: "/api/sendOTP",
     data: phone,
+  });
+};
+
+export const checkOtp = async (otp) => {
+
+  return await axios({
+    method: 'post',
+    url: "/api/checkOTP",
+    data: otp,
   });
 };

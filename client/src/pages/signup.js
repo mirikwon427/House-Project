@@ -121,7 +121,6 @@ export default function SignUp() {
         isAdress &&
         isAge
       ) {
-        console.log('passed');
         dispatch(
           userActions.signUpReq({
             name: name.value,

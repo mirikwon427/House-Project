@@ -34,6 +34,7 @@ const initialState = {
   isErr: false,
   isLiked: false,
   totalCnt: 0,
+  hotPlaces: [],
 };
 
 const houseSlice = createSlice({
@@ -73,8 +74,6 @@ const houseSlice = createSlice({
     },
     getHouseSuc(state, action) {
       state.isLoading = false;
-
-      console.log('상세데이터:::', action.payload);
       state.house = action.payload.registeredHouseDto;
       state.isLiked = action.payload.isLiked === 'TRUE';
     },
@@ -193,6 +192,23 @@ const houseSlice = createSlice({
       state.isErr = true;
       state.searchedHouses = [];
       state.totalCnt = 0;
+    },
+
+    getHotPlacesReq(state, action) {
+      state.isLoading = true;
+      state.errMsg = '';
+      state.isErr = false;
+      state.hotPlaces = [];
+    },
+    getHotPlacesSuc(state, action) {
+      state.isLoading = false;
+      console.log('hotPlaces:::', action.payload);
+      state.hotPlaces = action.payload.location;
+    },
+    getHotPlacesFail(state, action) {
+      state.isLoading = false;
+      state.isErr = true;
+      state.hotPlaces = [];
     },
   },
 });

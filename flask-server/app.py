@@ -20,12 +20,15 @@ def home():
 
 @app.route('/api/predict', methods = ['GET'])
 def predicted_price():
-   data = request.json
-   new_data = pd.DataFrame(data)
-   loaded_model = joblib.load('./baseline_model2.pkl')
+   try:
+    data = request.json
+    dates_list, past_price_list =  past_price(data)
+    future_price =  predict_price(data)
 
-   future_price = loaded_model.predict(new_data)
-   return jsonify(future_price)
+    return jsonify({"success": True, "price": future_price, "date": dates_list, "pastprice": past_price_list})
+   except Exception as e:
+    return jsonify({"success": False, "error": e})
+      
 
 # 핸드폰 인증 요청 API
 @app.route('/api/sendOTP', methods=['POST'])
@@ -38,10 +41,10 @@ def send_otp():
             .verifications \
             .create(to=to_number, channel="sms")
 
-        return jsonify({"status": verification.status}), 200
+        return jsonify({"status": verification.status})
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e)})
 
 # 핸드폰 인증 확인 API
 @app.route('/api/checkOTP', methods=['POST'])
@@ -55,10 +58,10 @@ def check_otp():
             .verification_checks \
             .create(to=to_number, code=otp_code)
 
-        return jsonify({"status": verification_check.status}), 200
+        return jsonify({"status": verification_check.status})
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e)})
 
 if __name__ == '__main__':  
    app.run('0.0.0.0',port=5000,debug=True)

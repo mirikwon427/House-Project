@@ -3,28 +3,26 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   isLoading: false,
   house: {
-    registerdHouse_id: 0,
-    sgg_cd: '',
-    sgg_nm: '',
-    land_gbm: '',
-    land_gbn_nm: '',
-    bonbeon: '',
-    bubeon: '',
-    bldg_nm: '',
-    dal_ymd: '',
-    obj_amt: 0,
-    bldg_area: 0,
-    tot_area: '',
-    h_floor: '',
-    build_year: '',
-    house_type: '',
-    req_gbn: '',
-    acc_year: '',
-    bjdong_cd: '',
-    bjdong_nm: '',
-    right_gbn: '',
-    cntl_ymd: '',
-    rdealer_lawdnm: '',
+    address: '',
+    addressRoad: '',
+    bathroom: '',
+    bjdongNm: '',
+    bldgNm: '',
+    description: '',
+    direction: '',
+    entranceStructure: '',
+    floor: '',
+    houseType: '',
+    managementFee: '',
+    netLeasableArea: 0,
+    numberOfHouseholds: '',
+    objAmt: 0,
+    parkingSpaces: '',
+    registeredHouse_id: 0,
+    room: '',
+    sggNm: '',
+    supplyArea: 0,
+    totalFloor: '',
     user_id: 0,
   },
   likedHouses: [],
@@ -34,6 +32,7 @@ const initialState = {
   isErr: false,
   isLiked: false,
   totalCnt: 0,
+  hotPlaces: [],
 };
 
 const houseSlice = createSlice({
@@ -44,28 +43,26 @@ const houseSlice = createSlice({
       state.isLoading = true;
       state.errMsg = '';
       state.house = {
-        registerdHouse_id: 0,
-        sgg_cd: '',
-        sgg_nm: '',
-        land_gbm: '',
-        land_gbn_nm: '',
-        bonbeon: '',
-        bubeon: '',
-        bldg_nm: '',
-        dal_ymd: '',
-        obj_amt: 0,
-        bldg_area: 0,
-        tot_area: '',
-        h_floor: '',
-        build_year: '',
-        house_type: '',
-        req_gbn: '',
-        acc_year: '',
-        bjdong_cd: '',
-        bjdong_nm: '',
-        right_gbn: '',
-        cntl_ymd: '',
-        rdealer_lawdnm: '',
+        address: '',
+        addressRoad: '',
+        bathroom: '',
+        bjdongNm: '',
+        bldgNm: '',
+        description: '',
+        direction: '',
+        entranceStructure: '',
+        floor: '',
+        houseType: '',
+        managementFee: '',
+        netLeasableArea: 0,
+        numberOfHouseholds: '',
+        objAmt: 0,
+        parkingSpaces: '',
+        registeredHouse_id: 0,
+        room: '',
+        sggNm: '',
+        supplyArea: 0,
+        totalFloor: '',
         user_id: 0,
       };
       state.isErr = false;
@@ -73,8 +70,6 @@ const houseSlice = createSlice({
     },
     getHouseSuc(state, action) {
       state.isLoading = false;
-
-      console.log('상세데이터:::', action.payload);
       state.house = action.payload.registeredHouseDto;
       state.isLiked = action.payload.isLiked === 'TRUE';
     },
@@ -193,6 +188,23 @@ const houseSlice = createSlice({
       state.isErr = true;
       state.searchedHouses = [];
       state.totalCnt = 0;
+    },
+
+    getHotPlacesReq(state, action) {
+      state.isLoading = true;
+      state.errMsg = '';
+      state.isErr = false;
+      state.hotPlaces = [];
+    },
+    getHotPlacesSuc(state, action) {
+      state.isLoading = false;
+      console.log('hotPlaces:::', action.payload);
+      state.hotPlaces = action.payload.location;
+    },
+    getHotPlacesFail(state, action) {
+      state.isLoading = false;
+      state.isErr = true;
+      state.hotPlaces = [];
     },
   },
 });

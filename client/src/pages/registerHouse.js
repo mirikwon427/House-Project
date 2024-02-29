@@ -11,46 +11,42 @@ export default function RegisterHouse() {
   const { isLoading } = useSelector((state) => state.house);
 
   // required
-  const sgg_cd = useInput(''); // 자치구코드 string
-  const sgg_nm = useInput(''); // 자치구명 string
-  const land_gbm = useInput(''); // 지번구분 string
-  const land_gbn_nm = useInput(''); // 지번구분명 string
-  const bonbeon = useInput(''); // 본번 string
-  const bubeon = useInput(''); // 부번 string
-  const bldg_nm = useInput(''); // 건물명 string
-  const dal_ymd = useInput(''); // 계약일 string
-  const obj_amt = useInput(''); // 물건금액(만원) int
-  const bldg_area = useInput(''); // 건물 면적 int
-  const tot_area = useInput(''); // 토지 면적 int
-  const h_floor = useInput(''); // 층 string
-  const build_year = useInput(''); // 건축년도 string
-  const house_type = useInput(''); // 건축물용도 string
-  const req_gbn = useInput(''); // 신고구분 string
+  const addressRoad = useInput(''); // 도로명 주소 string
+  const sggNm = useInput(''); // 자치구명 string
+  const bjdongNm = useInput(''); // 법정동명 string
+  const floor = useInput(''); // 해당층 string
+  const room = useInput(''); // 방수 string
+  const supplyArea = useInput(''); // 공급면적 double
+  const netLeasableArea = useInput(''); // 전용면적 double
+  const houseType = useInput(''); // 건물용도 string
+  const objAmt = useInput(''); // 물건금액(만원) int
+  const bldgNm = useInput(''); // 건물명 string
 
   // not required
-  const acc_year = useInput(''); // 접수연도 string
-  const bjdong_cd = useInput(''); // 법정동코드 string
-  const bjdong_nm = useInput(''); // 법정동명 string
-  const right_gbn = useInput(''); // 권리구분 string
-  const cntl_ymd = useInput(''); // 취소일 string
-  const rdealer_lawdnm = useInput(''); // 신고한 개업공인중개사 시군구명 string
+  const direction = useInput(''); // 방향 string
+  const entranceStructure = useInput(''); // 현관구조 string
+  const numberOfHouseholds = useInput(''); // 해당면적 세대수 string
+  const address = useInput(''); // 지번주소 string
+  const managementFee = useInput(''); // 관리비 string
+  const parkingSpaces = useInput(''); // 총주차대수 string
+  const description = useInput(''); // 매물설명 string
+  const totalFloor = useInput(''); // 총층 string
+  const bathroom = useInput(''); // 욕실수 string
 
   // Error
-  const [sgg_cdErr, setSgg_cdErr] = useState(false);
-  const [sgg_nmErr, setSgg_nmErr] = useState(false);
-  const [land_gbmErr, setLand_gbmErr] = useState(false);
-  const [land_gbn_nmErr, setLand_gbn_nmErr] = useState(false);
-  const [bonbeonErr, setBonbeonErr] = useState(false);
-  const [bubeonErr, setBubeonErr] = useState(false);
-  const [bldg_nmErr, setBldg_nmErr] = useState(false);
-  const [dal_ymdErr, setDal_ymdErr] = useState(false);
-  const [obj_amtErr, setObj_amtErr] = useState(false);
-  const [bldg_areaErr, setBldg_areaErr] = useState(false);
-  const [tot_areaErr, setTot_areaErr] = useState(false);
-  const [h_floorErr, setH_floorErr] = useState(false);
-  const [build_yearErr, setBuild_yearErr] = useState(false);
-  const [house_typeErr, setHouse_typeErr] = useState(false);
-  const [req_gbnErr, setReq_gbnErr] = useState(false);
+  const [addressRoadErr, setAddressRoadErr] = useState(false);
+  const [sggNmErr, setSggNmErr] = useState(false);
+  const [bjdongNmErr, setBjdongNmErr] = useState(false);
+  const [floorErr, setFloorErr] = useState(false);
+  const [roomErr, setRoomErr] = useState(false);
+  const [supplyAreaErr, setSupplyAreaErr] = useState(false);
+  const [netLeasableAreaErr, setNetLeasableAreaErr] = useState(false);
+  const [houseTypeErr, setHouseTypeErr] = useState(false);
+  const [objAmtErr, setObjAmtErr] = useState(false);
+  const [bldgNmErr, setBldgNmErr] = useState(false);
+  const [descriptionErr, setDescriptionErr] = useState(false);
+  const [totalFloorErr, setTotalFloorErr] = useState(false);
+  const [bathroomErr, setBathroomErr] = useState(false);
 
   // ErrorMsg
 
@@ -67,49 +63,43 @@ export default function RegisterHouse() {
 
       let errFlag = false;
 
-      errFlag = checkErr(sgg_cd, setSgg_cdErr);
-      errFlag = checkErr(sgg_nm, setSgg_nmErr);
-      errFlag = checkErr(land_gbm, setLand_gbmErr);
-      errFlag = checkErr(land_gbn_nm, setLand_gbn_nmErr);
-      errFlag = checkErr(bonbeon, setBonbeonErr);
-      errFlag = checkErr(bubeon, setBubeonErr);
-      errFlag = checkErr(bldg_nm, setBldg_nmErr);
-      errFlag = checkErr(dal_ymd, setDal_ymdErr);
-      errFlag = checkErr(obj_amt, setObj_amtErr);
-      errFlag = checkErr(bldg_area, setBldg_areaErr);
-      errFlag = checkErr(tot_area, setTot_areaErr);
-      errFlag = checkErr(h_floor, setH_floorErr);
-      errFlag = checkErr(build_year, setBuild_yearErr);
-      errFlag = checkErr(house_type, setHouse_typeErr);
-      errFlag = checkErr(req_gbn, setReq_gbnErr);
+      errFlag = checkErr(addressRoad, setAddressRoadErr);
+      errFlag = checkErr(sggNm, setSggNmErr);
+      errFlag = checkErr(bjdongNm, setBjdongNmErr);
+      errFlag = checkErr(floor, setFloorErr);
+      errFlag = checkErr(room, setRoomErr);
+      errFlag = checkErr(supplyArea, setSupplyAreaErr);
+      errFlag = checkErr(netLeasableArea, setNetLeasableAreaErr);
+      errFlag = checkErr(houseType, setHouseTypeErr);
+      errFlag = checkErr(objAmt, setObjAmtErr);
+      errFlag = checkErr(bldgNm, setBldgNmErr);
+      errFlag = checkErr(description, setDescriptionErr);
+      errFlag = checkErr(totalFloor, setTotalFloorErr);
+      errFlag = checkErr(bathroom, setBathroomErr);
 
       if (errFlag) return;
 
       let data = {
         house: {
-          sgg_cd: sgg_cd.value,
-          sgg_nm: sgg_nm.value,
-          land_gbm: land_gbm.value,
-          land_gbn_nm: land_gbn_nm.value,
-          bonbeon: bonbeon.value,
-          bubeon: bubeon.value,
-          bldg_nm: bldg_nm.value,
-          dal_ymd: dal_ymd.value,
-          obj_amt: Number(obj_amt.value),
-          bldg_area: Number(bldg_area.value),
-          tot_area: tot_area.value,
-          h_floor: h_floor.value,
-          build_year: build_year.value,
-          house_type: house_type.value,
-          req_gbn: req_gbn.value,
-          acc_year: acc_year.value,
-          bjdong_cd: bjdong_cd.value,
-          bjdong_nm: bjdong_nm.value,
-          right_gbn: right_gbn.value,
-          cntl_ymd: cntl_ymd.value,
-          rdealer_lawdnm: rdealer_lawdnm.value,
-          deal_ymd: '20240109',
-          floor: '2.0',
+          addressRoad: addressRoad.value,
+          sggNm: sggNm.value,
+          bjdongNm: bjdongNm.value,
+          floor: floor.value,
+          room: room.value,
+          supplyArea: Number(supplyArea.value),
+          netLeasableArea: Number(netLeasableArea.value),
+          houseType: houseType.value,
+          objAmt: Number(objAmt.value),
+          bldgNm: bldgNm.value,
+          description: description.value,
+          totalFloor: totalFloor.value,
+          bathroom: bathroom.value,
+          direction: direction.value,
+          entranceStructure: entranceStructure.value,
+          numberOfHouseholds: numberOfHouseholds.value,
+          address: address.value,
+          managementFee: managementFee.value,
+          parkingSpaces: parkingSpaces.value,
         },
         token,
       };
@@ -119,27 +109,25 @@ export default function RegisterHouse() {
     [
       dispatch,
       token,
-      sgg_cd,
-      sgg_nm,
-      land_gbm,
-      land_gbn_nm,
-      bonbeon,
-      bubeon,
-      bldg_nm,
-      dal_ymd,
-      obj_amt,
-      bldg_area,
-      tot_area,
-      h_floor,
-      build_year,
-      house_type,
-      req_gbn,
-      acc_year,
-      bjdong_cd,
-      bjdong_nm,
-      right_gbn,
-      cntl_ymd,
-      rdealer_lawdnm,
+      addressRoad,
+      sggNm,
+      bjdongNm,
+      floor,
+      room,
+      supplyArea,
+      netLeasableArea,
+      houseType,
+      objAmt,
+      bldgNm,
+      description,
+      totalFloor,
+      bathroom,
+      direction,
+      entranceStructure,
+      numberOfHouseholds,
+      address,
+      managementFee,
+      parkingSpaces,
     ],
   );
 
@@ -154,194 +142,175 @@ export default function RegisterHouse() {
 
         <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
           <CInput
-            {...bldg_nm}
+            {...bldgNm}
             type="text"
             label="건물명"
             placeholder="건물명을 입력해주세요."
             required
-            isErr={bldg_nmErr}
+            isErr={bldgNmErr}
             errMsg="건물명을 입력해주세요."
           />
+
           <CInput
-            {...obj_amt}
+            {...objAmt}
             type="text"
             label="물건금액(만원)"
             placeholder="물건금액을 입력해주세요."
             required
-            isErr={obj_amtErr}
+            isErr={objAmtErr}
             errMsg="물건금액을 입력해주세요."
+          />
+          <CInput
+            {...addressRoad}
+            type="text"
+            label="도로명 주소"
+            placeholder="도로명 주소를 입력해주세요."
+            required
+            isErr={addressRoadErr}
+            errMsg="도로명 주소를 입력해주세요."
+          />
+          <CInput
+            {...description}
+            type="text"
+            label="매물 설명"
+            placeholder="매물 설명을 입력해주세요."
+            required
+            isErr={descriptionErr}
+            errMsg="매물 설명을 입력해주세요."
           />
           <div className="w-full flex gap-6">
             <CInput
-              {...dal_ymd}
+              {...floor}
               type="text"
-              label="계약일"
-              placeholder="계약일을 입력해주세요."
+              label="해당 층"
+              placeholder="해당 층을 입력해주세요."
               required
-              isErr={dal_ymdErr}
-              errMsg="계약일을 입력해주세요."
+              isErr={floorErr}
+              errMsg="해당 층을 입력해주세요."
             />
+
             <CInput
-              {...acc_year}
+              {...totalFloor}
               type="text"
-              label="접수연도"
-              placeholder="접수연도를 입력해주세요."
+              label="총 층"
+              placeholder="총 층을 입력해주세요."
+              required
+              isErr={totalFloorErr}
+              errMsg="총 층을 입력해주세요."
             />
           </div>
           <div className="w-full flex gap-6">
             <CInput
-              {...sgg_nm}
+              {...sggNm}
               type="text"
               label="자치구명"
               placeholder="자치구명을 입력해주세요."
               required
-              isErr={sgg_nmErr}
+              isErr={sggNmErr}
               errMsg="자치구명을 입력해주세요."
             />
             <CInput
-              {...sgg_cd}
-              type="text"
-              label="자치구코드"
-              placeholder="자치구코드를 입력해주세요."
-              required
-              isErr={sgg_cdErr}
-              errMsg="자치구코드를 입력해주세요."
-            />
-          </div>
-          <div className="w-full flex gap-6">
-            <CInput
-              {...land_gbm}
-              type="text"
-              label="지번구분"
-              placeholder="지번구분을 입력해주세요."
-              required
-              isErr={land_gbmErr}
-              errMsg="지번구분을 입력해주세요."
-            />
-            <CInput
-              {...land_gbn_nm}
-              type="text"
-              label="지번구분명"
-              placeholder="지번구분명을 입력해주세요."
-              required
-              isErr={land_gbn_nmErr}
-              errMsg="지번구분명을 입력해주세요."
-            />
-          </div>
-          <div className="w-full flex gap-6">
-            <CInput
-              {...bonbeon}
-              type="text"
-              label="본번"
-              placeholder="본번을 입력해주세요."
-              required
-              isErr={bonbeonErr}
-              errMsg="본번을 입력해주세요."
-            />
-            <CInput
-              {...bubeon}
-              type="text"
-              label="부번"
-              placeholder="부번을 입력해주세요."
-              required
-              isErr={bubeonErr}
-              errMsg="부번을 입력해주세요."
-            />
-          </div>
-          <div className="w-full flex gap-6">
-            <CInput
-              {...bldg_area}
-              type="text"
-              label="건물 면적"
-              placeholder="건물 면적을 입력해주세요."
-              required
-              isErr={bldg_areaErr}
-              errMsg="건물 면적을 입력해주세요."
-            />
-            <CInput
-              {...tot_area}
-              type="text"
-              label="토지 면적"
-              placeholder="토지 면적을 입력해주세요."
-              required
-              isErr={tot_areaErr}
-              errMsg="토지 면적을 입력해주세요."
-            />
-          </div>
-          <div className="w-full flex gap-6">
-            <CInput
-              {...h_floor}
-              type="text"
-              label="층"
-              placeholder="층을 입력해주세요."
-              required
-              isErr={h_floorErr}
-              errMsg="층을 입력해주세요."
-            />
-            <CInput
-              {...build_year}
-              type="text"
-              label="건축년도"
-              placeholder="건축년도를 입력해주세요."
-              required
-              isErr={build_yearErr}
-              errMsg="건축년도를 입력해주세요."
-            />
-          </div>
-          <div className="w-full flex gap-6">
-            <CInput
-              {...house_type}
-              type="text"
-              label="건축물용도"
-              placeholder="건축물용도를 입력해주세요."
-              required
-              isErr={house_typeErr}
-              errMsg="건축물용도를 입력해주세요."
-            />
-            <CInput
-              {...req_gbn}
-              type="text"
-              label="신고구분"
-              placeholder="신고구분을 입력해주세요."
-              required
-              isErr={req_gbnErr}
-              errMsg="신고구분을 입력해주세요."
-            />
-          </div>
-          <div className="w-full flex gap-6">
-            <CInput
-              {...cntl_ymd}
-              type="text"
-              label="취소일"
-              placeholder="취소일을 입력해주세요."
-            />
-            <CInput
-              {...right_gbn}
-              type="text"
-              label="권리구분"
-              placeholder="권리구분을 입력해주세요."
-            />
-          </div>
-          <div className="w-full flex gap-6">
-            <CInput
-              {...bjdong_nm}
+              {...bjdongNm}
               type="text"
               label="법정동명"
               placeholder="법정동명을 입력해주세요."
-            />
-            <CInput
-              {...bjdong_cd}
-              type="text"
-              label="법정동코드"
-              placeholder="법정동코드를 입력해주세요."
+              required
+              isErr={bjdongNmErr}
+              errMsg="법정동명을 입력해주세요."
             />
           </div>
+          <div className="w-full flex gap-6">
+            <CInput
+              {...netLeasableArea}
+              type="text"
+              label="전용면적"
+              placeholder="전용면적을 입력해주세요."
+              required
+              isErr={netLeasableAreaErr}
+              errMsg="전용면적을 입력해주세요."
+            />
 
+            <CInput
+              {...supplyArea}
+              type="text"
+              label="공급면적"
+              placeholder="공급면적을 입력해주세요."
+              required
+              isErr={supplyAreaErr}
+              errMsg="공급면적을 입력해주세요."
+            />
+          </div>
+          <div className="w-full flex gap-6">
+            <CInput
+              {...room}
+              type="text"
+              label="방 수"
+              placeholder="방 수를 입력해주세요."
+              required
+              isErr={roomErr}
+              errMsg="방 수를 입력해주세요."
+            />
+            <CInput
+              {...bathroom}
+              type="text"
+              label="욕실 수"
+              placeholder="욕실 수를 입력해주세요."
+              required
+              isErr={bathroomErr}
+              errMsg="욕실 수를 입력해주세요."
+            />
+          </div>
+          <div className="w-full flex gap-6">
+            <CInput
+              {...houseType}
+              type="text"
+              label="건물 용도"
+              placeholder="건물 용도를 입력해주세요."
+              required
+              isErr={houseTypeErr}
+              errMsg="건물 용도를 입력해주세요."
+            />
+            <CInput
+              {...numberOfHouseholds}
+              type="text"
+              label="해당 면적"
+              placeholder="해당 면적을 입력해주세요."
+            />
+          </div>
+          <div className="w-full flex gap-6">
+            <CInput
+              {...parkingSpaces}
+              type="text"
+              label="총 주차 대수"
+              placeholder="총 주차 대수를 입력해주세요."
+            />
+            <CInput
+              {...direction}
+              type="text"
+              label="방향"
+              placeholder="방향을 입력해주세요."
+            />
+          </div>
+          <div className="w-full flex gap-6">
+            <CInput
+              {...managementFee}
+              type="text"
+              label="관리비"
+              placeholder="관리비를 입력해주세요."
+            />
+
+            <CInput
+              {...entranceStructure}
+              type="text"
+              label="현관구조"
+              placeholder="현관구조를 입력해주세요."
+            />
+          </div>
           <CInput
-            {...rdealer_lawdnm}
+            {...address}
             type="text"
-            label="신고한 개업공인중개사 시군구명"
-            placeholder="신고한 개업공인중개사 시군구명을 입력해주세요."
+            label="지번주소"
+            placeholder="지번주소를 입력해주세요."
           />
 
           <div className="w-full flex justify-end">

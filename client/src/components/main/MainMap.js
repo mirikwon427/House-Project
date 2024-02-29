@@ -5,17 +5,7 @@ import './kakaomap.css';
 
 const { kakao } = window;
 
-const hotPlaces = [
-  '양천구',
-  '영등포구',
-  '강남구',
-  '중구',
-  '은평구',
-  '송파구',
-  '강동구',
-];
-
-export default function MainMap() {
+export default function MainMap({ places }) {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -120,7 +110,6 @@ export default function MainMap() {
       // 마커가 지도 위에 표시되도록 설정합니다
       marker.setMap(map);
       kakao.maps.event.addListener(marker, 'click', () => {
-        console.log('마커클릭:::', name);
         navigate(`/search?loc=${enName}`);
       });
 
@@ -151,7 +140,7 @@ export default function MainMap() {
     };
 
     data
-      .filter((v) => hotPlaces.includes(v.properties.SIG_KOR_NM))
+      .filter((v) => places.includes(v.properties.SIG_KOR_NM))
       .forEach((val) => {
         let coordinates = val.geometry.coordinates;
         let name = val.properties.SIG_KOR_NM;
@@ -160,7 +149,7 @@ export default function MainMap() {
 
         displayArea(coordinates, name, color, enName);
       });
-  }, [navigate]);
+  }, [navigate, places]);
 
   return (
     <div className="w-full">

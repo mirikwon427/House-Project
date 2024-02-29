@@ -188,14 +188,14 @@ export default function HouseDetail() {
                 주소
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {house.address}
+                {house.addressRoad}
               </div>
             </div>
           </div>
         </div>
 
         <div className="text-2xl font-bold mb-6 mt-12">위치</div>
-        <DetailMap center={`${house.address}`} />
+        <DetailMap center={`${house.addressRoad}`} />
       </div>
 
       {/* 왼쪽 */}

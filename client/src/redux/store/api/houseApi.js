@@ -31,6 +31,7 @@ export const unlikedHouse = async (data) => {
 };
 
 export const registerHouse = async (data) => {
+  console.log('request:::', data.house);
   const requestData = {
     method: 'post',
     url: '/api/house',
@@ -74,7 +75,6 @@ export const getRecommendedHouse = async (data) => {
 export const searchHouses = async (data) => {
   let queryStr = '';
 
-  console.log('data:::', data);
   if (data.data.price1 !== 0) queryStr += `&price1=${data.data.price1}`;
   if (data.data.price2 !== 0) queryStr += `&price2=${data.data.price2}`;
   if (data.data.size1 !== 0) queryStr += `&size1=${data.data.size1}`;
@@ -95,6 +95,16 @@ export const searchHouses = async (data) => {
   const requestData = {
     method: 'get',
     url: `/api/search?page=${data.data.page}${queryStr}`,
+    headers: { Authorization: `Bearer ${data.token}` },
+  };
+
+  return await axios(requestData);
+};
+
+export const getHotPlaces = async (data) => {
+  const requestData = {
+    method: 'get',
+    url: `http://localhost:5000/api/hotPlace`,
     headers: { Authorization: `Bearer ${data.token}` },
   };
 

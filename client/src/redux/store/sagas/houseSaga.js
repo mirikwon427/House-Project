@@ -1,5 +1,6 @@
 import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 import {
+  getHotPlaces,
   getHouse,
   getLikedHouse,
   getRecommendedHouse,
@@ -132,8 +133,6 @@ function* searchedHousesApi(action) {
   try {
     const { data } = yield call(searchHouses, action.payload);
 
-    console.log('response:::', data);
-
     yield put(houseActions.searchHousesSuc(data));
   } catch (e) {
     yield put(
@@ -146,6 +145,23 @@ function* watchSearchedHouses() {
   yield takeLatest(houseActions.searchHousesReq, searchedHousesApi);
 }
 
+// Get Recommended House
+function* getHotPlacesApi(action) {
+  try {
+    const { data } = yield call(getHotPlaces, action.payload);
+
+    yield put(houseActions.getHotPlacesSuc(data));
+  } catch (e) {
+    yield put(
+      houseActions.getHotPlacesFail({ success: false, msg: e.message }),
+    );
+  }
+}
+
+function* watchGetHotPlaces() {
+  yield takeLatest(houseActions.getHotPlacesReq, getHotPlacesApi);
+}
+
 export default function* houseSaga() {
   yield all([
     fork(watchRegisterHouse),
@@ -156,5 +172,6 @@ export default function* houseSaga() {
     fork(watchGetLikedHouse),
     fork(watchGetRecommendedHouse),
     fork(watchSearchedHouses),
+    fork(watchGetHotPlaces),
   ]);
 }

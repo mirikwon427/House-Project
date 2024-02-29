@@ -134,7 +134,6 @@ export default function SignUp() {
         isAge &&
         isPhoneAuth
       ) {
-        console.log('passed');
         dispatch(
           userActions.signUpReq({
             name: name.value,

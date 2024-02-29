@@ -2,11 +2,13 @@ import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CButton from '../components/common/CButton';
 import CInput from '../components/common/CInput';
+import CSpinner from '../components/common/CSpinner';
 import { useInput } from '../hooks/useInput';
 import { houseActions } from '../redux/store/reducers/houseReducer';
 
 export default function RegisterHouse() {
   const { token } = useSelector((state) => state.user);
+  const { isLoading } = useSelector((state) => state.house);
 
   // required
   const sgg_cd = useInput(''); // 자치구코드 string
@@ -143,6 +145,8 @@ export default function RegisterHouse() {
 
   return (
     <div className="py-12 flex justify-center">
+      {isLoading && <CSpinner />}
+
       <div className="w-[864px]">
         <h1 className="w-full text-4xl font-bold mb-10">
           등록할 매물 정보를 입력해주세요.

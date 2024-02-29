@@ -2,12 +2,15 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CButton from '../components/common/CButton';
+import CSpinner from '../components/common/CSpinner';
 import MypageSwiper from '../components/mypage/MypageSwiper';
 import { houseActions } from '../redux/store/reducers/houseReducer';
 
 export default function Mypage() {
   const { user, token } = useSelector((state) => state.user);
-  const { likedHouses, registeredHouses } = useSelector((state) => state.house);
+  const { likedHouses, registeredHouses, isLoading } = useSelector(
+    (state) => state.house,
+  );
 
   const dispatch = useDispatch();
 
@@ -26,6 +29,8 @@ export default function Mypage() {
 
   return (
     <div className="w-full">
+      {isLoading && <CSpinner />}
+
       <div className="w-full bg-gray-50 rounded-sm p-16">
         <div className="w-full flex justify-between items-center">
           <div className="flex gap-8">

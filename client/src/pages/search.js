@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import CButton from '../components/common/CButton';
 import CFilterBtn from '../components/common/CFilterBtn';
+import CSpinner from '../components/common/CSpinner';
 import FilterModal from '../components/search/FilterModal';
 import SearchList from '../components/search/SearchList';
 import geojson from '../datas/geo.json';
@@ -11,10 +12,9 @@ import { bgFixed } from '../utils/utils';
 
 export default function Search() {
   const { token } = useSelector((state) => state.user);
+  const { isLoading } = useSelector((state) => state.house);
 
   const params = useLocation();
-
-  console.log('params:::', params);
 
   const dispatch = useDispatch();
 
@@ -326,6 +326,7 @@ export default function Search() {
 
   return (
     <div className="mt-4">
+      {isLoading && <CSpinner />}
       <div className="mb-12 w-full flex justify-between items-center">
         <div className="text-4xl font-extrabold">통합 검색</div>
         {/* 필터링 */}

@@ -74,6 +74,7 @@ const houseSlice = createSlice({
     getHouseSuc(state, action) {
       state.isLoading = false;
 
+      console.log('상세데이터:::', action.payload);
       state.house = action.payload.registeredHouseDto;
       state.isLiked = action.payload.isLiked === 'TRUE';
     },
@@ -133,7 +134,6 @@ const houseSlice = createSlice({
     },
     getLikedHouseSuc(state, action) {
       state.isLoading = false;
-
       state.likedHouses = action.payload.registeredHouse;
     },
     getLikedHouseFail(state, action) {

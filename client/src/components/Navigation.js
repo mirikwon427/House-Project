@@ -41,11 +41,6 @@ export default function Navigation() {
         <button>
           <Link to="/search">통합검색</Link>
         </button>
-        <button>트렌드</button>
-        {/* <CButton
-          title={`${token === '' ? 'Sign In' : 'Mypage'}`}
-          onClick={OnClickProfile}
-        /> */}
         {token === '' ? (
           <CButton title="Sign In" onClick={navigateToLogin} />
         ) : (

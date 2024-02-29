@@ -27,6 +27,14 @@ export default function Mypage() {
     navigate('/profile');
   };
 
+  const navigateToSearch = () => {
+    navigate('/search');
+  };
+
+  const navigateToRegisterHouse = () => {
+    navigate('/register/house');
+  };
+
   return (
     <div className="w-full">
       {isLoading && <CSpinner />}
@@ -44,8 +52,20 @@ export default function Mypage() {
         </div>
       </div>
 
-      <MypageSwiper title="찜한 매물 목록" data={likedHouses} />
-      <MypageSwiper title="등록한 매물 목록" data={registeredHouses} />
+      <MypageSwiper
+        title="찜한 매물 목록"
+        data={likedHouses}
+        errMsg="찜한 매물이 없습니다."
+        errBtn="찜 하러가기"
+        errFunc={navigateToSearch}
+      />
+      <MypageSwiper
+        title="등록한 매물 목록"
+        data={registeredHouses}
+        errMsg="등록된 매물이 없습니다."
+        errBtn="매물 등록"
+        errFunc={navigateToRegisterHouse}
+      />
     </div>
   );
 }

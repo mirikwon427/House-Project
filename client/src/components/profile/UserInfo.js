@@ -18,19 +18,31 @@ export default function UserInfo({ edit, logout }) {
         <div className="w-[640px] h-fit bg-white shadow-lg rounded-md flex p-20">
           <div className="w-full">
             <div className="text-center text-4xl font-bold mb-12">
-              User Info
+              회원 정보
             </div>
-            <form className="flex flex-col gap-4">
-              <div>이메일: {email}</div>
-              <div>이름: {name}</div>
-              <div>전화번호: {phone}</div>
-              <div>나이:{age}</div>
-              <div> 주소: {address}</div>
-              <CButton title="회원정보 수정하기" onClick={navigateToUpdate} />
+            <form className="flex flex-col gap-4 text-lg">
+              <div className="w-full flex gap-8">
+                <div className="font-bold w-[80px]">이메일</div>
+                <div className="flex-1">{email}</div>
+              </div>
+              <div className="w-full flex gap-8">
+                <div className="font-bold w-[80px]">이름</div>
+                <div className="flex-1">{name}</div>
+              </div>
+              <div className="w-full flex gap-8">
+                <div className="font-bold w-[80px]">전화번호</div>
+                <div className="flex-1">{phone}</div>
+              </div>
+              <div className="w-full flex gap-8">
+                <div className="font-bold w-[80px]">나이</div>
+                <div className="flex-1">{age}</div>
+              </div>
+              <div className="w-full flex gap-8 mb-8">
+                <div className="font-bold w-[80px]">주소</div>
+                <div className="flex-1">{address}</div>
+              </div>
+              <CButton title="회원정보 수정" onClick={navigateToUpdate} />
             </form>
-            <div className="flex flex-col gag-4 mt-4">
-              <CButton title="Log Out" onClick={logout} />
-            </div>
           </div>
         </div>
       </div>

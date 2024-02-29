@@ -18,14 +18,14 @@ export default function UserInfoEdit() {
   const dispatch = useDispatch();
 
   // 정규표현식 및 유효성 검사 후 true / false
-  const [isEmail, setIsEmail] = useState(false);
-  const [isPw, setIsPw] = useState(false);
-  const [isPwCorrect, setIsPwCorrect] = useState(false);
-  const [isAdress, setIsAdress] = useState(false);
-  const [isName, setIsName] = useState(false);
-  const [isPhone, setIsPhone] = useState(false);
-  const [isPhoneConfirm, setIsPhoneConfirm] = useState(false);
-  const [isAge, setIsAge] = useState(false);
+  const [isEmail, setIsEmail] = useState(true);
+  const [isPw, setIsPw] = useState(true);
+  const [isPwCorrect, setIsPwCorrect] = useState(true);
+  const [isAdress, setIsAdress] = useState(true);
+  const [isName, setIsName] = useState(true);
+  const [isPhone, setIsPhone] = useState(true);
+  const [isPhoneConfirm, setIsPhoneConfirm] = useState(true);
+  const [isAge, setIsAge] = useState(true);
 
   const [nameMessage, setNameMessage] = useState('');
   const [pwMessage, setpwMessage] = useState('');
@@ -68,7 +68,7 @@ export default function UserInfoEdit() {
         <div className="w-[640px] h-fit bg-white shadow-lg rounded-md flex p-20">
           <div className="w-full">
             <div className="text-center text-4xl font-bold mb-12">
-              User Info Edit
+              회원 정보 수정
             </div>
             <form onSubmit={onClickUserUpdate} className="flex flex-col gap-4">
               <CInput

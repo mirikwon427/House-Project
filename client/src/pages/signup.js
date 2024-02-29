@@ -5,12 +5,6 @@ import CInput from '../components/common/CInput';
 import CSpinner from '../components/common/CSpinner';
 import { useInput } from '../hooks/useInput';
 import { userActions } from '../redux/store/reducers/userReducer';
-import { phoneAuth } from '../redux/store/api/userApi'
-
-
-
-
-
 
 export default function SignUp() {
   const { isLoading } = useSelector((state) => state.user);
@@ -32,7 +26,6 @@ export default function SignUp() {
   const [isAdress, setIsAdress] = useState(false);
   const [isName, setIsName] = useState(false);
   const [isPhone, setIsPhone] = useState(false);
-  const [isPhoneAuth , setIsPhoneAuth] = useState(false);
   const [isAge, setIsAge] = useState(false);
 
   const [nameMessage, setNameMessage] = useState('');
@@ -45,12 +38,8 @@ export default function SignUp() {
 
   const handlePhoneAuthentication = async (e) => {
     e.preventDefault();
-    const result = phoneAuth({"phone" : phoneNumber.value})
-    if (result.success === true) {
-      alert("인증번호를 발송했습니다.")
-    } else {
-      alert("에러가 발생했습니다.")
-    }
+    // 휴대폰 인증 해주세염
+    // 저는 예전에 Naver Sens Service 썼습니당
     console.log('인증 클릭');
   };
 
@@ -58,7 +47,7 @@ export default function SignUp() {
     (e) => {
       e.preventDefault();
 
-      const phoneRule = /\d{3}\d{3,4}\d{4}/;
+      const phoneRule = /\d{3}-\d{3,4}-\d{4}/;
       const emailRule = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
       const pwRule =
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!%*#?&])[A-Za-z\d@!%*#?&]{8,}$/;
@@ -92,7 +81,7 @@ export default function SignUp() {
       }
 
       if (!phoneRule.test(phoneNumber.value)) {
-        setPhoneMessage('-없이 숫자만 입력해주세요.');
+        setPhoneMessage('010-1234-5678 형식으로 입력해주세요.');
         setIsPhone(false);
       } else {
         setPhoneMessage('');

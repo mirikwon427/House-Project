@@ -11,8 +11,8 @@ export default function CLargeCard({ data }) {
       />
       <div className="w-full flex justify-between mt-4">
         <div>
-          <div className="text-lg font-bold">{data.bldg_nm}</div>
-          <div className="text-[#7F7F7F] text-sm">{data.sgg_nm}</div>
+          <div className="text-lg font-bold">{data.bldgNm}</div>
+          <div className="text-[#7F7F7F] text-sm">{data.sggNm}</div>
         </div>
         <div className="flex flex-col justify-center">
           <svg

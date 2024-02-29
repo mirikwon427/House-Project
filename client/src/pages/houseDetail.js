@@ -76,7 +76,7 @@ export default function HouseDetail() {
         </div>
 
         <div className="text-3xl font-extrabold mt-12 flex items-center justify-between">
-          <div>{house.bldg_nm}</div>
+          <div>{house.bldgNm}</div>
 
           <div
             className={`cursor-pointer w-12 h-12 rounded-full bg-white items-center flex justify-center border border-gray-300`}
@@ -108,94 +108,78 @@ export default function HouseDetail() {
                 건물명
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {house.bldg_nm}
+                {house.bldgNm}
               </div>
 
               <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
                 가격
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {house.obj_amt} 만원
+                {house.objAmt} 만원
               </div>
             </div>
 
             <div className="flex w-full h-[52px] border-b border-[#d3d3d3]">
               <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
-                접수연도
+                전용면적
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {house.acc_year}
+                {house.netLeasableArea}
               </div>
 
               <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
-                계약일
+                공급면적
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {house.dal_ymd}
+                {house.supplyArea}
               </div>
             </div>
 
             <div className="flex w-full h-[52px] border-b border-[#d3d3d3]">
               <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
-                토지면적
+                건물용도
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {house.tot_area} 평
+                {house.houseType}
               </div>
 
               <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
                 층
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {house.floor} 층
+                {house.floor}&nbsp;/&nbsp;{house.totalFloor}
               </div>
             </div>
 
             <div className="flex w-full h-[52px] border-b border-[#d3d3d3]">
               <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
-                권리구분
+                관리비
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {house.right_gbn}
+                {house.managementFee}
               </div>
 
               <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
-                취소일
+                방향
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {house.cntl_ymd}
+                {house.direction}
               </div>
             </div>
 
             <div className="flex w-full h-[52px] border-b border-[#d3d3d3]">
               <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
-                건축년도
+                방 수
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {house.build_year}
+                {house.room}
               </div>
 
               <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
-                건물용도
+                욕실 수
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {house.hous_type}
-              </div>
-            </div>
-
-            <div className="flex w-full h-[52px] border-b border-[#d3d3d3]">
-              <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
-                신고구분
-              </div>
-              <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {house.req_gbn}
-              </div>
-
-              <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
-                공인중개사 시군구명
-              </div>
-              <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {house.rdealer_lawdnm}
+                {house.bathroom}
               </div>
             </div>
 
@@ -204,15 +188,14 @@ export default function HouseDetail() {
                 주소
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                서울시&nbsp;{house.sgg_nm}&nbsp;{house.land_gbm}&nbsp;(
-                {house.bjdong_nm})
+                {house.address}
               </div>
             </div>
           </div>
         </div>
 
         <div className="text-2xl font-bold mb-6 mt-12">위치</div>
-        <DetailMap center={`서울특별시 ${house.sgg_nm}`} />
+        <DetailMap center={`${house.address}`} />
       </div>
 
       {/* 왼쪽 */}

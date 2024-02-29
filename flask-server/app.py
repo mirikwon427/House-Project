@@ -9,7 +9,6 @@ from best_SGG import best_SGG
 account_sid = ""
 auth_token = ""
 verify_sid = ""
-# verified_number = "+821040374804"
 
 client = Client(account_sid, auth_token)
 
@@ -19,15 +18,14 @@ app = Flask(__name__)
 def home():
    return 'This is Home!'
 
-@app.route('/api/futurePrice', methods = ['GET'])
+@app.route('/api/predict', methods = ['GET'])
 def predicted_price():
-    try:
-        data = request.json
-        date_list, price_list = past_price(data)
-        future_price = predict_price(data)
-        return jsonify({"success": True, "price": future_price, "pastprice": price_list, "date": date_list})
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)})
+   data = request.json
+   new_data = pd.DataFrame(data)
+   loaded_model = joblib.load('./baseline_model2.pkl')
+
+   future_price = loaded_model.predict(new_data)
+   return jsonify(future_price)
 
 # 핸드폰 인증 요청 API
 @app.route('/api/sendOTP', methods=['POST'])
@@ -40,10 +38,10 @@ def send_otp():
             .verifications \
             .create(to=to_number, channel="sms")
 
-        return jsonify({"status": verification.status})
+        return jsonify({"status": verification.status}), 200
 
     except Exception as e:
-        return jsonify({"error": str(e)})
+        return jsonify({"error": str(e)}), 500
 
 # 핸드폰 인증 확인 API
 @app.route('/api/checkOTP', methods=['POST'])
@@ -57,20 +55,10 @@ def check_otp():
             .verification_checks \
             .create(to=to_number, code=otp_code)
 
-        return jsonify({"status": verification_check.status})
+        return jsonify({"status": verification_check.status}), 200
 
     except Exception as e:
-        return jsonify({"error": str(e)})
-
-
-@app.route('/api/hotPlace', methods=['GET'])
-def check_otp():
-    try:
-        hot_place = best_SGG()
-        return jsonify({"success": True, "locations": hot_place})
-
-    except Exception as e:
-        return jsonify({"success":False, "error": str(e)})
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':  
    app.run('0.0.0.0',port=5000,debug=True)

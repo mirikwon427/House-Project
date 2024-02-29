@@ -6,9 +6,9 @@ from predict_house_price import predict_price
 from best_SGG import best_SGG
 
 
-account_sid = ""
-auth_token = ""
-verify_sid = ""
+account_sid = "ACa37b34e5946eebc4b77f7733568dec20"
+auth_token = "f76971eb4389dff42d9db42be20e77e4"
+verify_sid = "VA358ac8aae5ed84ffe814aec83f07b2fa"
 
 client = Client(account_sid, auth_token)
 
@@ -18,14 +18,17 @@ app = Flask(__name__)
 def home():
    return 'This is Home!'
 
-@app.route('/api/predict', methods = ['GET'])
+@app.route('/api/futurePrice', methods = ['GET'])
 def predicted_price():
    try:
     data = request.json
     dates_list, past_price_list =  past_price(data)
+    past_list = dict()
+    for i in range(len(dates_list)):
+       past_list[dates_list[i]] = past_price_list[i]
     future_price =  predict_price(data)
 
-    return jsonify({"success": True, "price": future_price, "date": dates_list, "pastprice": past_price_list})
+    return jsonify({"success": True, "price": future_price, "pastList": past_list})
    except Exception as e:
     return jsonify({"success": False, "error": e})
       

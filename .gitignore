@@ -17,3 +17,6 @@ Real_estate_transaction_data1(공공데이터-1273500).csv
 Real_estate_transaction_data2(공공데이터-1273501~).csv
 flask-server/.venv/
 flask-server/__pycache__/
+flask-server/models/
+flask-server/logs.log
+flask-server/data/

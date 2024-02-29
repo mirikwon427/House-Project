@@ -31,6 +31,7 @@ export const unlikedHouse = async (data) => {
 };
 
 export const registerHouse = async (data) => {
+  console.log('request:::', data.house);
   const requestData = {
     method: 'post',
     url: '/api/house',

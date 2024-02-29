@@ -24,3 +24,11 @@ export const updateUser = async (user) => {
     headers: user.headers,
   });
 };
+
+export const phoneAuth = async (phone) => {
+  return await axios({
+    method: 'post',
+    url: "http://localhost:5000/api/futurePrice/api/sendOTP",
+    data: phone,
+  });
+}

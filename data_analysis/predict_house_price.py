@@ -21,7 +21,7 @@ def predict_price(data):
     df = df.reset_index(drop=True)
 
     # 모델 로드
-    model = load_model('./models/{}_blended_model'.format(data['SGG_NM']))
+    model = load_model('./models/{}_blended_model'.format(data['SGGNM']))
 
     # 새로운 데이터 만들기
     new_data = dict()
@@ -29,12 +29,12 @@ def predict_price(data):
     # 라벨 인코딩
     house_type_dict = {'단독다가구': 0, '아파트': 1, '연립다세대': 2, '오피스텔': 3}
 
-    new_data['HOUSE_TYPE'] = house_type_dict[data['HOUSE_TYPE']]
+    new_data['HOUSE_TYPE'] = house_type_dict[data['HOUSETYPE']]
 
     # 법정동 onehotencoding
-    BJDONG_NM_list = list(df[df['SGG_NM'] == data['SGG_NM']]['BJDONG_NM'].unique())
+    BJDONG_NM_list = list(df[df['SGG_NM'] == data['SGGNM']]['BJDONG_NM'].unique())
     for name in BJDONG_NM_list:
-        if name == data['BJDONG_NM']:
+        if name == data['BJDONGNM']:
             new_data[name] = 1
         else:
             new_data[name] = 0
@@ -44,23 +44,23 @@ def predict_price(data):
     new_data['DEAL_MONTH'] = date.today().month
 
     # BLDG_AREA 처리
-    if pd.isna(data['SUPPLY_AREA']):
+    if pd.isna(data['SUPPLYAREA']):
         temp = pd.DataFrame(df.groupby(['SGG_NM', 'BJDONG_NM'])['BLDG_AREA'].agg('mean'))
         temp = temp.reset_index()
         new_data['BLDG_AREA'] = round(
-            temp[(temp['SGG_NM'] == data['SGG_NM']) & (temp['BJDONG_NM'] == data['BJDONG_NM'])]['BLDG_AREA'], 2)
+            temp[(temp['SGG_NM'] == data['SGGNM']) & (temp['BJDONG_NM'] == data['BJDONGNM'])]['BLDG_AREA'], 2)
     else:
-        new_data['BLDG_AREA'] = float(data['SUPPLY_AREA'].split('㎡')[0])
+        new_data['BLDG_AREA'] = float(str(data['SUPPLYAREA']).split('㎡')[0])
 
     # TOT_AREA 처리
     # 이전 데이터들의 평균으로 대체
-    if pd.isna(data['NET_LEASABLE_AREA']):
+    if pd.isna(data['NETLEASABLEAREA']):
         temp = pd.DataFrame(df.groupby(['SGG_NM', 'BJDONG_NM'])['TOT_AREA'].agg('mean'))
         temp = temp.reset_index()
         new_data['TOT_AREA'] = round(
-            temp[(temp['SGG_NM'] == data['SGG_NM']) & (temp['BJDONG_NM'] == data['BJDONG_NM'])]['TOT_AREA'], 2)
+            temp[(temp['SGG_NM'] == data['SGGNM']) & (temp['BJDONG_NM'] == data['BJDONGNM'])]['TOT_AREA'], 2)
     else:
-        new_data['TOT_AREA'] = float(data['NET_LEASABLE_AREA'].split('㎡')[0])
+        new_data['TOT_AREA'] = float(str(data['NETLEASABLEAREA']).split('㎡')[0])
 
     new = pd.DataFrame([new_data])
 

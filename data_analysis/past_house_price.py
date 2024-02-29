@@ -1,6 +1,8 @@
 import pandas as pd
 
 def past_price(data):
+    data = {key.upper(): value for key, value in data.items()}
+
     from datetime import date
 
     today = date.today()
@@ -9,7 +11,7 @@ def past_price(data):
 
     SGG = data['SGG_NM']
     BJDONG = data['BJDONG_NM']
-    BLDG = data['BLDG_NM']
+    BLDG = data['BLDG_NM'].replace(' ','')
 
 
     building_df = df[(df['SGG_NM'] == SGG) & (df['BJDONG_NM'] == BJDONG) & (df['BLDG_NM'] == BLDG)]

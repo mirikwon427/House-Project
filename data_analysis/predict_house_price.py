@@ -11,9 +11,10 @@ from datetime import date, timedelta
 
 
 def predict_price(data):
+    data = {key.upper(): value for key, value in data.items()}
     today = date.today()
     today_formatted = today.strftime("%Y%m%d")
-    DATA_DIR = './data/'
+    DATA_DIR = './data/API/'
 
     df = pd.read_csv(DATA_DIR + 'API_data_{}.csv'.format(today_formatted))
     df = df.drop(df[df['TOT_AREA'] >= 3000].index)
@@ -24,13 +25,6 @@ def predict_price(data):
 
     # 새로운 데이터 만들기
     new_data = dict()
-
-    # house_type 데이터 전처리
-    if data['HOUSE_TYPE'] == '빌라':
-        data['HOUSE_TYPE'] = '연립다세대'
-
-    elif data['HOUSE_TYPE'] == '상가주택' or data['HOUSE_TYPE'] == '전원주택':
-        data['HOUSE_TYPE'] = '단독다가구'
 
     # 라벨 인코딩
     house_type_dict = {'단독다가구': 0, '아파트': 1, '연립다세대': 2, '오피스텔': 3}

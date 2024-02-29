@@ -17,7 +17,7 @@ def BLDG_NM_preprocessing(building_name):
         return building_name.split('/')[0]
     elif '-' in building_name:
         name_list = building_name.split('/')
-        if len(name_list)==2 and str(name_list[0]).isdigit() and str(name_lsit[1]).isdigit():
+        if len(name_list)==2 and str(name_list[0]).isdigit() and str(name_list[1]).isdigit():
             return np.nan
     else:
         return building_name
@@ -68,6 +68,7 @@ def API_data_update():
         update_df['BLDG_NM'] = update_df['BLDG_NM'].str.replace(r'\s+', '',regex=True)
         update_df['BLDG_NM'] = update_df['BLDG_NM'].str.replace('(', '',regex=False)
         update_df['BLDG_NM'] = update_df['BLDG_NM'].replace('',np.nan)
+        update_df['BLDG_NM'] = update_df['BLDG_NM'].apply(lambda x: str(x).replace(' ', ''))
 
         update_df['BLDG_NM'] = update_df['BLDG_NM'].apply(BLDG_NM_preprocessing)
         update_df = update_df.replace({None: np.nan,'nan':np.nan})

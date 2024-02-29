@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import CSpinner from '../components/common/CSpinner';
 import MainMap from '../components/main/MainMap';
 import MainSwiper from '../components/main/MainSwiper';
 import { houseActions } from '../redux/store/reducers/houseReducer';
 
 export default function Main() {
   const { user, token } = useSelector((state) => state.user);
-  const { likedHouses, recommendedHouses } = useSelector(
+  const { likedHouses, recommendedHouses, isLoading } = useSelector(
     (state) => state.house,
   );
 
@@ -33,6 +34,7 @@ export default function Main() {
 
   return (
     <div>
+      {isLoading && <CSpinner />}
       {/* 거래 많은 지역 */}
       <MainMap />
 

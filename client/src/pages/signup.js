@@ -1,29 +1,14 @@
-import CInput from '../components/common/CInput';
-import CButton from '../components/common/CButton';
-import { useInput } from '../hooks/useInput';
 import { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import CButton from '../components/common/CButton';
+import CInput from '../components/common/CInput';
+import CSpinner from '../components/common/CSpinner';
+import { useInput } from '../hooks/useInput';
 import { userActions } from '../redux/store/reducers/userReducer';
 
-
-
-
-const accountSid = "ACa37b34e5946eebc4b77f7733568dec20";
-const authToken = "a9acaafc3b910be8522880821f121e29";
-const subaccountSid = "VA358ac8aae5ed84ffe814aec83f07b2fa";
-// const twilio = require("twilio");
-// const bodyParser = require("body-parser");
-// const MessagingResponse = require("twilio").twiml.MessagingResponse;
-
-
-function send_message (phone) {
-  // const prequal = twilio.webhook(authToken)
-  // console.log(prequal)
-  // return  prequal
-}
-
-
 export default function SignUp() {
+  const { isLoading } = useSelector((state) => state.user);
+
   const email = useInput('');
   const pw = useInput('');
   const pwCorrect = useInput('');
@@ -51,12 +36,11 @@ export default function SignUp() {
   const [addressMessage, setAddressMessage] = useState('');
   const [ageMessage, setAgeMessage] = useState('');
 
-  const handlePhoneAuthentication = async(e) => {
+  const handlePhoneAuthentication = async (e) => {
     e.preventDefault();
     // 휴대폰 인증 해주세염
     // 저는 예전에 Naver Sens Service 썼습니당
     console.log('인증 클릭');
-    
   };
 
   const onClickSignup = useCallback(
@@ -171,6 +155,8 @@ export default function SignUp() {
 
   return (
     <div className="w-full flex justify-center my-16">
+      {isLoading && <CSpinner />}
+
       <div className="w-full h-fit py-36 bg-gray-50 rounded-2xl flex justify-center items-center">
         <div className="w-[640px] h-fit bg-white shadow-lg rounded-md flex p-20">
           <div className="w-full">

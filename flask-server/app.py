@@ -1,17 +1,17 @@
 from flask import Flask, request, jsonify
-import joblib
-import pandas as pd
 import os
-# from twilio.rest import Client
-#
-#
-#
-# account_sid = ""
-# auth_token = ""
-# verify_sid = ""
+from twilio.rest import Client
+from past_house_price import past_price
+from predict_house_price import predict_price
+from best_SGG import best_SGG
+
+
+account_sid = "ACa37b34e5946eebc4b77f7733568dec20"
+auth_token = "f76971eb4389dff42d9db42be20e77e4"
+verify_sid = "VA358ac8aae5ed84ffe814aec83f07b2fa"
 # verified_number = "+821040374804"
-#
-# client = Client(account_sid, auth_token)
+
+client = Client(account_sid, auth_token)
 
 app = Flask(__name__)
 
@@ -19,14 +19,15 @@ app = Flask(__name__)
 def home():
    return 'This is Home!'
 
-@app.route('/api/predict', methods = ['GET'])
+@app.route('/api/futurePrice', methods = ['GET'])
 def predicted_price():
-   data = request.json
-   new_data = pd.DataFrame(data)
-   loaded_model = joblib.load('./baseline_model2.pkl')
-
-   future_price = loaded_model.predict(new_data)
-   return jsonify(future_price)
+    try:
+        data = request.json
+        date_list, price_list = past_price(data)
+        future_price = predict_price(data)
+        return jsonify({"success": True, "price": future_price, "pastprice": price_list, "date": date_list})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)})
 
 # 핸드폰 인증 요청 API
 @app.route('/api/sendOTP', methods=['POST'])
@@ -39,10 +40,10 @@ def send_otp():
             .verifications \
             .create(to=to_number, channel="sms")
 
-        return jsonify({"status": verification.status}), 200
+        return jsonify({"status": verification.status})
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e)})
 
 # 핸드폰 인증 확인 API
 @app.route('/api/checkOTP', methods=['POST'])
@@ -56,10 +57,20 @@ def check_otp():
             .verification_checks \
             .create(to=to_number, code=otp_code)
 
-        return jsonify({"status": verification_check.status}), 200
+        return jsonify({"status": verification_check.status})
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e)})
+
+
+@app.route('/api/hotPlace', methods=['GET'])
+def check_otp():
+    try:
+        hot_place = best_SGG()
+        return jsonify({"success": True, "locations": hot_place})
+
+    except Exception as e:
+        return jsonify({"success":False, "error": str(e)})
 
 if __name__ == '__main__':  
    app.run('0.0.0.0',port=5000,debug=True)

@@ -1,8 +1,8 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import CButton from './common/CButton';
-import { userActions } from '../redux/store/reducers/userReducer';
 import { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { userActions } from '../redux/store/reducers/userReducer';
+import CButton from './common/CButton';
 
 export default function Navigation() {
   const { token } = useSelector((state) => state.user);
@@ -10,6 +10,9 @@ export default function Navigation() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const navigateToLogin = () => {
+    navigate('/login');
+  };
   const OnClickProfile = () => {
     if (token === '') {
       navigate('/login');
@@ -24,7 +27,6 @@ export default function Navigation() {
     },
     [dispatch],
   );
-
 
   return (
     <div className="w-full py-10 flex justify-between items-center">
@@ -44,15 +46,33 @@ export default function Navigation() {
           title={`${token === '' ? 'Sign In' : 'Mypage'}`}
           onClick={OnClickProfile}
         /> */}
-        <li className="group  relative dropdown list-none px-4 bg-black text-white hover:bg-gray-800 cursor-pointer text-base tracking-wide">
-        Mypage
-          <div className="group-hover:block dropdown-menu absolute hidden h-auto">
-            <ul className="top-0 w-36 bg-white shadow px-6 py-8">
-                <li className="py-1"><div className="block text-black text-base hover:text-gray-600 cursor-pointer" onClick={OnClickProfile}>Mypage</div></li>
-                <li className="py-1"><div className="block text-black text-base hover:text-gray-600 cursor-pointer" onClick={onClickLogout}>Logout</div></li>
-            </ul>
-          </div>
-        </li>
+        {token === '' ? (
+          <CButton title="Sign In" onClick={navigateToLogin} />
+        ) : (
+          <li className="group relative dropdown list-none bg-black text-white rounded-md px-4 py-2 hover:bg-gray-800 tracking-wide cursor-pointer">
+            Mypage
+            <div className="group-hover:block dropdown-menu absolute hidden top-10 -left-6 h-auto z-50 cursor-default">
+              <ul className="w-36 bg-white shadow px-6 py-8 rounded-md">
+                <li className="py-1">
+                  <div
+                    className="block text-black text-base hover:text-gray-600 cursor-pointer text-center"
+                    onClick={OnClickProfile}
+                  >
+                    Mypage
+                  </div>
+                </li>
+                <li className="py-1">
+                  <div
+                    className="block text-black text-base hover:text-gray-600 cursor-pointer text-center"
+                    onClick={onClickLogout}
+                  >
+                    Logout
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+        )}
       </div>
     </div>
   );

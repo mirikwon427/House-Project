@@ -1,13 +1,15 @@
-import CInput from '../components/common/CInput';
-import { useInput } from '../hooks/useInput';
-import CButton from '../components/common/CButton';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import CButton from '../components/common/CButton';
+import CInput from '../components/common/CInput';
+import CSpinner from '../components/common/CSpinner';
+import { useInput } from '../hooks/useInput';
 import { userActions } from '../redux/store/reducers/userReducer';
 
-
 export default function LogIn() {
+  const { isLoading } = useSelector((state) => state.user);
+
   const id = useInput('');
   const pw = useInput('');
   const dispatch = useDispatch();
@@ -28,6 +30,8 @@ export default function LogIn() {
 
   return (
     <>
+      {isLoading && <CSpinner />}
+
       <div className="flex items-center justify-center w-full my-16">
         <div className="w-full h-[800px] bg-gray-50 rounded-2xl flex justify-center items-center">
           <div className="mb-8 w-[480px] bg-white p-16 rounded-md border border-gray-200 shadow-lg">

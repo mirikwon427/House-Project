@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import CSpinner from '../components/common/CSpinner';
 import Chart from '../components/detail/Chart';
 import DetailMap from '../components/detail/DetailMap';
 import { houseActions } from '../redux/store/reducers/houseReducer';
@@ -14,7 +15,7 @@ export default function HouseDetail() {
   const [isAlert, setIsAlert] = useState(false);
   const [alertTitle, setAlertTitle] = useState('abc');
 
-  const { house, isLiked } = useSelector((state) => state.house);
+  const { house, isLiked, isLoading } = useSelector((state) => state.house);
   const { token } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
@@ -50,6 +51,8 @@ export default function HouseDetail() {
 
   return (
     <div className="w-full h-fit flex gap-12">
+      {isLoading && <CSpinner />}
+
       {/* 오른쪽 */}
       <div className="w-2/3">
         <div className="w-full bg-gray-50">

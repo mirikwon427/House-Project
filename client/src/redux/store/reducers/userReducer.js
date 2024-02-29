@@ -19,12 +19,12 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     loginUserReq(state, action) {
-      state.isloading = true;
+      state.isLoading = true;
       state.errMsg = '';
       state.isErr = false;
     },
     loginUserSuc(state, action) {
-      state.isloading = false;
+      state.isLoading = false;
 
       window.location.href = '/';
       sessionStorage.setItem('token', action.payload.token);
@@ -34,7 +34,7 @@ const userSlice = createSlice({
       state.token = action.payload.token;
     },
     loginUserFail(state, action) {
-      state.isloading = false;
+      state.isLoading = false;
       sessionStorage.clear();
       alert(action.payload.msg);
 
@@ -43,12 +43,12 @@ const userSlice = createSlice({
     },
     //Signup
     signUpReq(state, action) {
-      state.isloading = true;
+      state.isLoading = true;
       state.errMsg = '';
       state.isErr = false;
     },
     signUpSuc(state, action) {
-      state.isloading = false;
+      state.isLoading = false;
       sessionStorage.clear();
       window.location.href = '/login';
 
@@ -56,7 +56,7 @@ const userSlice = createSlice({
       state.isErr = true;
     },
     signUpFail(state, action) {
-      state.isloading = false;
+      state.isLoading = false;
       sessionStorage.removeItem('token');
 
       state.errMsg = action.payload.msg;
@@ -66,12 +66,12 @@ const userSlice = createSlice({
 
     // Logout
     logoutUserReq(state, action) {
-      state.isloading = true;
+      state.isLoading = true;
       state.errMsg = '';
       state.isErr = false;
     },
     logoutUserSuc(state, action) {
-      state.isloading = false;
+      state.isLoading = false;
 
       window.location.href = '/login';
       sessionStorage.clear();
@@ -87,25 +87,25 @@ const userSlice = createSlice({
       state.token = '';
     },
     logoutUserFail(state, action) {
-      state.isloading = false;
+      state.isLoading = false;
       state.errMsg = action.payload.msg;
       state.isErr = true;
     },
 
     //updateUser
     updateUserReq(state, action) {
-      state.isloading = true;
+      state.isLoading = true;
       state.errMsg = '';
       state.isErr = false;
     },
     updateUserSuc(state, action) {
-      state.isloading = false;
+      state.isLoading = false;
       state.user = action.payload.user;
 
       window.location.href = '/profile';
     },
     updateUserFail(state, action) {
-      state.isloading = false;
+      state.isLoading = false;
       alert(action.payload.msg);
       state.errMsg = action.payload.msg;
       state.isErr = true;

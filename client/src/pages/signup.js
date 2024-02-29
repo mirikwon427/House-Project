@@ -1,8 +1,9 @@
-import CInput from '../components/common/CInput';
-import CButton from '../components/common/CButton';
-import { useInput } from '../hooks/useInput';
 import { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import CButton from '../components/common/CButton';
+import CInput from '../components/common/CInput';
+import CSpinner from '../components/common/CSpinner';
+import { useInput } from '../hooks/useInput';
 import { userActions } from '../redux/store/reducers/userReducer';
 import { phoneAuth } from '../redux/store/api/userApi'
 
@@ -12,6 +13,8 @@ import { phoneAuth } from '../redux/store/api/userApi'
 
 
 export default function SignUp() {
+  const { isLoading } = useSelector((state) => state.user);
+
   const email = useInput('');
   const pw = useInput('');
   const pwCorrect = useInput('');
@@ -40,7 +43,7 @@ export default function SignUp() {
   const [addressMessage, setAddressMessage] = useState('');
   const [ageMessage, setAgeMessage] = useState('');
 
-  const handlePhoneAuthentication = async(e) => {
+  const handlePhoneAuthentication = async (e) => {
     e.preventDefault();
     const result = phoneAuth({"phone" : phoneNumber.value})
     if (result.success === true) {
@@ -49,7 +52,6 @@ export default function SignUp() {
       alert("에러가 발생했습니다.")
     }
     console.log('인증 클릭');
-    
   };
 
   const onClickSignup = useCallback(
@@ -164,6 +166,8 @@ export default function SignUp() {
 
   return (
     <div className="w-full flex justify-center my-16">
+      {isLoading && <CSpinner />}
+
       <div className="w-full h-fit py-36 bg-gray-50 rounded-2xl flex justify-center items-center">
         <div className="w-[640px] h-fit bg-white shadow-lg rounded-md flex p-20">
           <div className="w-full">

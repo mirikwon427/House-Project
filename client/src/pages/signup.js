@@ -57,13 +57,11 @@ export default function SignUp() {
 
   const handlePhoneAuthentication = async (e) => {
     e.preventDefault();
-    // 휴대폰 인증 해주세염
-    // 저는 예전에 Naver Sens Service 썼습니당
-    console.log('인증 번호 발송');
     try {
         const phone_format = formatPhoneNumber(phoneNumber.value)
-        const status = phoneAuth({"phone":phone_format})
-        if (status.success === true) {
+        let authresponse = await phoneAuth({"phone":phone_format})
+        const authresult = authresponse.data
+        if (authresult.success === "TRUE") {
           alert("인증번호를 발송했습니다.")
           setIsPhonePending(true)
         }
@@ -76,8 +74,9 @@ export default function SignUp() {
     e.preventDefault();
     console.log('otp 확인');
     try {
-        const status = checkOtp({"otp": otp.value})
-        if (status.success === true) {
+        const otpresponse = checkOtp({"otp": otp.value})
+        const otpresult = otpresponse.data
+        if (otpresult.success === "TRUE") {
           alert("인증되었습니다.")
           setIsPhoneAuth(true)
         }

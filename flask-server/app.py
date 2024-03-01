@@ -66,5 +66,17 @@ def check_otp():
     except Exception as e:
         return jsonify({"error": str(e)})
 
+
+# hot place API
+@app.route('/api/hotplce', methods=['POST'])
+def find_hotplace():
+    try:
+        best_location = best_SGG()
+        
+        return jsonify({"location": best_location})
+
+    except Exception as e:
+        return jsonify({"error": str(e)})
+
 if __name__ == '__main__':  
    app.run('0.0.0.0',port=5000,debug=True)

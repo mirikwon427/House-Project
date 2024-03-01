@@ -85,8 +85,27 @@ public class UserController {
     public ResponseEntity<?> sendOtp(@Valid @RequestBody String phonNum) {
 
         Map<String, Object> status = flaskService.sendToPhonNum(phonNum);
-
+        log.info(status.toString());
+        if(status.get("error") != null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("success", false, "error", status.get("error")));
+        }
         Message message = new Message();
+        message.setSuccess(StatusEnum.TRUE);
+        message.setStatus(status);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+
+    }
+    @PostMapping("/checkOTP")
+    public ResponseEntity<?> checkOTP(@Valid @RequestBody Map<String, Object> body) {
+        log.info("optCode : " + body);
+        Map<String, Object> status = flaskService.checkOTP(body);
+        log.info(status.toString());
+        Message message = new Message();
+        if(status.get("error") != null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("success", false, "error", status.get("error")));
+        }
         message.setSuccess(StatusEnum.TRUE);
         message.setStatus(status);
         return new ResponseEntity<>(message, HttpStatus.OK);

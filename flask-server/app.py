@@ -18,7 +18,7 @@ app = Flask(__name__)
 def home():
    return 'This is Home!'
 
-@app.route('/api/futurePrice', methods = ['GET'])
+@app.route('/api/futurePrice', methods = ['POST'])
 def predicted_price():
    try:
     data = request.json

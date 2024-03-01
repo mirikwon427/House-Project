@@ -10,6 +10,7 @@ import house.houseproject.dto.LoginDto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -32,6 +33,8 @@ public class Message {
     private RegisteredHouseDto registeredHouseDto;
     private StatusEnum isLiked;
 
+    private Integer price;
+    private Map<String, Integer> pastList;
 
     public Message() {
         this.success = StatusEnum.BAD_REQUEST;

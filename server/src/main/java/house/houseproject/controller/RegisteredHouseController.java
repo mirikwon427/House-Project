@@ -13,7 +13,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -89,13 +88,15 @@ public class RegisteredHouseController {
 
         RegisteredHouseDto registeredHouseDto = RegisteredHouseDto.from(registeredHouse);
         model.addAttribute("registeredHouse", registeredHouseDto);
-        String flask = flaskService.sendToFlask(registeredHouseDto);
-        System.out.println(flask);
+        Map<String,Object> response = flaskService.sendToFlask(registeredHouseDto);
+        int price = (int) response.get("price");
+        Map<String, Integer> pastPriceMap = (Map<String, Integer>) response.get("pastList");
         Message message = new Message();
 
         message.setSuccess(StatusEnum.TRUE);
         message.setIsLiked(StatusEnum.FALSE);
-        message.setMessage(flask);
+        message.setPrice(price);
+        message.setPastList(pastPriceMap);
         message.setRegisteredHouseDto(registeredHouseDto);
         if (userDetails == null) {
             log.error("userDetails == null");

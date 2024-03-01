@@ -16,7 +16,9 @@ export default function HouseDetail() {
   const [isAlert, setIsAlert] = useState(false);
   const [alertTitle, setAlertTitle] = useState('abc');
 
-  const { house, isLiked, isLoading } = useSelector((state) => state.house);
+  const { house, isLiked, isLoading, predicted, pastPrices } = useSelector(
+    (state) => state.house,
+  );
   const { token } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
@@ -220,7 +222,7 @@ export default function HouseDetail() {
                 (단위 : 만 원)
               </span>
             </div>
-            <Chart />
+            <Chart predicted={predicted} pastPrices={pastPrices} />
           </div>
         </div>
       </div>

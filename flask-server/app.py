@@ -44,7 +44,7 @@ def send_otp():
             .verifications \
             .create(to=to_number, channel="sms")
 
-        return jsonify({"status": verification.status})
+        return jsonify(verification.status)
 
     except Exception as e:
         return jsonify({"error": str(e)})
@@ -61,7 +61,7 @@ def check_otp():
             .verification_checks \
             .create(to=to_number, code=otp_code)
 
-        return jsonify({"status": verification_check.status})
+        return jsonify(verification_check.status)
 
     except Exception as e:
         return jsonify({"error": str(e)})

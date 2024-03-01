@@ -27,18 +27,22 @@ export const updateUser = async (user) => {
 
 export const phoneAuth = async (phone) => {
 
-  return await axios({
+  const authsend = await axios({
     method: 'post',
     url: "/api/sendOTP",
     data: phone,
-  });
+  })
+
+  return authsend
 };
 
 export const checkOtp = async (otp) => {
 
-  return await axios({
+  const approved =  await axios({
     method: 'post',
     url: "/api/checkOTP",
     data: otp,
   });
+
+  return approved
 };

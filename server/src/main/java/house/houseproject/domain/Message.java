@@ -7,12 +7,14 @@ import house.houseproject.dto.UserUpdateDto;
 import lombok.Data;
 
 import house.houseproject.dto.LoginDto;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Data
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Message {
 
@@ -36,12 +38,6 @@ public class Message {
     private Integer price;
     private Map<String, Integer> pastList;
     private Map<String, Object> status;
-
-    public Message() {
-        this.success = StatusEnum.BAD_REQUEST;
-        this.data = null;
-        this.message = null;
-    }
 
     public Message(UserUpdateDto updateUser, String message) {
 

@@ -5,14 +5,16 @@ export default class Chart extends Component {
   constructor(props) {
     super(props);
 
+    let date = Object.keys(props.pastPrices);
+    date.push('2027');
+    let prices = Object.values(props.pastPrices);
+    prices.push(props.predicted);
+
     this.state = {
       series: [
         {
           name: '가격',
-          data: [
-            420000, 440000, 470000, 450000, 460000, 480000, 520000, 540000,
-            560000, 600000, 580000, 590000, 530000, 560000, 720000,
-          ],
+          data: prices,
         },
       ],
       options: {
@@ -30,23 +32,7 @@ export default class Chart extends Component {
           curve: 'straight',
         },
         xaxis: {
-          categories: [
-            '2010',
-            '2011',
-            '2012',
-            '2013',
-            '2014',
-            '2015',
-            '2016',
-            '2017',
-            '2018',
-            '2019',
-            '2020',
-            '2021',
-            '2022',
-            '2023',
-            '2026',
-          ],
+          categories: date,
         },
       },
     };

@@ -142,7 +142,7 @@ export default function RegisterHouse() {
   const handleAddress = (e) => {
     setAddressRoadErr(false);
     setAddressRoad(e.address);
-    setSggNm(e.sigungu);
+    setSggNm(e.sigungu.split(' ')[1]);
     setBjdongNm(e.bname);
     setAddress(e.jibunAddress);
   };

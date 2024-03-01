@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -124,14 +125,14 @@ export default function HouseDetail() {
                 전용면적
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {house.netLeasableArea}
+                {house.netLeasableArea}&nbsp;㎡
               </div>
 
               <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
                 공급면적
               </div>
               <div className="flex-1 text-base flex justify-center flex-col px-5">
-                {house.supplyArea}
+                {house.supplyArea}&nbsp;㎡
               </div>
             </div>
 
@@ -190,6 +191,17 @@ export default function HouseDetail() {
               <div className="flex-1 text-base flex justify-center flex-col px-5">
                 {house.addressRoad}
               </div>
+            </div>
+            <div className="flex w-full h-fit min-h-[52px] border-b border-[#d3d3d3]">
+              <div className="w-1/4 text-base font-extrabold bg-[#f2f2f2] flex justify-center flex-col px-5">
+                설명
+              </div>
+              <div
+                className="flex-1 text-base flex justify-center flex-col px-5 py-2"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(house.description),
+                }}
+              ></div>
             </div>
           </div>
         </div>

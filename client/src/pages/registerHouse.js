@@ -3,17 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import CButton from '../components/common/CButton';
 import CInput from '../components/common/CInput';
 import CSpinner from '../components/common/CSpinner';
+import AddressModal from '../components/registerHouse/addressModal';
 import { useInput } from '../hooks/useInput';
 import { houseActions } from '../redux/store/reducers/houseReducer';
+import { bgFixed } from '../utils/utils';
 
 export default function RegisterHouse() {
+  const [showAddressModal, setShowAddressModal] = useState(false);
+
   const { token } = useSelector((state) => state.user);
   const { isLoading } = useSelector((state) => state.house);
 
   // required
-  const addressRoad = useInput(''); // 도로명 주소 string
-  const sggNm = useInput(''); // 자치구명 string
-  const bjdongNm = useInput(''); // 법정동명 string
   const floor = useInput(''); // 해당층 string
   const room = useInput(''); // 방수 string
   const supplyArea = useInput(''); // 공급면적 double
@@ -26,17 +27,20 @@ export default function RegisterHouse() {
   const direction = useInput(''); // 방향 string
   const entranceStructure = useInput(''); // 현관구조 string
   const numberOfHouseholds = useInput(''); // 해당면적 세대수 string
-  const address = useInput(''); // 지번주소 string
   const managementFee = useInput(''); // 관리비 string
   const parkingSpaces = useInput(''); // 총주차대수 string
   const description = useInput(''); // 매물설명 string
   const totalFloor = useInput(''); // 총층 string
   const bathroom = useInput(''); // 욕실수 string
 
+  // Address
+  const [addressRoad, setAddressRoad] = useState('');
+  const [sggNm, setSggNm] = useState('');
+  const [bjdongNm, setBjdongNm] = useState('');
+  const [address, setAddress] = useState('');
+
   // Error
   const [addressRoadErr, setAddressRoadErr] = useState(false);
-  const [sggNmErr, setSggNmErr] = useState(false);
-  const [bjdongNmErr, setBjdongNmErr] = useState(false);
   const [floorErr, setFloorErr] = useState(false);
   const [roomErr, setRoomErr] = useState(false);
   const [supplyAreaErr, setSupplyAreaErr] = useState(false);
@@ -53,8 +57,8 @@ export default function RegisterHouse() {
   const dispatch = useDispatch();
 
   const checkErr = (val, func) => {
-    func(val.value === '');
-    return val.value === '';
+    func(val === '');
+    return val === '';
   };
 
   const handleSubmit = useCallback(
@@ -64,26 +68,24 @@ export default function RegisterHouse() {
       let errFlag = false;
 
       errFlag = checkErr(addressRoad, setAddressRoadErr);
-      errFlag = checkErr(sggNm, setSggNmErr);
-      errFlag = checkErr(bjdongNm, setBjdongNmErr);
-      errFlag = checkErr(floor, setFloorErr);
-      errFlag = checkErr(room, setRoomErr);
-      errFlag = checkErr(supplyArea, setSupplyAreaErr);
-      errFlag = checkErr(netLeasableArea, setNetLeasableAreaErr);
-      errFlag = checkErr(houseType, setHouseTypeErr);
-      errFlag = checkErr(objAmt, setObjAmtErr);
-      errFlag = checkErr(bldgNm, setBldgNmErr);
-      errFlag = checkErr(description, setDescriptionErr);
-      errFlag = checkErr(totalFloor, setTotalFloorErr);
-      errFlag = checkErr(bathroom, setBathroomErr);
+      errFlag = checkErr(floor.value, setFloorErr);
+      errFlag = checkErr(room.value, setRoomErr);
+      errFlag = checkErr(supplyArea.value, setSupplyAreaErr);
+      errFlag = checkErr(netLeasableArea.value, setNetLeasableAreaErr);
+      errFlag = checkErr(houseType.value, setHouseTypeErr);
+      errFlag = checkErr(objAmt.value, setObjAmtErr);
+      errFlag = checkErr(bldgNm.value, setBldgNmErr);
+      errFlag = checkErr(description.value, setDescriptionErr);
+      errFlag = checkErr(totalFloor.value, setTotalFloorErr);
+      errFlag = checkErr(bathroom.value, setBathroomErr);
 
       if (errFlag) return;
 
       let data = {
         house: {
-          addressRoad: addressRoad.value,
-          sggNm: sggNm.value,
-          bjdongNm: bjdongNm.value,
+          addressRoad: addressRoad,
+          sggNm: sggNm,
+          bjdongNm: bjdongNm,
           floor: floor.value,
           room: room.value,
           supplyArea: Number(supplyArea.value),
@@ -97,7 +99,7 @@ export default function RegisterHouse() {
           direction: direction.value,
           entranceStructure: entranceStructure.value,
           numberOfHouseholds: numberOfHouseholds.value,
-          address: address.value,
+          address: address,
           managementFee: managementFee.value,
           parkingSpaces: parkingSpaces.value,
         },
@@ -131,6 +133,20 @@ export default function RegisterHouse() {
     ],
   );
 
+  const onClickAddress = () => {
+    setShowAddressModal(true);
+    bgFixed();
+  };
+
+  const closeAddressModal = () => setShowAddressModal(false);
+  const handleAddress = (e) => {
+    setAddressRoadErr(false);
+    setAddressRoad(e.address);
+    setSggNm(e.sigungu);
+    setBjdongNm(e.bname);
+    setAddress(e.jibunAddress);
+  };
+
   return (
     <div className="py-12 flex justify-center">
       {isLoading && <CSpinner />}
@@ -160,15 +176,30 @@ export default function RegisterHouse() {
             isErr={objAmtErr}
             errMsg="물건금액을 입력해주세요."
           />
-          <CInput
-            {...addressRoad}
-            type="text"
-            label="도로명 주소"
-            placeholder="도로명 주소를 입력해주세요."
-            required
-            isErr={addressRoadErr}
-            errMsg="도로명 주소를 입력해주세요."
-          />
+          <div className="w-full">
+            <div className="mb-2 font-medium text-sm">
+              주소<span className="text-[#ea002c]">&nbsp;*</span>
+            </div>
+            <div
+              className={`w-full h-10 flex gap-2 rounded-md border ${
+                addressRoadErr ? 'border-[#ea002c]' : 'border-gray-400'
+              } px-4 cursor-pointer`}
+            >
+              <input
+                className="flex-1 h-full border-none text-sm focus:outline-none bg-white cursor-pointer"
+                type="text"
+                value={addressRoad}
+                placeholder="주소를 입력해주세요."
+                readOnly
+                onClick={onClickAddress}
+              />
+            </div>
+            {addressRoadErr && (
+              <div className="text-[#ea002c] text-xs mt-1 pl-4">
+                주소를 입력해주세요.
+              </div>
+            )}
+          </div>
           <CInput
             {...description}
             type="text"
@@ -197,26 +228,6 @@ export default function RegisterHouse() {
               required
               isErr={totalFloorErr}
               errMsg="총 층을 입력해주세요."
-            />
-          </div>
-          <div className="w-full flex gap-6">
-            <CInput
-              {...sggNm}
-              type="text"
-              label="자치구명"
-              placeholder="자치구명을 입력해주세요."
-              required
-              isErr={sggNmErr}
-              errMsg="자치구명을 입력해주세요."
-            />
-            <CInput
-              {...bjdongNm}
-              type="text"
-              label="법정동명"
-              placeholder="법정동명을 입력해주세요."
-              required
-              isErr={bjdongNmErr}
-              errMsg="법정동명을 입력해주세요."
             />
           </div>
           <div className="w-full flex gap-6">
@@ -306,13 +317,12 @@ export default function RegisterHouse() {
               placeholder="현관구조를 입력해주세요."
             />
           </div>
-          <CInput
-            {...address}
-            type="text"
-            label="지번주소"
-            placeholder="지번주소를 입력해주세요."
-          />
-
+          {showAddressModal && (
+            <AddressModal
+              closeModal={closeAddressModal}
+              handleAddress={handleAddress}
+            />
+          )}
           <div className="w-full flex justify-end">
             <CButton title="등록하기" onClick={handleSubmit} />
           </div>

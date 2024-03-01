@@ -35,6 +35,7 @@ public class Message {
 
     private Integer price;
     private Map<String, Integer> pastList;
+    private Map<String, Object> status;
 
     public Message() {
         this.success = StatusEnum.BAD_REQUEST;

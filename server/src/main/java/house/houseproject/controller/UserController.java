@@ -5,6 +5,7 @@ import house.houseproject.domain.StatusEnum;
 import house.houseproject.dto.LoginDto;
 import house.houseproject.dto.UserDto;
 import house.houseproject.exception.DuplicateMemberException;
+import house.houseproject.service.FlaskService;
 import house.houseproject.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -31,8 +32,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class UserController {
     private final UserService userService;
-    public UserController(UserService userService) {
+    private final FlaskService flaskService;
+    public UserController(UserService userService, FlaskService flaskService) {
         this.userService = userService;
+        this.flaskService = flaskService;
     }
     @GetMapping("/hello")
     public ResponseEntity<String> hello() {
@@ -78,7 +81,17 @@ public class UserController {
                     .body(Map.of("status", 409, "success", false, "message", errorMessage, "fieldErrors", List.of()));
         }
     }
+    @PostMapping("/sendOTP")
+    public ResponseEntity<?> sendOtp(@Valid @RequestBody String phonNum) {
 
+        Map<String, Object> status = flaskService.sendToPhonNum(phonNum);
+
+        Message message = new Message();
+        message.setSuccess(StatusEnum.TRUE);
+        message.setStatus(status);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+
+    }
     /**
     @GetMapping("/user")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")

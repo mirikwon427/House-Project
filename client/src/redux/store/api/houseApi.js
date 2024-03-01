@@ -104,7 +104,7 @@ export const searchHouses = async (data) => {
 export const getHotPlaces = async (data) => {
   const requestData = {
     method: 'get',
-    url: `http://localhost:5000/api/hotPlace`,
+    url: `/api/hotPlace`,
     headers: { Authorization: `Bearer ${data.token}` },
   };
 

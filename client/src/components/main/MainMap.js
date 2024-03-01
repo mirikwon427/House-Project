@@ -1,20 +1,13 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import geojson from '../../datas/geo.json';
 import './kakaomap.css';
 
 const { kakao } = window;
 
-const hotPlaces = [
-  '양천구',
-  '영등포구',
-  '강남구',
-  '중구',
-  '은평구',
-  '송파구',
-  '강동구',
-];
+export default function MainMap({ places }) {
+  const navigate = useNavigate();
 
-export default function MainMap() {
   useEffect(() => {
     let data = geojson.features;
 
@@ -79,7 +72,7 @@ export default function MainMap() {
       return getCentroid(points);
     };
 
-    const displayArea = (coordinates, name, color) => {
+    const displayArea = (coordinates, name, color, enName) => {
       let path = [];
       let points = [];
 
@@ -104,34 +97,6 @@ export default function MainMap() {
 
       polygons.push(polygon);
 
-      //   // 다각형 mouseover 이벤트
-      //   // 지역명을 표시하는 커스텀오버레이를 지도위에 표시
-      //   kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
-      //     polygon.setOptions({ fillColor: '#09f' });
-
-      //     customOverlay.setContent('<div class="area">' + name + '</div>');
-
-      //     customOverlay.setPosition(mouseEvent.latLng);
-      //     customOverlay.setMap(map);
-      //   });
-
-      //   // 다각형 mousemove 이벤트
-      //   kakao.maps.event.addListener(polygon, 'mousemove', function (mouseEvent) {
-      //     customOverlay.setPosition(mouseEvent.latLng);
-      //   });
-
-      //   // 다각형 mouseout 이벤트
-      //   // 커스텀 오버레이를 지도에서 제거
-      //   kakao.maps.event.addListener(polygon, 'mouseout', function () {
-      //     polygon.setOptions({ fillColor: '#fff' });
-      //     customOverlay.setMap(null);
-      //   });
-
-      //   // 다각형에 click 이벤트
-      //   kakao.maps.event.addListener(polygon, 'click', function (mouseEvent) {
-      //     console.log('클릭됨!!!');
-      //   });
-
       let result = createMarker(coordinates[0]);
 
       // 마커가 표시될 위치입니다
@@ -145,7 +110,7 @@ export default function MainMap() {
       // 마커가 지도 위에 표시되도록 설정합니다
       marker.setMap(map);
       kakao.maps.event.addListener(marker, 'click', () => {
-        console.log('마커클릭:::', name);
+        navigate(`/search?loc=${enName}`);
       });
 
       var iwContent = `<span class="info-title">${name}</span>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
@@ -175,15 +140,16 @@ export default function MainMap() {
     };
 
     data
-      .filter((v) => hotPlaces.includes(v.properties.SIG_KOR_NM))
+      .filter((v) => places.includes(v.properties.SIG_KOR_NM))
       .forEach((val) => {
         let coordinates = val.geometry.coordinates;
         let name = val.properties.SIG_KOR_NM;
         let color = val.properties.color;
+        let enName = val.properties.SIG_ENG_NM;
 
-        displayArea(coordinates, name, color);
+        displayArea(coordinates, name, color, enName);
       });
-  }, []);
+  }, [navigate, places]);
 
   return (
     <div className="w-full">

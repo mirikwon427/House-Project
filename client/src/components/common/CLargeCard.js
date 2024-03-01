@@ -5,14 +5,14 @@ export default function CLargeCard({ data }) {
   return (
     <div className="cursor-pointer">
       <img
-        src={data.image}
+        src="https://picsum.photos/id/27/200/300"
         alt="dummy"
         className="w-full h-[540px] bg-[#9C9C9C] rounded-xl"
       />
       <div className="w-full flex justify-between mt-4">
         <div>
-          <div className="text-lg font-bold">{data.bldg_nm}</div>
-          <div className="text-[#7F7F7F] text-sm">{data.sgg_nm}</div>
+          <div className="text-lg font-bold">{data.bldgNm}</div>
+          <div className="text-[#7F7F7F] text-sm">{data.sggNm}</div>
         </div>
         <div className="flex flex-col justify-center">
           <svg

@@ -5,10 +5,10 @@ export default function CCheckBtn({ checked = false, data, onClick }) {
 
   return (
     <div
-      className="w-fit h-10 rounded-md flex justify-center flex-col border-[#d3d3d3] border bg-white cursor-pointer"
+      className="group w-fit h-10 rounded-md flex justify-center flex-col border-[#d3d3d3] border bg-white cursor-pointer hover:border-black transition-all"
       onClick={() => {
         setIsChecked(!isChecked);
-        onClick();
+        onClick({ checked: !isChecked, id: data.id });
       }}
     >
       <div className="w-fit px-5 pl-3 flex gap-3 items-center">
@@ -17,7 +17,7 @@ export default function CCheckBtn({ checked = false, data, onClick }) {
             className={`w-full h-6 bg-center bg-no-repeat ${
               isChecked
                 ? 'bg-black border-none'
-                : 'bg-white border border-gray-400'
+                : 'bg-white border border-gray-400 group-hover:border-black transition-all'
             } rounded-md`}
           >
             <svg
@@ -36,7 +36,7 @@ export default function CCheckBtn({ checked = false, data, onClick }) {
             </svg>
           </div>
         </div>
-        <div className="text-base font-normal">{data}</div>
+        <div className="text-base font-normal">{data.title}</div>
       </div>
     </div>
   );

@@ -69,7 +69,7 @@ def check_otp():
 
 
 # hot place API
-@app.route('/api/hotplce', methods=['POST'])
+@app.route('/api/hotPlace', methods=['POST'])
 def find_hotplace():
     try:
         best_location = best_SGG()

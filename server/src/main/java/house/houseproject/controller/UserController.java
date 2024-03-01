@@ -98,7 +98,6 @@ public class UserController {
         log.info("optCode : " + body);
         Map<String, Object> status = flaskService.checkOTP(body);
         log.info("status"+status.toString());
-        Message message = new Message();
         if(status.get("error") != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(Map.of("success", false, "error", status.get("error")));

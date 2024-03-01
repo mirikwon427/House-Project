@@ -25,6 +25,8 @@ const initialState = {
     totalFloor: '',
     user_id: 0,
   },
+  predicted: 0,
+  pastPrices: {},
   likedHouses: [],
   registeredHouses: [],
   recommendedHouses: [],
@@ -71,6 +73,8 @@ const houseSlice = createSlice({
     getHouseSuc(state, action) {
       state.isLoading = false;
       state.house = action.payload.registeredHouseDto;
+      state.pastPrices = action.payload.pastList;
+      state.predicted = action.payload.price;
       state.isLiked = action.payload.isLiked === 'TRUE';
     },
     getHouseFail(state, action) {

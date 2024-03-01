@@ -74,7 +74,8 @@ export default function SignUp() {
     e.preventDefault();
     console.log('otp 확인');
     try {
-        const otpresponse = checkOtp({"otp": otp.value})
+        const phone_format_otp = formatPhoneNumber(phoneNumber.value)
+        const otpresponse = checkOtp({"otpCode": otp.value, "phone": phone_format_otp})
         const otpresult = otpresponse.data
         if (otpresult.success === "TRUE") {
           alert("인증되었습니다.")

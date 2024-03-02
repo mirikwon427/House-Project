@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.baseURL = process.env.REACT_APP_BASIC_SERVER_URL;
 
 export const loginUser = async (user) => {
   return await axios.post('/api/login', user);
@@ -26,23 +26,21 @@ export const updateUser = async (user) => {
 };
 
 export const phoneAuth = async (phone) => {
-
   const authsend = await axios({
     method: 'post',
-    url: "/api/sendOTP",
+    url: '/api/sendOTP',
     data: phone,
-  })
+  });
 
-  return authsend
+  return authsend;
 };
 
 export const checkOtp = async (otp) => {
-
-  const approved =  await axios({
+  const approved = await axios({
     method: 'post',
-    url: "/api/checkOTP",
+    url: '/api/checkOTP',
     data: otp,
   });
 
-  return approved
+  return approved;
 };

@@ -6,9 +6,9 @@ from predict_house_price import predict_price
 from best_SGG import best_SGG
 
 
-account_sid = "ACa37b34e5946eebc4b77f7733568dec20"
-auth_token = "f76971eb4389dff42d9db42be20e77e4"
-verify_sid = "VA358ac8aae5ed84ffe814aec83f07b2fa"
+account_sid = os.environ.get('account_sid','')
+auth_token = os.environ.get('auth_token','')
+verify_sid = os.environ.get('verify_sid','')
 
 client = Client(account_sid, auth_token)
 

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CSpinner from '../components/common/CSpinner';
+import MainMap from '../components/main/MainMap';
 import MainSwiper from '../components/main/MainSwiper';
 import { houseActions } from '../redux/store/reducers/houseReducer';
 
@@ -39,7 +40,7 @@ export default function Main() {
     <div>
       {isLoading && <CSpinner />}
       {/* 거래 많은 지역 */}
-      {/* <MainMap places={hotPlaces} /> */}
+      <MainMap places={hotPlaces} />
 
       {/* 찜한 매물 목록 */}
       <MainSwiper

@@ -87,13 +87,37 @@ public class FlaskService {
             log.info(body.toString());
 
             String param = objectMapper.writeValueAsString(body);
-
+            log.info(param);
             HttpEntity<String> entity = new HttpEntity<String>(param, headers);
 
             String url = "http://localhost:5000/api/checkOTP";
             ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
             Map<String, Object> responseMap = objectMapper.readValue(response.getBody(), new TypeReference<Map<String, Object>>() {});
 
+            return responseMap;
+        } catch (JsonProcessingException e) {
+            // JSON 변환 오류가 발생하면 로그를 남기고 null 반환
+            log.error("Error while processing JSON: {}", e.getMessage());
+            return null;
+        } catch (Exception e) {
+            // 다른 예외가 발생하면 로그를 남기고 null 반환
+            log.error("Error while sending request to Flask: {}", e.getMessage());
+            return null;
+        }
+    }
+    @Transactional
+    public Map<String, Object>  hotPlace() {
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<String> entity = new HttpEntity<String>(headers);
+
+            String url = "http://localhost:5000/api/hotPlace";
+            ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
+            Map<String, Object> responseMap = objectMapper.readValue(response.getBody(), new TypeReference<Map<String, Object>>() {});
+            log.info(responseMap.toString());
             return responseMap;
         } catch (JsonProcessingException e) {
             // JSON 변환 오류가 발생하면 로그를 남기고 null 반환

@@ -75,8 +75,13 @@ export default function SignUp() {
     console.log('otp 확인');
     try {
         const phone_format_otp = formatPhoneNumber(phoneNumber.value)
-        const otpresponse = checkOtp({"otpCode": otp.value, "phone": phone_format_otp})
+        const otpresponse = await checkOtp({"otpCode": otp.value, "phone": phone_format_otp})
+        console.log(otpresponse.data)
+        console.log(otp.value)
+        console.log(phone_format_otp)
         const otpresult = otpresponse.data
+        console.log('otpresult : '+otpresult)
+        console.log('otpresult.success === "TRUE"'+otpresult.success === "TRUE");
         if (otpresult.success === "TRUE") {
           alert("인증되었습니다.")
           setIsPhoneAuth(true)

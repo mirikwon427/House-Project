@@ -209,5 +209,17 @@ public class RegisteredHouseController {
         message.setRegisteredHouse(registeredHouseDtoList);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+    @GetMapping("/hotPlace")
+    public  ResponseEntity<?> hotPlace() {
 
+        Map<String, Object> status = flaskService.hotPlace();
+        log.info("status"+status.toString());
+        if(status.get("error") != null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("success", false, "error", status.get("error")));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Map.of("success", "TRUE", "status", status.get("location")));
+    }
 }

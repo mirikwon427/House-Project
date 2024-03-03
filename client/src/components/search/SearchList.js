@@ -6,6 +6,10 @@ import CCard from '../common/CCard';
 
 export default function SearchList({ handleFilter, handleSearch, page }) {
   const { searchedHouses, totalCnt } = useSelector((state) => state.house);
+    const { user, token } = useSelector((state) => state.user);
+
+    console.log("user:::", user)
+    console.log("searchedHouses:::", searchedHouses)
   const [currentPage, setCurrentpage] = useState(1);
 
   const onChangePage = (e) => {

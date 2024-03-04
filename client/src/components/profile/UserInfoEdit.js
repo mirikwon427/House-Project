@@ -4,27 +4,42 @@ import { useInput } from '../../hooks/useInput';
 import { userActions } from '../../redux/store/reducers/userReducer';
 import CButton from '../common/CButton';
 import CInput from '../common/CInput';
+import { phoneAuth, checkOtp } from '../../redux/store/api/userApi';
+import CSpinner from '../common/CSpinner';
+
+function formatPhoneNumber(phoneNumber) {
+  // 정규식을 사용하여 숫자만 추출
+  const numbersOnly = phoneNumber.replace(/\D/g, '');
+  // 앞에 0을 제거하고 +82를 앞에 붙임
+  const formattedNumber = '+82' + numbersOnly.slice(1);
+
+  return formattedNumber;
+}
 
 export default function UserInfoEdit() {
-  const { user, token } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
+  const { isLoading } = useSelector((state) => state.user);
+
 
   const name = useInput(user.name);
   const address = useInput(user.address);
   const age = useInput(user.age);
-  const phone = useInput(user.phone);
+  const phoneNumber = useInput(user.phone);
   const email = useInput(user.email);
   const pw = useInput('');
   const pwCorrect = useInput('');
+  const otp = useInput('');
   const dispatch = useDispatch();
 
   // 정규표현식 및 유효성 검사 후 true / false
   const [isEmail, setIsEmail] = useState(true);
-  const [isPw, setIsPw] = useState(true);
-  const [isPwCorrect, setIsPwCorrect] = useState(true);
+  const [isPw, setIsPw] = useState(false);
+  const [isPwCorrect, setIsPwCorrect] = useState(false);
   const [isAdress, setIsAdress] = useState(true);
   const [isName, setIsName] = useState(true);
   const [isPhone, setIsPhone] = useState(true);
-  const [isPhoneConfirm, setIsPhoneConfirm] = useState(true);
+  const [isPhonePending, setIsPhonePending] = useState(false);
+  const [isPhoneAuth, setIsPhoneAuth] = useState(false);
   const [isAge, setIsAge] = useState(true);
 
   const [nameMessage, setNameMessage] = useState('');
@@ -34,43 +49,163 @@ export default function UserInfoEdit() {
   const [phoneMessage, setPhoneMessage] = useState('');
   const [addressMessage, setAddressMessage] = useState('');
   const [ageMessage, setAgeMessage] = useState('');
-
-  const handlePhoneAuthentication = (e) => {
+  
+  const handlePhoneAuthentication = async (e) => {
     e.preventDefault();
-    // 휴대폰 인증 어떻게 구현할지
+    try {
+        const phone_format = formatPhoneNumber(phoneNumber.value)
+        let authresponse = await phoneAuth({"phone":phone_format})
+        const authresult = authresponse.data
+        if (authresult.success === "TRUE") {
+          alert("인증번호를 발송했습니다.")
+          setIsPhonePending(true)
+        }
+      } catch (e) {
+        console.log(e)
+      }
   };
 
-  const onClickUserUpdate = useCallback(
+  const confirmPhoneAuthentication = async (e) => {
+    e.preventDefault();
+    console.log('otp 확인');
+    try {
+        const phone_format_otp = formatPhoneNumber(phoneNumber.value)
+        const otpresponse = await checkOtp({"otpCode": otp.value, "phone": phone_format_otp})
+        console.log(otpresponse.data)
+        console.log(otp.value)
+        console.log(phone_format_otp)
+        const otpresult = otpresponse.data
+        console.log('otpresult : '+otpresult)
+        console.log('otpresult.success === "TRUE"'+otpresult.success === "TRUE");
+        if (otpresult.success === "TRUE") {
+          alert("인증되었습니다.")
+          setIsPhoneAuth(true)
+        }
+      } catch (e) {
+        console.log(e)
+      }
+  };
+
+  const onClickSignup = useCallback(
     (e) => {
       e.preventDefault();
 
-      dispatch(
-        userActions.updateUserReq({
-          headers: token,
-          user: {
-            id: user.id,
-            email: email.value,
-            password: pw.value,
+      const phoneRule = /\d{3}\d{3,4}\d{4}/;
+      const emailRule = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+      const pwRule =
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!%*#?&])[A-Za-z\d@!%*#?&]{8,}$/;
+      const addressRule = /^.{4,}$/;
+      const ageRule = /\d{1,}$/;
+
+      if (!emailRule.test(email.value)) {
+        setEmailMessage('이메일 형식이 아닙니다.');
+        setIsEmail(false);
+      } else {
+        setEmailMessage('사용가능한 아이디 입니다.');
+        setIsEmail(true);
+      }
+
+      if (!pwRule.test(pw.value)) {
+        setpwMessage(
+          '최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자를 포함해서 최소 8자 이상 입력하세요',
+        );
+        setIsPw(false);
+      } else {
+        setpwMessage('사용가능한 비밀번호입니다.');
+        setIsPw(true);
+      }
+
+      if (pw.value !== pwCorrect.value) {
+        setPwConfirmMessage('일치하지 않습니다.');
+        setIsPwCorrect(false);
+      } else {
+        setPwConfirmMessage('일치');
+        setIsPwCorrect(true);
+      }
+
+      if (!phoneRule.test(phoneNumber.value)) {
+        setPhoneMessage('-를 제외하고 번호만 입력해주세요.');
+        setIsPhone(false);
+      } else {
+        setPhoneMessage('');
+        setIsPhone(true);
+      }
+
+      if (name.value === '') {
+        setNameMessage('필수 입력사항입니다.');
+        setIsName(false);
+      } else {
+        setNameMessage('');
+        setIsName(true);
+      }
+
+      if (!addressRule.test(address.value)) {
+        setAddressMessage('최소 4글자 이상 입력하세요.');
+        setIsAdress(false);
+      } else {
+        setAddressMessage('');
+        setIsAdress(true);
+      }
+
+      if (!ageRule.test(age.value)) {
+        setAgeMessage('숫자만 입력가능합니다.');
+        setIsAge(false);
+      } else {
+        setAgeMessage('');
+        setIsAge(true);
+      }
+
+      if (
+        isEmail &&
+        isPw &&
+        isPwCorrect &&
+        isPhone &&
+        isName &&
+        isAdress &&
+        isAge &&
+        isPhoneAuth
+      ) {
+        dispatch(
+          userActions.signUpReq({
             name: name.value,
             age: age.value,
-            phone: phone.value,
+            email: email.value,
+            password: pw.value,
+            phone: phoneNumber.value,
             address: address.value,
-          },
-        }),
-      );
+          }),
+        );
+      }
     },
-    [dispatch, email, pw, name, age, phone, address, token, user],
+    [
+      dispatch,
+      email,
+      pw,
+      phoneNumber,
+      pwCorrect,
+      address,
+      name,
+      isAdress,
+      age,
+      isAge,
+      isName,
+      isEmail,
+      isPw,
+      isPwCorrect,
+      isPhone,
+      isPhoneAuth
+    ],
   );
 
   return (
     <div className="w-full flex justify-center my-16">
+      {isLoading && <CSpinner />}
+
       <div className="w-full h-fit py-36 bg-gray-50 rounded-2xl flex justify-center items-center">
         <div className="w-[640px] h-fit bg-white shadow-lg rounded-md flex p-20">
           <div className="w-full">
-            <div className="text-center text-4xl font-bold mb-12">
-              회원 정보 수정
-            </div>
-            <form onSubmit={onClickUserUpdate} className="flex flex-col gap-4">
+            <div className="text-center text-4xl font-bold mb-12">Sign Up</div>
+            <form onSubmit={onClickSignup} className="flex flex-col gap-4">
               <CInput
                 {...email}
                 type="email"
@@ -98,9 +233,9 @@ export default function UserInfoEdit() {
               <CInput
                 {...pw}
                 type="password"
-                placeholder="새로운 비밀번호를 입력해주세요."
+                placeholder="비밀번호를 입력해주세요."
                 label="비밀번호"
-                isErr={!isPw}
+                isErr={isPw}
                 errMsg={pwMessage}
               >
                 <svg
@@ -124,7 +259,7 @@ export default function UserInfoEdit() {
                 type="password"
                 placeholder="비밀번호 확인을 입력해주세요."
                 label="비밀번호 확인"
-                isErr={!isPwCorrect}
+                isErr={isPwCorrect}
                 errMsg={pwConfirmMessage}
               >
                 <svg
@@ -172,9 +307,9 @@ export default function UserInfoEdit() {
                 <div className="w-full flex gap-4">
                   <div className="flex-1">
                     <CInput
-                      {...phone}
+                      {...phoneNumber}
                       type="text"
-                      placeholder="핸드폰 번호를 입력해주세요."
+                      placeholder="-없이 번호만 입력해주세요."
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -204,6 +339,47 @@ export default function UserInfoEdit() {
                   </div>
                 )}
               </div>
+
+              {isPhonePending &&( <div>
+                <div className="mb-2 font-medium text-sm">인증 번호</div>
+                <div className="w-full flex gap-4">
+                  <div className="flex-1">
+                    <CInput
+                      {...otp}
+                      type="text"
+                      placeholder="핸드폰으로 발송된 otp 번호를 입력해주세요."
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
+                        />
+                      </svg>
+                    </CInput>
+                  </div>
+
+                  <CButton
+                    title="확인"
+                    onClick={confirmPhoneAuthentication}
+                  />
+                </div>
+
+
+                
+                {!isPhone && (
+                  <div className="text-[#ea002c] text-xs mt-1 pl-4">
+                    {phoneMessage}
+                  </div>
+                )}
+              </div>)}
 
               <CInput
                 {...age}
@@ -253,12 +429,11 @@ export default function UserInfoEdit() {
                 </svg>
               </CInput>
 
-              <CButton title="Update Info" onClick={onClickUserUpdate} />
+              <CButton title="SIGN UP" onClick={onClickSignup} />
             </form>
           </div>
         </div>
       </div>
     </div>
-    // 수정 이후
   );
 }

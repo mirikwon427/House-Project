@@ -86,7 +86,7 @@ export default function UserInfoEdit() {
       }
   };
 
-  const onClickSignup = useCallback(
+  const onClickUserUpdate = useCallback(
     (e) => {
       e.preventDefault();
 
@@ -166,13 +166,14 @@ export default function UserInfoEdit() {
         isPhoneAuth
       ) {
         dispatch(
-          userActions.signUpReq({
+          userActions.updateUserReq({
             name: name.value,
             age: age.value,
             email: email.value,
             password: pw.value,
             phone: phoneNumber.value,
             address: address.value,
+            id: sessionStorage.id,
           }),
         );
       }
@@ -205,7 +206,7 @@ export default function UserInfoEdit() {
         <div className="w-[640px] h-fit bg-white shadow-lg rounded-md flex p-20">
           <div className="w-full">
             <div className="text-center text-4xl font-bold mb-12">Sign Up</div>
-            <form onSubmit={onClickSignup} className="flex flex-col gap-4">
+            <form onSubmit={onClickUserUpdate} className="flex flex-col gap-4">
               <CInput
                 {...email}
                 type="email"
@@ -429,7 +430,7 @@ export default function UserInfoEdit() {
                 </svg>
               </CInput>
 
-              <CButton title="SIGN UP" onClick={onClickSignup} />
+              <CButton title="User Info Update" onClick={onClickUserUpdate} />
             </form>
           </div>
         </div>

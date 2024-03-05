@@ -4,11 +4,11 @@ export default function Footer() {
       <div className="w-full bg-black h-96 flex flex-col justify-center text-white">
         <div className="w-full px-20 flex justify-between m-auto max-w-[1730px]">
           <div>
-            <div className="text-3xl font-bold mb-6">LOGO</div>
+            <div className="text-3xl font-bold mb-6">다솔이네집</div>
             <div className="text-sm text-gray-500">
-              뭐라뭐라 씨부리고
+              다솔이네
               <br />
-              뭐라뭐라 지껄이고.
+              신혼 집 찾기
             </div>
           </div>
           <div className="flex gap-32">

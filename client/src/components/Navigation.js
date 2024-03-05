@@ -31,7 +31,7 @@ export default function Navigation() {
   return (
     <div className="w-full py-10 flex justify-between items-center">
       <div className="font-extrabold text-2xl">
-        <Link to="/">LOGO</Link>
+        <Link to="/">다솔이네집</Link>
       </div>
 
       <div className="flex gap-12 items-center">

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import house.houseproject.dto.RegisteredHouseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,6 +22,17 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class FlaskService {
+    @Value("${future.price}")
+    private String futurePrice;
+
+    @Value("${send.otp}")
+    private String sendOtp;
+
+    @Value("${check.otp}")
+    private String checkOtp;
+
+    @Value("${hot.place}")
+    private String hotPlace;
 
     //데이터를 JSON 객체로 변환하기 위해서 사용
     private final ObjectMapper objectMapper;
@@ -33,8 +45,7 @@ public class FlaskService {
             String param = objectMapper.writeValueAsString(registeredHouseDto);
             HttpEntity<String> entity = new HttpEntity<String>(param, headers);
 
-            String url = "http://localhost:5000/api/futurePrice";
-            ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
+            ResponseEntity<String> response = restTemplate.postForEntity(futurePrice, entity, String.class);
             Map<String, Object> responseMap =  objectMapper.readValue(response.getBody(), new TypeReference<Map<String, Object>>() {});
 
             return responseMap;
@@ -62,8 +73,8 @@ public class FlaskService {
             String param = objectMapper.writeValueAsString(data);
             HttpEntity<String> entity = new HttpEntity<String>(param, headers);
 
-            String url = "http://localhost:5000/api/sendOTP";
-            ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
+
+            ResponseEntity<String> response = restTemplate.postForEntity(sendOtp, entity, String.class);
             Map<String, Object> responseMap = objectMapper.readValue(response.getBody(), new TypeReference<Map<String, Object>>() {});
 
             return responseMap;
@@ -90,8 +101,7 @@ public class FlaskService {
             log.info(param);
             HttpEntity<String> entity = new HttpEntity<String>(param, headers);
 
-            String url = "http://localhost:5000/api/checkOTP";
-            ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
+            ResponseEntity<String> response = restTemplate.postForEntity(checkOtp, entity, String.class);
             Map<String, Object> responseMap = objectMapper.readValue(response.getBody(), new TypeReference<Map<String, Object>>() {});
 
             return responseMap;
@@ -114,8 +124,7 @@ public class FlaskService {
 
             HttpEntity<String> entity = new HttpEntity<String>(headers);
 
-            String url = "http://localhost:5000/api/hotPlace";
-            ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
+            ResponseEntity<String> response = restTemplate.postForEntity(hotPlace, entity, String.class);
             Map<String, Object> responseMap = objectMapper.readValue(response.getBody(), new TypeReference<Map<String, Object>>() {});
             log.info(responseMap.toString());
             return responseMap;

@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInput } from '../../hooks/useInput';
+import { checkOtp, phoneAuth } from '../../redux/store/api/userApi';
 import { userActions } from '../../redux/store/reducers/userReducer';
 import CButton from '../common/CButton';
 import CInput from '../common/CInput';
-import { phoneAuth, checkOtp } from '../../redux/store/api/userApi';
 import CSpinner from '../common/CSpinner';
 
 function formatPhoneNumber(phoneNumber) {
@@ -19,7 +19,6 @@ function formatPhoneNumber(phoneNumber) {
 export default function UserInfoEdit() {
   const { user } = useSelector((state) => state.user);
   const { isLoading } = useSelector((state) => state.user);
-
 
   const name = useInput(user.name);
   const address = useInput(user.address);
@@ -49,41 +48,46 @@ export default function UserInfoEdit() {
   const [phoneMessage, setPhoneMessage] = useState('');
   const [addressMessage, setAddressMessage] = useState('');
   const [ageMessage, setAgeMessage] = useState('');
-  
+
   const handlePhoneAuthentication = async (e) => {
     e.preventDefault();
     try {
-        const phone_format = formatPhoneNumber(phoneNumber.value)
-        let authresponse = await phoneAuth({"phone":phone_format})
-        const authresult = authresponse.data
-        if (authresult.success === "TRUE") {
-          alert("인증번호를 발송했습니다.")
-          setIsPhonePending(true)
-        }
-      } catch (e) {
-        console.log(e)
+      const phone_format = formatPhoneNumber(phoneNumber.value);
+      let authresponse = await phoneAuth({ phone: phone_format });
+      const authresult = authresponse.data;
+      if (authresult.success === 'TRUE') {
+        alert('인증번호를 발송했습니다.');
+        setIsPhonePending(true);
       }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const confirmPhoneAuthentication = async (e) => {
     e.preventDefault();
     console.log('otp 확인');
     try {
-        const phone_format_otp = formatPhoneNumber(phoneNumber.value)
-        const otpresponse = await checkOtp({"otpCode": otp.value, "phone": phone_format_otp})
-        console.log(otpresponse.data)
-        console.log(otp.value)
-        console.log(phone_format_otp)
-        const otpresult = otpresponse.data
-        console.log('otpresult : '+otpresult)
-        console.log('otpresult.success === "TRUE"'+otpresult.success === "TRUE");
-        if (otpresult.success === "TRUE") {
-          alert("인증되었습니다.")
-          setIsPhoneAuth(true)
-        }
-      } catch (e) {
-        console.log(e)
+      const phone_format_otp = formatPhoneNumber(phoneNumber.value);
+      const otpresponse = await checkOtp({
+        otpCode: otp.value,
+        phone: phone_format_otp,
+      });
+      console.log(otpresponse.data);
+      console.log(otp.value);
+      console.log(phone_format_otp);
+      const otpresult = otpresponse.data;
+      console.log('otpresult : ' + otpresult);
+      console.log(
+        'otpresult.success === "TRUE"' + otpresult.success === 'TRUE',
+      );
+      if (otpresult.success === 'TRUE') {
+        alert('인증되었습니다.');
+        setIsPhoneAuth(true);
       }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const onClickUserUpdate = useCallback(
@@ -97,74 +101,81 @@ export default function UserInfoEdit() {
       const addressRule = /^.{4,}$/;
       const ageRule = /\d{1,}$/;
 
-      if (!emailRule.test(email.value)) {
-        setEmailMessage('이메일 형식이 아닙니다.');
-        setIsEmail(false);
-      } else {
-        setEmailMessage('사용가능한 아이디 입니다.');
+      setIsEmail(false);
+      setIsPw(false);
+      setIsPwCorrect(false);
+      setIsPhone(false);
+      setIsName(false);
+      setIsAdress(false);
+      setIsAge(false);
+
+      let errFlag = false;
+
+      if (email.value === '') {
         setIsEmail(true);
+        setEmailMessage('이메일을 입력해주세요.');
+        errFlag = true;
+      } else if (!emailRule.test(email.value)) {
+        setEmailMessage('이메일을 형식에 맞게 입력해주세요.');
+        setIsEmail(true);
+        errFlag = true;
       }
 
-      if (!pwRule.test(pw.value)) {
-        setpwMessage(
-          '최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자를 포함해서 최소 8자 이상 입력하세요',
-        );
-        setIsPw(false);
-      } else {
-        setpwMessage('사용가능한 비밀번호입니다.');
+      if (pw.value === '') {
+        setpwMessage('비밀번호를 입력해주세요.');
         setIsPw(true);
+        errFlag = true;
+      } else if (!pwRule.test(pw.value)) {
+        setpwMessage(
+          '최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자를 포함해서 최소 8자 이상으로 입력해주세요.',
+        );
+        setIsPw(true);
+        errFlag = true;
       }
 
       if (pw.value !== pwCorrect.value) {
-        setPwConfirmMessage('일치하지 않습니다.');
-        setIsPwCorrect(false);
-      } else {
-        setPwConfirmMessage('일치');
+        setPwConfirmMessage('비밀번호 확인란을 정확하게 입력해주세요.');
         setIsPwCorrect(true);
+        errFlag = true;
       }
 
-      if (!phoneRule.test(phoneNumber.value)) {
-        setPhoneMessage('-를 제외하고 번호만 입력해주세요.');
-        setIsPhone(false);
-      } else {
-        setPhoneMessage('');
+      if (phoneNumber.value === '') {
+        setPhoneMessage('휴대폰 번호를 입력해주세요.');
         setIsPhone(true);
+        errFlag = true;
+      } else if (!phoneRule.test(phoneNumber.value)) {
+        setPhoneMessage('-를 제외하고 번호만 입력해주세요.');
+        setIsPhone(true);
+        errFlag = true;
       }
 
       if (name.value === '') {
-        setNameMessage('필수 입력사항입니다.');
-        setIsName(false);
-      } else {
-        setNameMessage('');
+        setNameMessage('이름을 입력해주세요.');
         setIsName(true);
+        errFlag = true;
       }
 
-      if (!addressRule.test(address.value)) {
-        setAddressMessage('최소 4글자 이상 입력하세요.');
-        setIsAdress(false);
-      } else {
-        setAddressMessage('');
+      if (address.value === '') {
+        setAddressMessage('주소를 입력해주세요.');
         setIsAdress(true);
+        errFlag = true;
+      } else if (!addressRule.test(address.value)) {
+        setAddressMessage('주소를 최소 4글자 이상 입력하세요.');
+        setIsAdress(true);
+        errFlag = true;
       }
 
-      if (!ageRule.test(age.value)) {
-        setAgeMessage('숫자만 입력가능합니다.');
-        setIsAge(false);
-      } else {
-        setAgeMessage('');
+      if (age.value === '') {
+        setAgeMessage('나이를 입력해주세요.');
         setIsAge(true);
+        errFlag = true;
+      } else if (!ageRule.test(age.value)) {
+        setAgeMessage('숫자만 입력가능합니다.');
+        setIsAge(true);
+        errFlag = true;
       }
 
-      if (
-        isEmail &&
-        isPw &&
-        isPwCorrect &&
-        isPhone &&
-        isName &&
-        isAdress &&
-        isAge &&
-        isPhoneAuth
-      ) {
+      if (!errFlag) {
         dispatch(
           userActions.updateUserReq({
             name: name.value,
@@ -178,24 +189,7 @@ export default function UserInfoEdit() {
         );
       }
     },
-    [
-      dispatch,
-      email,
-      pw,
-      phoneNumber,
-      pwCorrect,
-      address,
-      name,
-      isAdress,
-      age,
-      isAge,
-      isName,
-      isEmail,
-      isPw,
-      isPwCorrect,
-      isPhone,
-      isPhoneAuth
-    ],
+    [dispatch, email, pw, phoneNumber, pwCorrect, address, name, age],
   );
 
   return (
@@ -212,7 +206,7 @@ export default function UserInfoEdit() {
                 type="email"
                 placeholder="이메일을 입력해주세요."
                 label="이메일"
-                isErr={!isEmail}
+                isErr={isEmail}
                 errMsg={emailMessage}
               >
                 <svg
@@ -284,7 +278,7 @@ export default function UserInfoEdit() {
                 type="text"
                 placeholder="이름을 입력해주세요."
                 label="이름"
-                isErr={!isName}
+                isErr={isName}
                 errMsg={nameMessage}
               >
                 <svg
@@ -334,60 +328,60 @@ export default function UserInfoEdit() {
                     onClick={handlePhoneAuthentication}
                   />
                 </div>
-                {!isPhone && (
+                {isPhone && (
                   <div className="text-[#ea002c] text-xs mt-1 pl-4">
                     {phoneMessage}
                   </div>
                 )}
               </div>
 
-              {isPhonePending &&( <div>
-                <div className="mb-2 font-medium text-sm">인증 번호</div>
-                <div className="w-full flex gap-4">
-                  <div className="flex-1">
-                    <CInput
-                      {...otp}
-                      type="text"
-                      placeholder="핸드폰으로 발송된 otp 번호를 입력해주세요."
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
+              {isPhonePending && (
+                <div>
+                  <div className="mb-2 font-medium text-sm">인증 번호</div>
+                  <div className="w-full flex gap-4">
+                    <div className="flex-1">
+                      <CInput
+                        {...otp}
+                        type="text"
+                        placeholder="핸드폰으로 발송된 otp 번호를 입력해주세요."
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
-                        />
-                      </svg>
-                    </CInput>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
+                          />
+                        </svg>
+                      </CInput>
+                    </div>
+
+                    <CButton
+                      title="확인"
+                      onClick={confirmPhoneAuthentication}
+                    />
                   </div>
 
-                  <CButton
-                    title="확인"
-                    onClick={confirmPhoneAuthentication}
-                  />
+                  {isPhone && (
+                    <div className="text-[#ea002c] text-xs mt-1 pl-4">
+                      {phoneMessage}
+                    </div>
+                  )}
                 </div>
-
-
-                
-                {!isPhone && (
-                  <div className="text-[#ea002c] text-xs mt-1 pl-4">
-                    {phoneMessage}
-                  </div>
-                )}
-              </div>)}
+              )}
 
               <CInput
                 {...age}
                 type="text"
                 placeholder="나이를 입력해주세요."
                 label="나이"
-                isErr={!isAge}
+                isErr={isAge}
                 errMsg={ageMessage}
               >
                 <svg
@@ -411,7 +405,7 @@ export default function UserInfoEdit() {
                 type="text"
                 placeholder="주소를 입력해주세요."
                 label="주소"
-                isErr={!isAdress}
+                isErr={isAdress}
                 errMsg={addressMessage}
               >
                 <svg

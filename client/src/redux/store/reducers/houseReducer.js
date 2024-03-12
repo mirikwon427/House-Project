@@ -202,8 +202,7 @@ const houseSlice = createSlice({
     },
     getHotPlacesSuc(state, action) {
       state.isLoading = false;
-      console.log('hotPlaces:::', action.payload);
-      state.hotPlaces = action.payload.location;
+      state.hotPlaces = action.payload.status;
     },
     getHotPlacesFail(state, action) {
       state.isLoading = false;

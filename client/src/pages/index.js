@@ -40,7 +40,7 @@ export default function Main() {
     <div>
       {isLoading && <CSpinner />}
       {/* 거래 많은 지역 */}
-      <MainMap places={hotPlaces} />
+      {!isLoading && <MainMap places={hotPlaces} />}
 
       {/* 찜한 매물 목록 */}
       <MainSwiper

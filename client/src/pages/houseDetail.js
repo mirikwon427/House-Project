@@ -24,6 +24,7 @@ export default function HouseDetail() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log('here');
     dispatch(houseActions.getHouseReq({ id: params.id, token }));
   }, [dispatch, params, token]);
 
@@ -222,7 +223,9 @@ export default function HouseDetail() {
                 (단위 : 만 원)
               </span>
             </div>
-            <Chart predicted={predicted} pastPrices={pastPrices} />
+            {!isLoading && (
+              <Chart predicted={predicted} pastPrices={pastPrices} />
+            )}
           </div>
         </div>
       </div>

@@ -15,6 +15,7 @@ import { houseActions } from '../reducers/houseReducer';
 // Get House
 function* getHouseApi(action) {
   try {
+    console.log('here');
     const { data } = yield call(getHouse, action.payload);
 
     yield put(houseActions.getHouseSuc(data));

@@ -5,9 +5,15 @@ export default class Chart extends Component {
   constructor(props) {
     super(props);
 
+    let currentDate = new Date();
+    let year = currentDate.getFullYear();
+    let month = currentDate.getMonth() + 1;
+
     let date = Object.keys(props.pastPrices);
+    date.push(`${year}년 ${month}월`);
     date.push('2027');
     let prices = Object.values(props.pastPrices);
+    prices.push(props.currentPrice);
     prices.push(props.predicted);
 
     this.state = {

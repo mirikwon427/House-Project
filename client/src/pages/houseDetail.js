@@ -24,7 +24,6 @@ export default function HouseDetail() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('here');
     dispatch(houseActions.getHouseReq({ id: params.id, token }));
   }, [dispatch, params, token]);
 
@@ -224,7 +223,11 @@ export default function HouseDetail() {
               </span>
             </div>
             {!isLoading && (
-              <Chart predicted={predicted} pastPrices={pastPrices} />
+              <Chart
+                predicted={predicted}
+                currentPrice={house.objAmt}
+                pastPrices={pastPrices}
+              />
             )}
           </div>
         </div>

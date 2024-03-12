@@ -24,7 +24,7 @@ def BLDG_NM_preprocessing(building_name):
 
 
 def API_data_update():
-    api_key = '6a4f6575757039363834685968426e'
+    api_key = os.environ.get('API_key','')
 
     url = 'http://openapi.seoul.go.kr:8088/{0}/json/tbLnOpendataRtmsV/{1}/{2}/'.format(api_key, 1, 100)
 

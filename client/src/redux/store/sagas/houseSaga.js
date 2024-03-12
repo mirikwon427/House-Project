@@ -15,7 +15,6 @@ import { houseActions } from '../reducers/houseReducer';
 // Get House
 function* getHouseApi(action) {
   try {
-    console.log('here');
     const { data } = yield call(getHouse, action.payload);
 
     yield put(houseActions.getHouseSuc(data));
@@ -146,11 +145,13 @@ function* watchSearchedHouses() {
   yield takeLatest(houseActions.searchHousesReq, searchedHousesApi);
 }
 
-// Get Recommended House
+// Get Hot Place
 function* getHotPlacesApi(action) {
   try {
+    console.log('here1');
     const { data } = yield call(getHotPlaces, action.payload);
 
+    console.log('here2:::', data);
     yield put(houseActions.getHotPlacesSuc(data));
   } catch (e) {
     yield put(

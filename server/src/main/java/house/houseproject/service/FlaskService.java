@@ -115,27 +115,5 @@ public class FlaskService {
             return null;
         }
     }
-    @Transactional
-    public Map<String, Object>  hotPlace() {
-        try {
-            RestTemplate restTemplate = new RestTemplate();
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
 
-            HttpEntity<String> entity = new HttpEntity<String>(headers);
-
-            ResponseEntity<String> response = restTemplate.postForEntity(hotPlace, entity, String.class);
-            Map<String, Object> responseMap = objectMapper.readValue(response.getBody(), new TypeReference<Map<String, Object>>() {});
-            log.info(responseMap.toString());
-            return responseMap;
-        } catch (JsonProcessingException e) {
-            // JSON 변환 오류가 발생하면 로그를 남기고 null 반환
-            log.error("Error while processing JSON: {}", e.getMessage());
-            return null;
-        } catch (Exception e) {
-            // 다른 예외가 발생하면 로그를 남기고 null 반환
-            log.error("Error while sending request to Flask: {}", e.getMessage());
-            return null;
-        }
-    }
 }

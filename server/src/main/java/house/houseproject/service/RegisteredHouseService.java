@@ -1,6 +1,7 @@
 package house.houseproject.service;
 
 import house.houseproject.Repository.HUserRepository;
+import house.houseproject.Repository.HotPlaceRepository;
 import house.houseproject.Repository.RegisteredHouseRepository;
 import house.houseproject.domain.HUser;
 import house.houseproject.domain.RegisteredHouse;
@@ -22,9 +23,12 @@ public class RegisteredHouseService {
     private final RegisteredHouseRepository registeredHouseRepository;
     private final HUserRepository userRepository;
 
-    public RegisteredHouseService(RegisteredHouseRepository registeredHouseRepository,HUserRepository userRepository) {
+    private final HotPlaceRepository hotPlaceRepository;
+
+    public RegisteredHouseService(RegisteredHouseRepository registeredHouseRepository,HUserRepository userRepository, HotPlaceRepository hotPlaceRepository) {
         this.registeredHouseRepository = registeredHouseRepository;
         this.userRepository = userRepository;
+        this.hotPlaceRepository = hotPlaceRepository;
     }
 
     public boolean existsByRegisteredHouseIdAndUserId(int registeredHouseId, int userId) {
@@ -84,4 +88,12 @@ public class RegisteredHouseService {
         log.info("registeredHousesList : {}",registeredHousesList);
         return registeredHousesList;
     }
+
+    @Transactional
+    public List<String> hotPlace() {
+        List<String> locationList = hotPlaceRepository.findByLocation();
+        log.info("locationList : ", locationList);
+        return locationList;
+    }
+
 }

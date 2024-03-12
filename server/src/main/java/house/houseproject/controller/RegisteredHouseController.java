@@ -212,14 +212,14 @@ public class RegisteredHouseController {
     @GetMapping("/hotPlace")
     public  ResponseEntity<?> hotPlace() {
 
-        Map<String, Object> status = flaskService.hotPlace();
-        log.info("status"+status.toString());
-        if(status.get("error") != null) {
+        List<String> locationList = registeredHouseService.hotPlace();
+        log.info("locationList"+locationList.toString());
+        if(locationList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(Map.of("success", false, "error", status.get("error")));
+                    .body(Map.of("success", false, "location","null"));
         }
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(Map.of("success", "TRUE", "status", status.get("location")));
+                .body(Map.of("success", "TRUE", "location", locationList));
     }
 }

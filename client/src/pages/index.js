@@ -12,6 +12,7 @@ export default function Main() {
     (state) => state.house,
   );
 
+  console.log('hotPlaces:::', hotPlaces);
   const dispatch = useDispatch();
 
   useEffect(() => {

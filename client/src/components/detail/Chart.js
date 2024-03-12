@@ -8,9 +8,13 @@ export default class Chart extends Component {
     let currentDate = new Date();
     let year = currentDate.getFullYear();
     let month = currentDate.getMonth() + 1;
+    let day = currentDate.getDate();
+
+    if (month < 10) month = '0' + month;
+    if (day < 10) day = '0' + day;
 
     let date = Object.keys(props.pastPrices);
-    date.push(`${year}년 ${month}월`);
+    date.push(`${year}-${month}-${day}`);
     date.push('2027');
     let prices = Object.values(props.pastPrices);
     prices.push(props.currentPrice);

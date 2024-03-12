@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CButton from '../components/common/CButton';
@@ -8,11 +8,13 @@ import { useInput } from '../hooks/useInput';
 import { userActions } from '../redux/store/reducers/userReducer';
 
 export default function LogIn() {
-  const { isLoading } = useSelector((state) => state.user);
+  const { isLoading, isErr, errMsg } = useSelector((state) => state.user);
 
   const id = useInput('');
   const pw = useInput('');
   const dispatch = useDispatch();
+
+  const [initErr, setInitErr] = useState(false);
 
   const onClickLogin = useCallback(
     (e) => {
@@ -24,6 +26,8 @@ export default function LogIn() {
           password: pw.value,
         }),
       );
+
+      setInitErr(true);
     },
     [dispatch, id, pw],
   );
@@ -74,6 +78,12 @@ export default function LogIn() {
                   </svg>
                 </CInput>
               </div>
+
+              {initErr && isErr && (
+                <div className="text-[#ea002c] text-xs mb-2 -mt-2">
+                  {errMsg}
+                </div>
+              )}
 
               <CButton title="Log In" onClick={onClickLogin} />
 

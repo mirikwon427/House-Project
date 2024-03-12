@@ -9,7 +9,12 @@ function* loginUserApi(action) {
 
     yield put(userActions.loginUserSuc(data));
   } catch (e) {
-    yield put(userActions.loginUserFail({ success: false, msg: e.message }));
+    yield put(
+      userActions.loginUserFail({
+        success: false,
+        msg: e.response.data.message,
+      }),
+    );
   }
 }
 

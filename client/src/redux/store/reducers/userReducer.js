@@ -36,8 +36,6 @@ const userSlice = createSlice({
     loginUserFail(state, action) {
       state.isLoading = false;
       sessionStorage.clear();
-      alert(action.payload.msg);
-
       state.errMsg = action.payload.msg;
       state.isErr = true;
     },

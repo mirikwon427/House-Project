@@ -8,41 +8,28 @@ import warnings
 warnings.filterwarnings(action='ignore')
 
 from datetime import date
-import os
 
-def predict_price(data):
+def predict_price(data, API):
+
     data = {key.upper(): value for key, value in data.items()}
-    today = date.today()
-    today_formatted = today.strftime("%Y%m%d")
-    DATA_DIR = './data/API/'
+    crawling = pd.read_csv('./data/crawling_final_data.csv')
 
-    file_list = os.listdir(DATA_DIR)
-    file_list.sort()
+    # 크롤링 데이터와 API 공공데이터 merge
+    temp_crawling = crawling[['SGG_NM', 'BJDONG_NM', 'BLDG_NM', 'HOUSE_TYPE']]
+    temp_crawling = temp_crawling.drop_duplicates()
+    temp_crawling['check'] = True
 
-    df = pd.read_csv(DATA_DIR + file_list[-1])
+    df = pd.merge(API, temp_crawling, how='left', on=['SGG_NM', 'BJDONG_NM', 'BLDG_NM', 'HOUSE_TYPE'])
+    df = df.dropna(subset=['check'])
+    df = df.drop(['check'], axis=1)
+    df = df.drop_duplicates()
+    df = df.reset_index(drop=True)
 
     # 모델 로드
-    model = load_model('./models/house_price_model_update')
+    model = load_model('./models/model/{}_model'.format(data['SGGNM']))
 
     # 새로운 데이터 만들기
     new_data = dict()
-
-    # 자치구 라벨인코딩
-    SGG_dict = dict()
-
-    SGG_grouped = pd.DataFrame(df.groupby(['SGG_NM'])['OBJ_AMT'].mean())
-    SGG_grouped = SGG_grouped.reset_index()
-    SGG_grouped = SGG_grouped.sort_values(by='OBJ_AMT')
-    SGG_grouped = SGG_grouped.reset_index()
-    SGG_grouped = SGG_grouped.drop(['index'], axis=1)
-    SGG_grouped = SGG_grouped.reset_index()
-
-    SGG_list = list(SGG_grouped['SGG_NM'])
-    index_list = list(SGG_grouped['index'])
-    for SGG, index in zip(SGG_list, index_list):
-        SGG_dict[SGG] = index
-
-    new_data['SGG_NM'] = SGG_dict[data['SGGNM']]
 
     # 법정동 라벨인코딩
     SGG = list(df['SGG_NM'].unique())
@@ -106,7 +93,7 @@ def predict_price(data):
             'OBJ_AMT'].mean())
 
     new = pd.DataFrame([new_data])
-
     preds = predict_model(model, data=new)
     pred = int(preds['prediction_label'][0])
+
     return pred

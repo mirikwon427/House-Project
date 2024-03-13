@@ -5,10 +5,21 @@ from past_house_price import past_price
 from predict_house_price import predict_price
 from best_SGG import best_SGG
 
+########
+import pandas as pd
+import os
+
 
 account_sid = os.environ.get('account_sid','')
 auth_token = os.environ.get('auth_token','')
 verify_sid = os.environ.get('verify_sid','')
+
+DATA_DIR = './data/API/'
+
+file_list = os.listdir(DATA_DIR)
+file_list.sort()
+
+df = pd.read_csv('./data/API/' + file_list[-1])
 
 client = Client(account_sid, auth_token)
 
@@ -22,11 +33,12 @@ def home():
 def predicted_price():
    try:
     data = request.json
-    dates_list, past_price_list =  past_price(data)
+
+    dates_list, past_price_list =  past_price(data, df)
     past_list = dict()
     for i in range(len(dates_list)):
        past_list[dates_list[i]] = past_price_list[i]
-    future_price =  predict_price(data)
+    future_price =  predict_price(data, df)
 
     return jsonify({"success": True, "price": future_price, "pastList": past_list})
    except Exception as e:

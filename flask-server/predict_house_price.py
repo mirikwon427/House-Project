@@ -9,7 +9,7 @@ warnings.filterwarnings(action='ignore')
 
 from datetime import date
 
-def predict_price(data, API):
+def predict_price(data, API,past_price_list):
 
     data = {key.upper(): value for key, value in data.items()}
     crawling = pd.read_csv('./data/crawling_final_data.csv')
@@ -88,9 +88,10 @@ def predict_price(data, API):
     new_data['past_OBJ_AMT'] = data['OBJAMT']
 
     # 지역의 평균 집 값 넣기
-    new_data['OBJ_AMT_mean'] = int(
-        df[(df['SGG_NM'] == data['SGGNM']) & (df['BJDONG_NM'] == data['BJDONGNM']) & (df['BLDG_NM'] == data['BLDGNM'])][
-            'OBJ_AMT'].mean())
+    # new_data['OBJ_AMT_mean'] = int(
+    #     df[(df['SGG_NM'] == data['SGGNM']) & (df['BJDONG_NM'] == data['BJDONGNM']) & (df['BLDG_NM'] == data['BLDGNM'])][
+    #         'OBJ_AMT'].mean())
+    new_data['OBJ_AMT_mean'] = sum(past_price_list)/len(past_price_list)
 
     new = pd.DataFrame([new_data])
     preds = predict_model(model, data=new)

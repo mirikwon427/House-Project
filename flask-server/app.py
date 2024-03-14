@@ -38,7 +38,7 @@ def predicted_price():
     past_list = dict()
     for i in range(len(dates_list)):
        past_list[dates_list[i]] = past_price_list[i]
-    future_price =  predict_price(data, df)
+    future_price =  predict_price(data, df, past_price_list)
 
     return jsonify({"success": True, "price": future_price, "pastList": past_list})
    except Exception as e:

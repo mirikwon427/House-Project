@@ -5,9 +5,11 @@ def past_price(data, df):
     SGG = data['SGGNM']
     BJDONG = data['BJDONGNM']
     BLDG = data['BLDGNM'].replace(' ', '')
-    BLDG_TYPE = data['HOUSETYPE']
+    OBJ_AMT = data['OBJAMT']
 
-    building_df = df[(df['SGG_NM'] == SGG) & (df['BJDONG_NM'] == BJDONG) & (df['BLDG_NM'] == BLDG) & (df['HOUSE_TYPE']==BLDG_TYPE)]
+    diff = int(df[(df['SGG_NM'] == SGG) & (df['BJDONG_NM'] == BJDONG) & (df['BLDG_NM'] == BLDG)]['OBJ_AMT'].mean() / 2)
+
+    building_df = df[(df['SGG_NM'] == SGG) & (df['BJDONG_NM'] == BJDONG) & (df['BLDG_NM'] == BLDG) & (df['OBJ_AMT']>=OBJ_AMT-diff)&(df['OBJ_AMT']<=OBJ_AMT+diff)]
     building_df = building_df.sort_values(by='DEAL_YMD', ascending=False)
 
     date = list(building_df.iloc[:10, :]['DEAL_YMD'])

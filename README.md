@@ -8,6 +8,9 @@ FrontEnd : React, Typescript, tailwindcss, Redux
 BackEnd : Spring
 Data : Python, Tensorflow
 
+# 아키텍처 다이어그램
+[image](https://github.com/mirikwon427/House-Project/tree/master/images)
+
 ## Issues
 
 1. 아직 미구현 부분이나 에러가 많습니다. 모든 내용은 [Issues](https://github.com/housestudy/project/issues)에 정리되어 있습니다.

@@ -9,7 +9,7 @@ BackEnd : Spring
 Data : Python, Tensorflow
 
 # 아키텍처 다이어그램
-![image](https://github.com/mirikwon427/House-Project/tree/master/images/image1)
+![image](https://github.com/mirikwon427/House-Project/blob/master/images/image1.png)
 
 ## Issues
 
